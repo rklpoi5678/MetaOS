@@ -3,12 +3,6 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 // 좌측 사이드바: 프로젝트 폴더 목록
 function WorkspaceSidebar() {

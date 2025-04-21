@@ -45,11 +45,11 @@ export default function LandingPage() {
         <p className="mt-4 text-gray-600">수천 명의 사용자들이 MetaOS를 신뢰합니다.</p>
         <div className="mt-8 flex justify-center space-x-6">
           <div className="p-6 bg-white rounded-lg shadow-md max-w-sm">
-            <p className="text-gray-600">"업무 효율이 200% 증가했어요!"</p>
+            <p className="text-gray-600">{"업무 효율이 200% 증가했어요!"}</p>
             <span className="block mt-2 font-semibold">- 김철수, 스타트업 CEO</span>
           </div>
           <div className="p-6 bg-white rounded-lg shadow-md max-w-sm">
-            <p className="text-gray-600">"AI 자동화 덕분에 시간을 절약할 수 있었습니다."</p>
+            <p className="text-gray-600">{"AI 자동화 덕분에 시간을 절약할 수 있었습니다."}</p>
             <span className="block mt-2 font-semibold">- 이영희, 마케팅 매니저</span>
           </div>
         </div>
