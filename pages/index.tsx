@@ -14,7 +14,7 @@ export default function LandingPage() {
         <h1 className="text-5xl font-bold">MetaOS - The Future of SaaS</h1>
         <p className="mt-4 text-lg">AI 기반으로 더 스마트한 업무 환경을 경험하세요.</p>
         <Link href="/login">
-          <Button className="mt-6 bg-white text-blue-$00 px-6 py-3 rounded-lg">
+          <Button className="mt-6 text-blue-600 text-white px-6 py-3 rounded-lg transition-colors duration-200 ease-in-out hover:bg-white hover:text-black">
             체험 시작하기
           </Button>
         </Link>
