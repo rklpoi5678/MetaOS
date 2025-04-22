@@ -1,26 +1,72 @@
 // pages/index.tsx
 "use client";
 
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabaseClient';
+import { useRouter } from 'next/router';
 import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { ProjectCard } from '@/components/ui/card';
 import Footer from "@/pages/componects/Footer";
 import Link from "next/link";
+// pages/index.js (HomePage)
+
+interface Project {
+  id: string;
+  title: string;
+  status: string;
+  created_at: string;
+  tags: string[];
+}
 
 // 헤더바 컴포넌트: MetaOS 로고, 유저명, "새 프로젝트" 버튼
 function Header() {
+  const [userName, setUserName] = useState('Guest');
+
+  useEffect(() => {
+    async function fetchUserName() {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (authError || !user) {
+        console.error('Auth Error:', authError);
+        return;
+      }
+
+      // 커스텀 users 테이블에서 이름 가져오기
+      const { data, error } = await supabase
+        .from('users')
+        .select('name')
+        .eq('id', user.id)
+        .maybeSingle();
+        console.log('현재 로그인 ID:', user.id);
+        console.log('user.id:', user.id, user.id.length);
+
+        console.log('data from users table:', data);
+      if (error) {
+        console.error('DB Error:', error);
+      } 
+      if (data?.name) {
+        setUserName(data.name);
+      } else {
+        console.log('No name found in users table.');
+      }
+    }
+
+    fetchUserName();
+  }, []);
+
+
   return (
-    <header className="flex flex-col">
+    <header className="flex flex-col bg-gray-900">
       <div className="flex justify-between items-center p-4">
+        <Link href="/">
         <span className="font-bold text-xl">MetaOS</span>
+        </Link>
         <div className="flex items-center">
-          <span className="mr-4">현재 유저명: user@example.com</span>
+          <span className="mr-4">현재 유저명: {userName}</span>
           <Link href="/componects/NewProjectModal">
             <Button>새 프로젝트</Button>
           </Link>
@@ -40,10 +86,10 @@ function Sidebar() {
     ];
   
     return (
-      <aside className="w-64 bg-gray-100 p-4">
+      <aside className="w-64 bg-gray-500 p-5">
         <ul>
           {menuItems.map((item) => (
-            <li key={item.name} className="p-2 hover:bg-gray-200 cursor-pointer">
+            <li key={item.name} className="p-2 hover:bg-gray-400 cursor-pointer">
               <Link href={item.path}>{item.name}</Link>
             </li>
           ))}
@@ -52,70 +98,65 @@ function Sidebar() {
     );
   }
 
-// 개별 프로젝트 카드를 위한 컴포넌트
-function ProjectCard({
-  name,
-  status,
-  createdAt,
-  tags,
-}: {
-  name: string;
-  status: string;
-  createdAt: string;
-  tags: string[];
-}) {
-  return (
-    <Card className="w-full max-w-sm shadow-md">
-      <CardHeader>
-        <CardTitle>{name}</CardTitle>
-        <CardDescription>
-          <span className={status === "진행중" ? "text-green-500" : "text-red-500"}>
-            {status === "진행중" ? "🟢 진행중" : "🔴 중단"}
-          </span>
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div>생성일: {createdAt}</div>
-        <div className="mt-2">
-          {tags.map((tag) => (
-            <span key={tag} className="mr-2 text-sm text-gray-600">
-              #{tag}
-            </span>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
 
-// Home 페이지 메인 컴포넌트
+
 export default function HomePage() {
-  // 데모용 프로젝트 데이터: 카드 갯수를 늘려서 페이지를 넓힘.
-  const projects = [
-    { name: "프로젝트 Alpha", status: "진행중", createdAt: "2025-04-21", tags: ["PLR", "감정루틴"] },
-    { name: "프로젝트 Beta", status: "중단", createdAt: "2025-03-15", tags: ["감정루틴"] },
-    { name: "프로젝트 Gamma", status: "진행중", createdAt: "2025-02-10", tags: ["PLR"] },
-    { name: "프로젝트 Delta", status: "진행중", createdAt: "2025-01-05", tags: ["감정루틴", "테스트"] },
-    { name: "프로젝트 Epsilon", status: "중단", createdAt: "2024-12-11", tags: ["PLR", "샘플"] },
-    { name: "프로젝트 Zeta", status: "진행중", createdAt: "2024-11-20", tags: ["감정루틴"] },
-    // 원하는 만큼 추가할 수 있습니다.
-  ];
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const router = useRouter();
+
+  useEffect(() => {
+    async function fetchProjects() {
+      // 현재 로그인한 사용자를 가져옵니다.
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError) {
+        setError(userError.message);
+        setLoading(false);
+        return;
+      }
+      if (!user) {
+        // 로그인 상태가 아니면 로그인 페이지로 이동하도록 처리할 수 있습니다.
+        setError('로그인 후 이용해주세요.');
+        setLoading(false);
+        router.push('/login');
+        return;
+      }
+
+      // 현재 사용자의 프로젝트를 조회합니다.
+      const { data, error: projectError } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('user_id', user.id);
+
+      if (projectError) {
+        setError(projectError.message);
+      } else {
+        setProjects(data);
+      }
+      setLoading(false);
+    }
+    fetchProjects();
+  }, [router]);
+
+  if (loading) return <div>로딩중...</div>;
+  if (error) return <div>오류: {error}</div>;
 
   return (
     <div>
       <Header />
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 p-4 bg-gray-50">
-          <h2 className="text-2xl font-bold mb-4">프로젝트 리스트</h2>
+        <main className="flex-2 p-4 bg-gray-300">
+          <h2 className="text-2xl font-bold text-gray-700 mb-5">프로젝트 리스트</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {projects.map((proj) => (
               <ProjectCard
-                key={proj.name}
-                name={proj.name}
+                key={proj.id}
+                name={proj.title}           // Supabase에서 프로젝트명은 `title` 컬럼에 저장된다고 가정
                 status={proj.status}
-                createdAt={proj.createdAt}
-                tags={proj.tags}
+                createdAt={proj.created_at}
+                tags={proj.tags || []}
               />
             ))}
           </div>

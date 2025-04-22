@@ -81,6 +81,34 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+interface ProjectCardProps {
+  name: string;
+  status: string;
+  createdAt: string;
+  tags: string[];
+}
+
+function ProjectCard({ name, status, createdAt, tags }: ProjectCardProps) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{name}</CardTitle>
+        <CardDescription>{status}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p>생성일: {createdAt}</p>
+        <div className="flex flex-wrap gap-2 mt-2">
+          {tags.map((tag) => (
+            <span key={tag} className="bg-gray-200 px-2 py-1 rounded text-sm">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export {
   Card,
   CardHeader,
@@ -89,4 +117,5 @@ export {
   CardAction,
   CardDescription,
   CardContent,
+  ProjectCard,
 }

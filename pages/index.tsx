@@ -10,47 +10,47 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-20">
+      <section className="bg-gradient-to-r from-black-700 to-purple-900 text-white text-center py-20">
         <h1 className="text-5xl font-bold">MetaOS - The Future of SaaS</h1>
         <p className="mt-4 text-lg">AI 기반으로 더 스마트한 업무 환경을 경험하세요.</p>
-        <Link href="/dashboard">
+        <Link href="/login">
           <Button className="mt-6 bg-white text-blue-600 px-6 py-3 rounded-lg">
-            무료 체험 시작하기
+            체험 시작하기
           </Button>
         </Link>
       </section>
 
       {/* 기능 소개 */}
-      <section className="py-16 px-8 text-center">
+      <section className="py-16 px-8 bg-gray-900 text-center">
         <h2 className="text-3xl font-bold">주요 기능</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-          <div className="p-6 bg-gray-100 rounded-lg shadow-md">
+          <div className="p-6 bg-gray-500 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold">자동화된 워크플로우</h3>
-            <p className="mt-2 text-gray-600">AI 기반으로 업무를 자동화하세요.</p>
+            <p className="mt-2 text-gray-100">AI 기반으로 업무를 자동화하세요.</p>
           </div>
-          <div className="p-6 bg-gray-100 rounded-lg shadow-md">
+          <div className="p-6 bg-gray-500 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold">실시간 협업</h3>
-            <p className="mt-2 text-gray-600">팀원들과 실시간으로 문서를 공유하세요.</p>
+            <p className="mt-2 text-gray-100">팀원들과 실시간으로 문서를 공유하세요.</p>
           </div>
-          <div className="p-6 bg-gray-100 rounded-lg shadow-md">
+          <div className="p-6 bg-gray-500 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold">강력한 데이터 분석</h3>
-            <p className="mt-2 text-gray-600">데이터 기반으로 더 나은 결정을 내리세요.</p>
+            <p className="mt-2 text-gray-100">데이터 기반으로 더 나은 결정을 내리세요.</p>
           </div>
         </div>
       </section>
 
       {/* 고객 리뷰 */}
-      <section className="bg-gray-50 py-16 text-center">
+      <section className="bg-gray-900 py-16 text-center">
         <h2 className="text-3xl font-bold">고객 리뷰</h2>
-        <p className="mt-4 text-gray-600">수천 명의 사용자들이 MetaOS를 신뢰합니다.</p>
+        <p className="mt-4 text-gray-100">수천 명의 사용자들이 MetaOS를 신뢰합니다.</p>
         <div className="mt-8 flex justify-center space-x-6">
           <div className="p-6 bg-white rounded-lg shadow-md max-w-sm">
-            <p className="text-gray-600">{"업무 효율이 200% 증가했어요!"}</p>
-            <span className="block mt-2 font-semibold">- 김철수, 스타트업 CEO</span>
+            <p className="text-gray-800">{"업무 효율이 200% 증가했어요!"}</p>
+            <span className="block mt-2 text-gray-800 font-semibold">- 김철수, 스타트업 CEO</span>
           </div>
           <div className="p-6 bg-white rounded-lg shadow-md max-w-sm">
-            <p className="text-gray-600">{"AI 자동화 덕분에 시간을 절약할 수 있었습니다."}</p>
-            <span className="block mt-2 font-semibold">- 이영희, 마케팅 매니저</span>
+            <p className="text-gray-800">{"AI 자동화 덕분에 시간을 절약할 수 있었습니다."}</p>
+            <span className="block mt-2 text-gray-800 font-semibold">- 이영희, 마케팅 매니저</span>
           </div>
         </div>
       </section>
