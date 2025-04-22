@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { useRouter } from 'next/router';
-import { useUserStore } from '@/pages/src/store/userStore';
+import { useUserStore } from '@/src/store/userStore';
 
 export default function Login() {
   const setUser = useUserStore(state => state.setUser);
