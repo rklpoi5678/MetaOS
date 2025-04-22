@@ -25,6 +25,7 @@ export default function Login() {
       setMessage(error.message);
     } else {
       setMessage('로그인 성공!');
+      setUserData(data.user);
       router.push('/dashboard'); // 로그인 후 이동할 페이지
     }
   };
