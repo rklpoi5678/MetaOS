@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabaseClient';
 import { useRouter } from 'next/router';
 
 export default function Login() {
+  const setUser = useUserStore(state => state.setUser);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -24,8 +25,8 @@ export default function Login() {
     if (error) {
       setMessage(error.message);
     } else {
+      setUser(data.user);
       setMessage('로그인 성공!');
-      setUserData(data.user);
       router.push('/dashboard'); // 로그인 후 이동할 페이지
     }
   };
