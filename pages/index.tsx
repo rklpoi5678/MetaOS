@@ -5,68 +5,144 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/pages/componects/Footer";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-slate-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-black-700 to-purple-900 text-white text-center py-20">
-        <h1 className="text-5xl font-bold">MetaOS - The Future of SaaS</h1>
-        <p className="mt-4 text-lg">AI 기반으로 더 스마트한 업무 환경을 경험하세요.</p>
+      <section className="bg-gradient-to-r from-blue-50 to-indigo-100 text-gray-800 text-center py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-10 animate-pulse"></div>
+        <h1 className="text-5xl font-bold transform hover:scale-105 transition-transform duration-300">
+          MetaOS - 스마트한 업무의 시작
+        </h1>
+        <p className="mt-4 text-lg animate-fade-in">AI 기반 통합 업무 플랫폼으로 업무 효율을 극대화하세요</p>
         <Link href="/login">
-          <Button className="mt-6 text-blue-600 text-white px-6 py-3 rounded-lg transition-colors duration-200 ease-in-out hover:bg-white hover:text-black">
+          <Button className="
+            mt-6 
+            bg-indigo-600 text-white
+            px-6 py-3 rounded-lg 
+            transition-all duration-300
+            hover:bg-indigo-700
+            hover:shadow-lg transform hover:scale-105
+            animate-pulse
+          ">
             체험 시작하기
           </Button>
         </Link>
       </section>
 
-      {/* 기능 소개 */}
-      <section className="py-16 px-8 bg-gray-900 text-center">
-        <h2 className="text-3xl font-bold">주요 기능</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-          <div className="p-6 bg-gray-500 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold">자동화된 워크플로우</h3>
-            <p className="mt-2 text-gray-100">AI 기반으로 업무를 자동화하세요.</p>
-          </div>
-          <div className="p-6 bg-gray-500 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold">실시간 협업</h3>
-            <p className="mt-2 text-gray-100">팀원들과 실시간으로 문서를 공유하세요.</p>
-          </div>
-          <div className="p-6 bg-gray-500 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold">강력한 데이터 분석</h3>
-            <p className="mt-2 text-gray-100">데이터 기반으로 더 나은 결정을 내리세요.</p>
+      {/* 가치 제안 */}
+      <section className="py-16 px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">왜 MetaOS인가요?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-4xl mb-4">⚡️</div>
+              <h3 className="text-xl font-semibold text-gray-800">생산성 300% 향상</h3>
+              <p className="mt-2 text-gray-600">AI 자동화로 반복 업무 해방</p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-4">💰</div>
+              <h3 className="text-xl font-semibold text-gray-800">비용 50% 절감</h3>
+              <p className="mt-2 text-gray-600">업무 자동화로 인건비 절감</p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-4">🔒</div>
+              <h3 className="text-xl font-semibold text-gray-800">엔터프라이즈급 보안</h3>
+              <p className="mt-2 text-gray-600">ISO27001 인증</p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-4">🌐</div>
+              <h3 className="text-xl font-semibold text-gray-800">글로벌 확장성</h3>
+              <p className="mt-2 text-gray-600">40개국 언어 지원</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 고객 리뷰 */}
-      <section className="bg-gray-900 py-16 text-center">
-        <h2 className="text-3xl font-bold">고객 리뷰</h2>
-        <p className="mt-4 text-gray-100">수천 명의 사용자들이 MetaOS를 신뢰합니다.</p>
-        <div className="mt-8 flex justify-center space-x-6">
-          <div className="p-6 bg-white rounded-lg shadow-md max-w-sm">
-            <p className="text-gray-800">{"업무 효율이 200% 증가했어요!"}</p>
-            <span className="block mt-2 text-gray-800 font-semibold">- 김철수, 스타트업 CEO</span>
+      {/* 주요 기능 */}
+      <section className="py-16 px-8 bg-slate-50">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">핵심 기능</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="p-6 bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300">
+            <div className="text-4xl mb-4">🤖</div>
+            <h3 className="text-xl font-semibold text-gray-800">AI 워크플로우</h3>
+            <p className="mt-2 text-gray-600">머신러닝 기반 업무 자동화</p>
+            <ul className="mt-4 text-gray-600 text-sm">
+              <li>• 문서 자동 분류</li>
+              <li>• 데이터 자동 입력</li>
+              <li>• 업무 우선순위 추천</li>
+            </ul>
           </div>
-          <div className="p-6 bg-white rounded-lg shadow-md max-w-sm">
-            <p className="text-gray-800">{"AI 자동화 덕분에 시간을 절약할 수 있었습니다."}</p>
-            <span className="block mt-2 text-gray-800 font-semibold">- 이영희, 마케팅 매니저</span>
+          <div className="p-6 bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300">
+            <div className="text-4xl mb-4">📊</div>
+            <h3 className="text-xl font-semibold text-gray-800">실시간 분석</h3>
+            <p className="mt-2 text-gray-600">데이터 기반 의사결정</p>
+            <ul className="mt-4 text-gray-600 text-sm">
+              <li>• 실시간 대시보드</li>
+              <li>• 맞춤형 리포트</li>
+              <li>• 예측 분석</li>
+            </ul>
+          </div>
+          <div className="p-6 bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300">
+            <div className="text-4xl mb-4">🤝</div>
+            <h3 className="text-xl font-semibold text-gray-800">팀 협업</h3>
+            <p className="mt-2 text-gray-600">원활한 커뮤니케이션</p>
+            <ul className="mt-4 text-gray-600 text-sm">
+              <li>• 실시간 문서 공유</li>
+              <li>• 화상 회의</li>
+              <li>• 팀 채팅</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* 고객 사례 */}
+      <section className="py-16 px-8 bg-white">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">신뢰할 수 있는 파트너</h2>
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="p-6 bg-slate-50 rounded-xl">
+            <div className="flex items-center mb-4">
+              <Image src="/company1.png" alt="Company" className="w-12 h-12 rounded-full" />
+              <div className="ml-4">
+                <h4 className="font-semibold text-gray-800">디자인웨이브로</h4>
+                <p className="text-sm text-gray-600">제조업</p>
+              </div>
+            </div>
+            <p className="text-gray-700">{"MetaOS 도입 후 업무 처리 시간이 60% 단축되었습니다."}</p>
+          </div>
+          <div className="p-6 bg-slate-50 rounded-xl">
+            <div className="flex items-center mb-4">
+              <Image src="/company2.png" alt="Company" className="w-12 h-12 rounded-full" />
+              <div className="ml-4">
+                <h4 className="font-semibold text-gray-800">(주)구구 컴퍼니</h4>
+                <p className="text-sm text-gray-600">IT 서비스</p>
+              </div>
+            </div>
+            <p className="text-gray-700">{"AI 기반 자동화로 인적 오류가 90% 감소했습니다."}</p>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-16 text-center">
-        <h2 className="text-3xl font-bold">지금 시작하세요!</h2>
-        <p className="mt-4 text-gray-600">무료 체험을 통해 MetaOS의 강력한 기능을 경험해보세요.</p>
-        <Link href="/dashboard">
-          <Button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg">
-            무료 가입하기
+      <section className="py-16 px-8 bg-gradient-to-r from-indigo-600 to-blue-500 text-white text-center">
+        <h2 className="text-3xl font-bold">지금 바로 시작하세요</h2>
+        <p className="mt-4">무료 체험으로 MetaOS의 모든 기능을 경험해보세요</p>
+        <Link href="/login">
+          <Button className="
+            mt-8
+            bg-white text-indigo-600
+            px-8 py-4 rounded-lg
+            transition-all duration-300
+            hover:bg-gray-100
+            hover:shadow-lg transform hover:scale-105
+          ">
+            무료 체험 시작하기
           </Button>
         </Link>
       </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   );
