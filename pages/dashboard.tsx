@@ -10,7 +10,7 @@ import Footer from "@/pages/componects/Footer";
 import Link from "next/link";
 // zustand 스토어
 import { useAppStore } from '@/src/store/appStore';
-import NewProjectModal from './componects/NewProjectModal';
+import AiProjectModal from "./componects/AiProjectModal";
 
 export default function HomePage() {
   const router = useRouter();
@@ -112,10 +112,22 @@ export default function HomePage() {
             </span>
           </Link>
           <div className="flex items-center space-x-6">
-            <span className="text-gray-300">
-              환영합니다, <span className="font-semibold">{userName}</span>님
-            </span>
-            <NewProjectModal className="
+            <div className="flex items-center space-x-4">
+              <span className="text-gray-300">
+                환영합니다, <span className="font-semibold">{userName}</span>님
+              </span>
+              <button
+                onClick={async () => {
+                  await supabase.auth.signOut();
+                  localStorage.removeItem('isLoggedIn'); // 세션 제거
+                  router.push('/');
+                }}
+                className="px-3 py-1 text-sm text-gray-300 hover:text-white border border-gray-600 rounded hover:bg-gray-700 transition-colors"
+              >
+                로그아웃
+              </button>
+            </div>
+            <AiProjectModal className="
               bg-gradient-to-r from-blue-500 to-purple-600 
               text-white font-medium
               px-4 py-2 rounded-lg
@@ -166,13 +178,14 @@ export default function HomePage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {projects.map((proj) => (
-                <ProjectCard
-                  key={proj.id}
-                  name={proj.title}
-                  status={proj.status}
-                  createdAt={proj.created_at}
-                  tags={proj.tags || []}
-                />
+                <Link href="/project-workspace" key={proj.id}>
+                  <ProjectCard
+                    name={proj.title}
+                    status={proj.status}
+                    createdAt={proj.created_at}
+                    tags={proj.tags || []}
+                  />
+                </Link>
               ))}
             </div>
           </div>

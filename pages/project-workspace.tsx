@@ -12,8 +12,14 @@ import WorkspaceSidebarRight from "./componects/WorkspaceSidebarRight";
 export default function ProjectWorkspacePage() {
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <header className="p-4 bg-white shadow-md flex items-center">
-        <Link href="/dashboard" className="text-2xl font-bold mr-4 text-gray-900 hover:text-gray-600">MetaOS</Link>
+      <header className="bg-gray-900 text-white shadow-lg">
+        <div className="flex justify-between items-center p-4 max-w-7xl mx-auto w-full">
+          <Link href="/" className="transform hover:scale-105 transition-transform duration-200">
+            <span className="font-bold text-2xl bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+              MetaOS
+            </span>
+          </Link>
+        </div>
       </header>
       <div className="flex flex-1 overflow-hidden">
         <WorkspaceSidebar />

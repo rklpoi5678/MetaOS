@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { useRouter } from 'next/router';
 import { useUserStore } from '@/src/store/userStore';
@@ -14,6 +14,15 @@ export default function Login() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    // 로컬 스토리지에서 로그인 상태 확인
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+      router.push('/dashboard');
+    }
+
+  }, [router]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,6 +40,7 @@ export default function Login() {
       setMessage(error.message);
     } else {
       setUser(data.user);
+      localStorage.setItem('isLoggedIn', 'true');
       setMessage('로그인 성공!');
       router.push('/dashboard');
     }
@@ -136,7 +146,7 @@ export default function Login() {
           계정이 없으신가요?{' '}
           <motion.button
             whileHover={{ scale: 1.05 }}
-            onClick={() => router.push('/components/signup')}
+            onClick={() => router.push('/componects/signup')}
             className="text-blue-600 hover:underline"
           >
             회원가입

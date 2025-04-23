@@ -22,10 +22,10 @@ function WorkspaceSidebar() {
       <motion.aside 
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        className="w-64 bg-gray-100 p-4 h-screen"
+        className="w-64 bg-gray-800 p-4 h-screen text-gray-100"
       >
         <motion.h1 
-          className="text-2xl font-bold text-gray-900"
+          className="text-2xl font-bold text-gray-100"
           whileHover={{ scale: 1.05 }}
         >
           프로젝트 작업공간
@@ -52,8 +52,8 @@ function WorkspaceSidebar() {
                   whileTap={{ scale: 0.98 }}
                   className={`
                     p-2 cursor-pointer rounded-md
-                    flex items-center gap-2 text-gray-900
-                    ${selectedFolder === folder ? 'bg-blue-100' : 'hover:bg-gray-200'}
+                    flex items-center gap-2 text-gray-100
+                    ${selectedFolder === folder ? 'bg-gray-700' : 'hover:bg-gray-700'}
                     transition-all duration-200
                   `}
                 >
@@ -81,7 +81,6 @@ function WorkspaceSidebar() {
           </ul>
         </motion.div>
       </motion.aside>
-    );
-}
+)}
 
 export default WorkspaceSidebar;

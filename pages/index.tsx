@@ -1,13 +1,24 @@
 // pages/index.tsx
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/pages/componects/Footer";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 export default function LandingPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // 로컬 스토리지에서 로그인 상태 확인
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+      router.push('/dashboard');
+    }
+  }, [router]);
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       {/* Hero Section */}
@@ -104,7 +115,7 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="p-6 bg-slate-50 rounded-xl">
             <div className="flex items-center mb-4">
-              <Image src="/company1.png" alt="Company" className="w-12 h-12 rounded-full" />
+              <Image src="/c.png" alt="Company" width={48} height={48} className="w-12 h-12 rounded-full" />
               <div className="ml-4">
                 <h4 className="font-semibold text-gray-800">디자인웨이브로</h4>
                 <p className="text-sm text-gray-600">제조업</p>
@@ -114,7 +125,7 @@ export default function LandingPage() {
           </div>
           <div className="p-6 bg-slate-50 rounded-xl">
             <div className="flex items-center mb-4">
-              <Image src="/company2.png" alt="Company" className="w-12 h-12 rounded-full" />
+              <Image src="/c.png" alt="Company" width={48} height={48} className="w-12 h-12 rounded-full object-cover" />
               <div className="ml-4">
                 <h4 className="font-semibold text-gray-800">(주)구구 컴퍼니</h4>
                 <p className="text-sm text-gray-600">IT 서비스</p>
