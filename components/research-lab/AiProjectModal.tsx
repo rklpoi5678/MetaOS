@@ -181,7 +181,13 @@ export default function AiProjectModal({ className }: { className?: string }) {
       }
 
       // 2. 프로젝트 노드 생성
-      let projectNodes = [];
+      let projectNodes: Array<{
+        project_id: string;
+        type: string;
+        title: string;
+        content: string | null;
+        sort_order: number;
+      }> = [];
       
       if (aiProjectState.selectedProject === "new_project" && aiProjectState.aiResponse?.tree) {
         // AI 모드: AI가 생성한 노드 구조 사용
@@ -190,7 +196,9 @@ export default function AiProjectModal({ className }: { className?: string }) {
         
         // 폴더 노드 필터링 및 변환
         const folderNodes = tree
-          .filter((node: { type: string; title: string }) => node.type === 'folder' && allowedFolders.includes(node.title))
+          .filter((node: { type: string; title: string }) => 
+            node.type === 'folder' && allowedFolders.includes(node.title)
+          )
           .map((node: { type: string; title: string }, index: number) => ({
             project_id: project.id,
             type: 'folder',
@@ -199,39 +207,19 @@ export default function AiProjectModal({ className }: { className?: string }) {
             sort_order: index,
           }));
 
-        // 파일 노드 변환
-        interface TreeFolder {
-          type: string;
-          title: string;
-          children?: TreeChild[];
-        }
+        // 누락된 폴더 추가
+        const existingFolders = folderNodes.map(node => node.title);
+        const missingFolders = allowedFolders.filter(folder => !existingFolders.includes(folder));
+        
+        const additionalFolderNodes = missingFolders.map((folder, index) => ({
+          project_id: project.id,
+          type: 'folder',
+          title: folder,
+          content: null,
+          sort_order: folderNodes.length + index,
+        }));
 
-        interface TreeChild {
-          type: string;
-          title: string;
-          content?: string;
-        }
-
-        interface FolderNode {
-          title: string;
-        }
-
-        const fileNodes = tree.flatMap((folder: TreeFolder) => {
-          if (folder.type === 'folder' && allowedFolders.includes(folder.title) && folder.children) {
-            return folder.children
-              .filter((child: TreeChild) => child.type === 'file')
-              .map((child: TreeChild, index: number) => ({
-                project_id: project.id,
-                type: 'file',
-                title: child.title,
-                content: child.content || null,
-                sort_order: folderNodes.findIndex((n: FolderNode) => n.title === folder.title) * 100 + index,
-              }));
-          }
-          return [];
-        });
-
-        projectNodes = [...folderNodes, ...fileNodes];
+        projectNodes = [...folderNodes, ...additionalFolderNodes];
       } else {
         // 수동 모드: 기본 노드 구조 생성
         projectNodes = [
@@ -261,12 +249,12 @@ export default function AiProjectModal({ className }: { className?: string }) {
 
       // 필수 폴더가 모두 있는지 확인
       const requiredFolders = ['00_Core', '01_Structure', '02_Tool'];
-      const hasAllRequiredFolders = requiredFolders.every(folder =>
-        projectNodes.some(node => node.title === folder)
+      const missingFolders = requiredFolders.filter(folder =>
+        !projectNodes.some(node => node.type === 'folder' && node.title === folder)
       );
 
-      if (!hasAllRequiredFolders) {
-        setAiError("필수 폴더가 누락되었습니다.");
+      if (missingFolders.length > 0) {
+        setAiError(`다음 필수 폴더가 누락되었습니다: ${missingFolders.join(', ')}`);
         return;
       }
 
