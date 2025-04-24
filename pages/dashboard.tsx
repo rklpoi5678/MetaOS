@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useAppStore } from '@/src/store/appStore';
 import AiProjectModal from "./componects/AiProjectModal";
 import RoutineDashboard from "./componects/flow/RoutineDashboard";
+import InfoStack from "./componects/info/InfoStack";
 
 export default function HomePage() {
   const router = useRouter();
@@ -160,7 +161,7 @@ export default function HomePage() {
             {[
               { name: "프로젝트", path: "/project-workspace", icon: "📁", tab: 'projects' },
               { name: "워크플로우", path: "/flow", icon: "🔄", tab: 'workflow' },
-              { name: "정보 저장소", path: "/infostack", icon: "📚" },
+              { name: "정보 저장소", path: "/infostack", icon: "📚", tab: 'infostack' },
               { name: "결과물", path: "/output", icon: "📤" },
             ].map(item => (
               <div 
@@ -187,12 +188,17 @@ export default function HomePage() {
             <div className="mb-8">
               <div className="flex justify-between items-center">
                 <h2 className="text-3xl font-bold text-gray-800">
-                  {activeTab === 'workflow' ? '워크플로우' : '프로젝트'}
+                  {activeTab === 'workflow' ? '워크플로우' : 
+                   activeTab === 'infostack' ? '정보 저장소' : '프로젝트'}
                 </h2>
                 <div className="flex space-x-4">
                   <input
                     type="search"
-                    placeholder={activeTab === 'workflow' ? "루틴 검색..." : "프로젝트 검색..."}
+                    placeholder={
+                      activeTab === 'workflow' ? "루틴 검색..." :
+                      activeTab === 'infostack' ? "노트 검색..." :
+                      "프로젝트 검색..."
+                    }
                     value={dashboardState.searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -205,6 +211,8 @@ export default function HomePage() {
               <div className="bg-white rounded-lg shadow-lg p-6">
                 <RoutineDashboard />
               </div>
+            ) : activeTab === 'infostack' ? (
+              <InfoStack />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {filteredProjects.map((proj) => (
