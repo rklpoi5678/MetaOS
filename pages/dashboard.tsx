@@ -178,11 +178,21 @@ export default function HomePage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {projects.map((proj) => (
-                <Link href="/project-workspace" key={proj.id}>
+                <Link
+                  href={`/project-workspace/${proj.id}`}
+                  key={proj.id}
+                  >
                   <ProjectCard
                     name={proj.title}
                     status={proj.status}
-                    createdAt={proj.created_at}
+                    createdAt={new Date(proj.created_at).toLocaleString('ko-KR', {
+                      year: 'numeric',
+                      month: '2-digit', 
+                      day: '2-digit',
+                      hour12: false,
+                      minute: undefined,
+                      second: undefined
+                    }).replace(/\. /g, '/').replace(/\.$/, '')}
                     tags={proj.tags || []}
                   />
                 </Link>

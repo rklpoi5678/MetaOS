@@ -53,6 +53,12 @@ export default function AiProjectModal({ className }: { className?: string }) {
   const [projectName, setProjectName] = React.useState("");
   const [selectedTemplate, setSelectedTemplate] = React.useState<string>("");
   const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [aiResponse, setAiResponse] = React.useState<{
+    core: string;
+    structure: string[];
+    tool: string[];
+  } | null>(null);
   const router = useRouter();
 
   const projectTypes = [
@@ -80,12 +86,32 @@ export default function AiProjectModal({ className }: { className?: string }) {
     setSelectedTags(tags => tags.includes(tag) ? tags.filter(t => t !== tag) : [...tags, tag]);
   };
 
-  const handleAiSubmit = () => {
-    if (selectedProject === "continue" || userInput.trim()) {
+  const handleAiSubmit = async () => {
+    if (selectedProject === "continue" || !userInput.trim()) {
       setCurrentStep("manual");
       return;
     }
-    alert("무엇을 하고 싶은지 입력해주세요.");
+
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/generate-structure", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: `${selectedTemplate} 와 관련된 프로젝트를 시작하려고 해.(핵심 구조와 도구를 추천해줘)` })
+      });
+
+      const json = await response.json();
+      const parsed = JSON.parse(json.choices[0].message.content);
+      
+      setAiResponse(parsed);
+      console.log("AI 응답:", parsed);
+      setCurrentStep("manual");
+    } catch (error) {
+      console.error("AI 응답 처리 중 오류:", error);
+      alert("AI 응답 처리 중 오류가 발생했습니다. 다시 시도하거나 내용을 확인해주세요.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCreate = async () => {
@@ -103,6 +129,7 @@ export default function AiProjectModal({ className }: { className?: string }) {
           status: "in_progress",
           template: selectedTemplate,
           tags: selectedTags,
+          structure: aiResponse, // AI 응답 저장
         },
       ])
       .select()
@@ -133,10 +160,11 @@ export default function AiProjectModal({ className }: { className?: string }) {
             <div className="space-y-6 mt-4">
               <div className="space-y-2">
                 <Input
-                  placeholder="예: 블로그 글쓰기 자동화 시스템을 만들고 싶어요"
+                  placeholder="예: 글쓰기 루틴을 자동화하고 싶어, 어떠한 일을 실험하고 싶어 등"
                   value={userInput}
                   onChange={(e) => setUserInput(e.target.value)}
                   className="w-full p-3 text-lg text-gray-900"
+                  disabled={isLoading}
                 />
               </div>
               
@@ -162,7 +190,13 @@ export default function AiProjectModal({ className }: { className?: string }) {
               </div>
             </div>
             <DialogFooter className="mt-6">
-              <Button onClick={handleAiSubmit} className="w-full">시작하기</Button>
+              <Button 
+                onClick={handleAiSubmit} 
+                className="w-full"
+                disabled={isLoading}
+              >
+                {isLoading ? "처리중..." : "시작하기"}
+              </Button>
             </DialogFooter>
           </DialogContent>
         ) : (

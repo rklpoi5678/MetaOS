@@ -1,68 +1,91 @@
 'use client'
-import React, { useState, useEffect } from "react";
+
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
 import { motion, AnimatePresence } from "framer-motion";
 
-// 중앙 작업 공간: 프로젝트 구조화된 작업 영역
-function WorkspaceEditor() {
-    const [activeStructure, setActiveStructure] = useState('mindmap');
-    const [editorContent, setEditorContent] = useState('');
-    const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-    const [selectedTool, setSelectedTool] = useState('editor');
-    const [isSaving, setIsSaving] = useState(false);
-    const [showTooltip, setShowTooltip] = useState(false);
-    const [draggedItem, setDraggedItem] = useState(null);
+interface WorkspaceEditorProps {
+  projectId: string;
+}
 
-    // 자동 저장 효과
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        if (editorContent) {
-          handleAutoSave();
-        }
-      }, 3000);
-      return () => clearTimeout(timer);
-    }, [editorContent]);
+const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {projectId: string}) => {
+  const [title, setTitle] = useState<string>("");
+  const [activeStructure, setActiveStructure] = useState('mindmap');
+  const [editorContent, setEditorContent] = useState('');
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [selectedTool, setSelectedTool] = useState('editor');
+  const [isSaving, setIsSaving] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [draggedItem, setDraggedItem] = useState(null);
 
-    const handleAutoSave = async () => {
-      setIsSaving(true);
-      // 자동 저장 로직 구현
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setIsSaving(false);
-    };
+  useEffect(() => {
+    if (!projectId) return;
+    (async () => {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("title")
+        .eq("id", projectId)
+        .single();
 
-    const handleDragStart = (e: React.DragEvent<HTMLElement>, item: string) => {
-      e.dataTransfer.setData('text/plain', item);
-      setDraggedItem(item as unknown as null);
-    };
-
-    const handleDrop = (e: React.DragEvent<HTMLElement>) => {
-      e.preventDefault();
-      if (draggedItem) {
-        // 드래그 앤 드롭 로직 구현
-        setDraggedItem(null);
+      if (error) {
+        console.error("프로젝트 조회 오류:", error);
+        return;
       }
-    };
 
-    return (
+      setTitle(data.title);
+    })();
+  }, [projectId]);
+
+  // 자동 저장 효과
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (editorContent) {
+        handleAutoSave();
+      }
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [editorContent]);
+
+  const handleAutoSave = async () => {
+    setIsSaving(true);
+    // 자동 저장 로직 구현
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setIsSaving(false);
+  };
+
+  const handleDragStart = (e: React.DragEvent<HTMLElement>, item: string) => {
+    e.dataTransfer.setData('text/plain', item);
+    setDraggedItem(item as unknown as null);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    if (draggedItem) {
+      // 드래그 앤 드롭 로직 구현
+      setDraggedItem(null);
+    }
+  };
+
+  if (!projectId) {
+    return <p>프로젝트 ID를 불러오는 중...</p>;
+  }
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="p-4 space-y-6"
+    >
+      {/* 프로젝트 제목 및 핵심 문장 - 편집 가능 */}
       <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="p-4 space-y-6"
+        className="border-b pb-4"
+        whileHover={{ scale: 1.01 }}
       >
-        {/* 프로젝트 제목 및 핵심 문장 - 편집 가능 */}
-        <motion.div 
-          className="border-b pb-4"
-          whileHover={{ scale: 1.01 }}
+        <div
+          className="text-2xl font-bold mb-2 text-gray-900 w-full border-b border-transparent"
         >
-          <input 
-            type="text"
-            defaultValue="PLR 마켓플레이스"
-            className="text-2xl font-bold mb-2 text-gray-900 w-full border-b border-transparent hover:border-gray-300 focus:outline-none focus:border-blue-500 transition-all"
-          />
-          <input
-            type="text" 
-            defaultValue="시장 분석을 통한 PLR 콘텐츠 최적화 프로젝트"
-            className="text-lg text-gray-700 font-medium w-full border-b border-transparent hover:border-gray-300 focus:outline-none focus:border-blue-500 transition-all"
-          />
+          {title || "불러오는 중..."}
+        </div>
         </motion.div>
   
         {/* Structure Selector - 토글 기능 */}

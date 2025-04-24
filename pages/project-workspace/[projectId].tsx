@@ -3,13 +3,21 @@
 
 import React from "react";
 import Link from "next/link";
-import WorkspaceSidebar from "./componects/WorkspaceSidebar"
-import WorkspaceEditor from "./componects/WorkspaceEditor"
-import WorkspaceSidebarRight from "./componects/WorkspaceSidebarRight";
+import WorkspaceSidebar from "../componects/WorkspaceSidebar"
+import WorkspaceEditor from "../componects/WorkspaceEditor"
+import WorkspaceSidebarRight from "../componects/WorkspaceSidebarRight";
+import { useRouter } from "next/router";
 
 
 
 export default function ProjectWorkspacePage() {
+  const router = useRouter();
+  const { projectId } = router.query; 
+
+  if (!router.isReady || typeof projectId !== "string") {
+    return <p>프로젝트 로딩 중...</p>;
+  }
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       <header className="bg-gray-900 text-white shadow-lg">
@@ -22,9 +30,9 @@ export default function ProjectWorkspacePage() {
         </div>
       </header>
       <div className="flex flex-1 overflow-hidden">
-        <WorkspaceSidebar />
+        <WorkspaceSidebar projectId={projectId}/>
         <div className="flex-1 bg-gray-50 overflow-auto">
-          <WorkspaceEditor />
+          <WorkspaceEditor projectId={projectId} />
         </div>
         <WorkspaceSidebarRight />
       </div>

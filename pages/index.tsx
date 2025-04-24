@@ -38,7 +38,7 @@ export default function LandingPage() {
             hover:shadow-lg transform hover:scale-105
             animate-pulse
           ">
-            체험 시작하기
+            대시보드로 바로가기
           </Button>
         </Link>
       </section>
@@ -149,7 +149,7 @@ export default function LandingPage() {
             hover:bg-gray-100
             hover:shadow-lg transform hover:scale-105
           ">
-            무료 체험 시작하기
+            대시보드로 바로가기
           </Button>
         </Link>
       </section>

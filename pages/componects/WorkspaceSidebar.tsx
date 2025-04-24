@@ -1,23 +1,44 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/router";
 
-// 좌측 사이드바: 프로젝트 폴더 목록 
-function WorkspaceSidebar() {
+interface WorkspaceSidebarProps {
+  projectId: string;
+}
+
+interface Node {
+  type: string;
+  id: string;
+  title: string;
+}
+
+function WorkspaceSidebar({ projectId }: WorkspaceSidebarProps) {
+    const router = useRouter()
+    const [folders, setFolders] = useState<string[]>([]);
     const [selectedFolder, setSelectedFolder] = useState("");
     const [isHovered, setIsHovered] = useState("");
     
-    const folders = [
-      "00_코어",
-      "01_구조", 
-      "02_도구", 
-      "03_실험",
-      "04_보관",
-      "05_버전",
-      "06_공개"
-    ];
+    useEffect(() => {
+      if (!projectId) return;
+      fetch(`/api/project_nodes/${projectId}`)
+        .then(res => res.json())
+        .then((response) => {
+          const nodes = Array.isArray(response) ? response : response.nodes || [];
+          // 예: nodes 중에서 폴더 타입만 걸러내기
+          const folderTitles = nodes
+            .filter((n: Node) => n.type === 'folder')
+            .map((n: Node) => n.title);
+          setFolders(folderTitles);
+        })
+        .catch(error => {
+          console.error('폴더 데이터 가져오기 실패:', error);
+          setFolders([]);
+        });
+    }, [projectId]);
 
+      if (!router.isReady) return <p>프로젝트 로딩중 ...</p>
     return (
       <motion.aside 
         initial={{ x: -100, opacity: 0 }}
