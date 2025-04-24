@@ -72,28 +72,54 @@ function WorkspaceSidebar({ projectId }: WorkspaceSidebarProps) {
                   whileTap={{ scale: 0.98 }}
                   className={`
                     p-2 cursor-pointer rounded-md
-                    flex items-center gap-2 text-gray-100
+                    flex flex-col gap-2 text-gray-100
                     ${selectedFolder === folder.id ? 'bg-gray-700' : 'hover:bg-gray-700'}
                     transition-all duration-200
                   `}
                 >
-                  <motion.div 
-                    animate={{
-                      scale: isHovered === folder.id ? 1.2 : 1,
-                      backgroundColor: selectedFolder === folder.id ? "#3B82F6" : "#D1D5DB"
-                    }}
-                    className="w-3 h-3 rounded-full"
-                  />
-                  <span>{folder.title}</span>
-                  
-                  {selectedFolder === folder.id && (
-                    <motion.div
-                      layoutId="activeIndicator"
-                      className="absolute right-2 w-1 h-6 bg-blue-500 rounded-full"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
+                  <div className="flex items-center gap-2">
+                    <motion.div 
+                      animate={{
+                        scale: isHovered === folder.id ? 1.2 : 1,
+                        backgroundColor: selectedFolder === folder.id ? "#3B82F6" : "#D1D5DB"
+                      }}
+                      className="w-3 h-3 rounded-full"
                     />
+                    <span>{folder.title}</span>
+                    
+                    {selectedFolder === folder.id && (
+                      <motion.div
+                        layoutId="activeIndicator"
+                        className="absolute right-2 w-1 h-6 bg-blue-500 rounded-full"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      />
+                    )}
+                  </div>
+
+                  {selectedFolder === folder.id && (
+                    <motion.ul
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="ml-6 space-y-1"
+                    >
+                      {projectNodes
+                        .filter(node => node.type === 'file' && node.parent_id === folder.id)
+                        .map((file, fileIndex) => (
+                          <motion.li
+                            key={file.id}
+                            initial={{ x: -10, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: fileIndex * 0.05 }}
+                            className="p-2 cursor-pointer text-gray-300 hover:text-gray-100 hover:bg-gray-700 rounded-md flex items-center gap-2"
+                          >
+                            <div className="w-2 h-2 rounded-full bg-gray-400" />
+                            <span>{file.title}</span>
+                          </motion.li>
+                        ))}
+                    </motion.ul>
                   )}
                 </motion.li>
               ))}

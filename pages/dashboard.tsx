@@ -10,6 +10,7 @@ import Footer from "@/pages/componects/Footer";
 import Link from "next/link";
 import { useAppStore } from '@/src/store/appStore';
 import AiProjectModal from "./componects/AiProjectModal";
+import RoutineDashboard from "./componects/flow/RoutineDashboard";
 
 export default function HomePage() {
   const router = useRouter();
@@ -23,6 +24,8 @@ export default function HomePage() {
     setDashboardError,
     setSearchQuery
   } = useAppStore();
+
+  const [activeTab, setActiveTab] = React.useState('workflow'); // 'workflow' 또는 'projects'
 
   useEffect(() => {
     async function init() {
@@ -155,62 +158,77 @@ export default function HomePage() {
         <aside className="w-64 bg-gray-800 text-gray-100 shadow-lg">
           <nav className="p-4 space-y-2">
             {[
-              { name: "프로젝트", path: "/project-workspace", icon: "📁" },
-              { name: "워크플로우", path: "/flow", icon: "🔄" },
+              { name: "프로젝트", path: "/project-workspace", icon: "📁", tab: 'projects' },
+              { name: "워크플로우", path: "/flow", icon: "🔄", tab: 'workflow' },
               { name: "정보 저장소", path: "/infostack", icon: "📚" },
               { name: "결과물", path: "/output", icon: "📤" },
             ].map(item => (
-              <Link 
-                key={item.name} 
-                href={item.path}
-                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200"
+              <div 
+                key={item.name}
+                onClick={() => item.tab && setActiveTab(item.tab)}
+                className={`
+                  flex items-center space-x-3 p-3 rounded-lg 
+                  hover:bg-gray-700 transition-colors duration-200 cursor-pointer
+                  ${activeTab === item.tab ? 'bg-gray-700' : ''}
+                `}
               >
                 <span className="text-xl">{item.icon}</span>
                 <span>{item.name}</span>
-              </Link>
+                {activeTab === item.tab && (
+                  <span className="ml-auto w-2 h-2 bg-blue-500 rounded-full"></span>
+                )}
+              </div>
             ))}
           </nav>
         </aside>
 
-        <main className="flex-1 bg-gray-100 overflow-auto p-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-800">
-                나의 프로젝트
-              </h2>
-              <div className="flex space-x-4 text-gray-800">
-                <input
-                  type="search"
-                  placeholder="프로젝트 검색..."
-                  value={dashboardState.searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+        <main className="flex-1 bg-gray-100 overflow-auto">
+          <div className="max-w-7xl mx-auto py-6">
+            <div className="mb-8">
+              <div className="flex justify-between items-center">
+                <h2 className="text-3xl font-bold text-gray-800">
+                  {activeTab === 'workflow' ? '워크플로우' : '프로젝트'}
+                </h2>
+                <div className="flex space-x-4">
+                  <input
+                    type="search"
+                    placeholder={activeTab === 'workflow' ? "루틴 검색..." : "프로젝트 검색..."}
+                    value={dashboardState.searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
               </div>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredProjects.map((proj) => (
-                <Link
-                  href={`/project-workspace/${proj.id}`}
-                  key={proj.id}
-                >
-                  <ProjectCard
-                    name={proj.title}
-                    status={proj.status}
-                    createdAt={new Date(proj.created_at).toLocaleString('ko-KR', {
-                      year: 'numeric',
-                      month: '2-digit', 
-                      day: '2-digit',
-                      hour12: false,
-                      minute: undefined,
-                      second: undefined
-                    }).replace(/\. /g, '/').replace(/\.$/, '')}
-                    tags={Array.isArray(proj.tags) ? proj.tags : []}
-                  />
-                </Link>
-              ))}
-            </div>
+
+            {activeTab === 'workflow' ? (
+              <div className="bg-white rounded-lg shadow-lg p-6">
+                <RoutineDashboard />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredProjects.map((proj) => (
+                  <Link
+                    href={`/project-workspace/${proj.id}`}
+                    key={proj.id}
+                  >
+                    <ProjectCard
+                      name={proj.title}
+                      status={proj.status}
+                      createdAt={new Date(proj.created_at).toLocaleString('ko-KR', {
+                        year: 'numeric',
+                        month: '2-digit', 
+                        day: '2-digit',
+                        hour12: false,
+                        minute: undefined,
+                        second: undefined
+                      }).replace(/\. /g, '/').replace(/\.$/, '')}
+                      tags={Array.isArray(proj.tags) ? proj.tags : []}
+                    />
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </main>
       </div>
