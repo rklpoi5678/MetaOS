@@ -6,13 +6,13 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { ProjectCard } from '@/components/ui/card';
 import { supabase } from '../lib/supabaseClient';
-import Footer from "@/pages/componects/Footer";
+import Footer from "@/components/research-lab/Footer";
 import Link from "next/link";
 import { useAppStore } from '@/src/store/appStore';
-import AiProjectModal from "./componects/AiProjectModal";
-import RoutineDashboard from "./componects/flow/RoutineDashboard";
-import InfoStack from "./componects/info/InfoStack";
-import OutputEngine from "./componects/output/OutputEngine";
+import AiProjectModal from "../components/research-lab/AiProjectModal";
+import RoutineDashboard from "../components/research-lab/flow/RoutineDashboard";
+import InfoStack from "../components/research-lab/info/InfoStack";
+import OutputEngine from "../components/research-lab/output/OutputEngine";
 
 export default function HomePage() {
   const router = useRouter();
@@ -164,10 +164,18 @@ export default function HomePage() {
               { name: "워크플로우", path: "/flow", icon: "🔄", tab: 'workflow' },
               { name: "정보 저장소", path: "/infostack", icon: "📚", tab: 'infostack' },
               { name: "결과물", path: "/output", icon: "📤", tab: 'output' },
+              { name: "연구실", path: "/research-lab", icon: "🧪", tab: 'research' },
             ].map(item => (
               <div 
                 key={item.name}
-                onClick={() => item.tab && setActiveTab(item.tab)}
+                onClick={() => {
+                  if (item.tab) {
+                    setActiveTab(item.tab);
+                  }
+                  if (item.path && !['projects', 'workflow', 'infostack', 'output'].includes(item.tab)) {
+                    router.push(item.path);
+                  }
+                }}
                 className={`
                   flex items-center space-x-3 p-3 rounded-lg 
                   hover:bg-gray-700 transition-colors duration-200 cursor-pointer

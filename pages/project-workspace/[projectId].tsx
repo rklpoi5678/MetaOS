@@ -3,9 +3,9 @@
 
 import React from "react";
 import Link from "next/link";
-import WorkspaceSidebar from "../componects/WorkspaceSidebar"
-import WorkspaceEditor from "../componects/WorkspaceEditor"
-import WorkspaceSidebarRight from "../componects/WorkspaceSidebarRight";
+import WorkspaceSidebar from "./WorkspaceSidebar"
+import WorkspaceEditor from "./WorkspaceEditor"
+import WorkspaceSidebarRight from "./WorkspaceSidebarRight";
 import { useRouter } from "next/router";
 
 
