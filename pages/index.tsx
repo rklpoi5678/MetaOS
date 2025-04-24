@@ -2,13 +2,12 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import Footer from "@/components/research-lab/Footer";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/router";
+import { motion } from 'framer-motion';
 
-export default function LandingPage() {
+export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
@@ -20,28 +19,96 @@ export default function LandingPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-50 to-indigo-100 text-gray-800 text-center py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-10 animate-pulse"></div>
-        <h1 className="text-5xl font-bold transform hover:scale-105 transition-transform duration-300">
-          MetaOS - 스마트한 업무의 시작
-        </h1>
-        <p className="mt-4 text-lg animate-fade-in">AI 기반 통합 업무 플랫폼으로 업무 효율을 극대화하세요</p>
-        <Link href="/login">
-          <Button className="
-            mt-6 
-            bg-indigo-600 text-white
-            px-6 py-3 rounded-lg 
-            transition-all duration-300
-            hover:bg-indigo-700
-            hover:shadow-lg transform hover:scale-105
-            animate-pulse
-          ">
-            대시보드로 바로가기
-          </Button>
-        </Link>
-      </section>
+      <div className="container mx-auto px-4 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center"
+        >
+          <h1 className="text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+            MetaOS
+          </h1>
+          <p className="text-xl text-gray-300 mb-8">
+            당신의 아이디어를 현실로 만드는 AI 기반 프로젝트 플랫폼
+          </p>
+        </motion.div>
+
+        {/* Feature Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="bg-gray-800/50 p-6 rounded-xl border border-gray-700"
+          >
+            <div className="text-4xl mb-4">🧠</div>
+            <h3 className="text-xl font-semibold mb-2">AI 기반 프로젝트 생성</h3>
+            <p className="text-gray-400">간단한 설명만으로 완성된 프로젝트 구조를 생성합니다</p>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="bg-gray-800/50 p-6 rounded-xl border border-gray-700"
+          >
+            <div className="text-4xl mb-4">🔄</div>
+            <h3 className="text-xl font-semibold mb-2">자동화된 워크플로우</h3>
+            <p className="text-gray-400">반복적인 작업을 자동화하여 효율성을 높입니다</p>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="bg-gray-800/50 p-6 rounded-xl border border-gray-700"
+          >
+            <div className="text-4xl mb-4">📊</div>
+            <h3 className="text-xl font-semibold mb-2">실시간 분석</h3>
+            <p className="text-gray-400">프로젝트 진행 상황을 실시간으로 분석하고 최적화합니다</p>
+          </motion.div>
+        </div>
+
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="text-center mt-16"
+        >
+          <p className="text-gray-400 mb-6">지금 바로 시작하세요</p>
+          <Link href="/dashboard">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              무료로 시작하기
+            </motion.button>
+          </Link>
+          <p className="text-sm text-gray-500 mt-4">알파 버전 - 무료로 이용 가능</p>
+        </motion.div>
+
+        {/* Alpha Badge and Demo Button */}
+        <div className="absolute top-4 right-4 flex items-center space-x-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.8 }}
+            className="bg-yellow-500/20 text-yellow-400 px-4 py-2 rounded-full text-sm font-medium"
+          >
+            Alpha v0.1
+          </motion.div>
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 0.8 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => router.push('/demo')}
+            className="bg-green-500/20 text-green-400 px-4 py-2 rounded-full text-sm font-medium hover:bg-green-500/30 transition-all duration-300"
+          >
+            데모 체험하기
+          </motion.button>
+        </div>
+      </div>
 
       {/* 가치 제안 */}
       <section className="py-16 px-8 bg-white">
@@ -115,7 +182,7 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="p-6 bg-slate-50 rounded-xl">
             <div className="flex items-center mb-4">
-              <Image src="/c.png" alt="Company" width={48} height={48} className="w-12 h-12 rounded-full" />
+              <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white text-xl font-bold">D</div>
               <div className="ml-4">
                 <h4 className="font-semibold text-gray-800">디자인웨이브로</h4>
                 <p className="text-sm text-gray-600">제조업</p>
@@ -125,7 +192,7 @@ export default function LandingPage() {
           </div>
           <div className="p-6 bg-slate-50 rounded-xl">
             <div className="flex items-center mb-4">
-              <Image src="/c.png" alt="Company" width={48} height={48} className="w-12 h-12 rounded-full object-cover" />
+              <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-white text-xl font-bold">G</div>
               <div className="ml-4">
                 <h4 className="font-semibold text-gray-800">(주)구구 컴퍼니</h4>
                 <p className="text-sm text-gray-600">IT 서비스</p>
@@ -134,24 +201,6 @@ export default function LandingPage() {
             <p className="text-gray-700">{"AI 기반 자동화로 인적 오류가 90% 감소했습니다."}</p>
           </div>
         </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16 px-8 bg-gradient-to-r from-indigo-600 to-blue-500 text-white text-center">
-        <h2 className="text-3xl font-bold">지금 바로 시작하세요</h2>
-        <p className="mt-4">무료 체험으로 MetaOS의 모든 기능을 경험해보세요</p>
-        <Link href="/login">
-          <Button className="
-            mt-8
-            bg-white text-indigo-600
-            px-8 py-4 rounded-lg
-            transition-all duration-300
-            hover:bg-gray-100
-            hover:shadow-lg transform hover:scale-105
-          ">
-            대시보드로 바로가기
-          </Button>
-        </Link>
       </section>
 
       <Footer />
