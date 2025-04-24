@@ -24,16 +24,53 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         messages: [
           {
             role: "system",
-            content:`너는 사용자가 시작하려는 프로젝트를 분석해서 다음 항목으로 요약해주는 조력자야. 아래 형식을 반드시 지켜야 해.
+            content:`너는 사용자가 시작하려는 프로젝트를 분석해서 다음 항목으로 요약해주는 조력자야. 반드시 아래 3개의 폴더 구조만 생성해야 해:
+              1. 00_Core: 프로젝트의 핵심 개념과 목표
+              2. 01_Structure: 프로젝트의 구조와 설계
+              3. 02_Tool: 프로젝트에 필요한 도구와 기술
 
-              형식:
-              {
-                "core": "이 프로젝트의 핵심 철학 또는 방향성",
-                "structure": ["추천할 수 있는 구조 2~3개"],
-                "tool": ["사용할 도구, 기술 또는 플랫폼"]
-              }
+              각 폴더는 반드시 아래 형식을 따라야 해:
+              [
+                {
+                  "type": "folder",
+                  "title": "00_Core",
+                  "children": [
+                    {
+                      "type": "file",
+                      "title": "README.md",
+                      "content": "# 프로젝트 소개\n이 프로젝트는 ...\n"
+                    }
+                  ]
+                },
+                {
+                  "type": "folder",
+                  "title": "01_Structure",
+                  "children": [
+                    {
+                      "type": "file",
+                      "title": "Design.md",
+                      "content": "# 디자인 개요\nUI/UX 컨셉은 ...\n"
+                    }
+                  ]
+                },
+                {
+                  "type": "folder",
+                  "title": "02_Tool",
+                  "children": [
+                    {
+                      "type": "file",
+                      "title": "Implementation.md",
+                      "content": "# 구현 계획\n기술 스택은 ...\n"
+                    }
+                  ]
+                }
+              ]
 
-              주의: JSON 외에는 아무 말도. 설명도 하지 마.`
+              주의사항:
+              1. 반드시 위의 3개 폴더만 생성해야 함
+              2. 각 폴더의 제목은 정확히 일치해야 함
+              3. JSON 외에는 아무 말도 하지 마
+              4. 반드시 type은 folder(폴더) file(파일) 두가지 밖에없다.`
           },
           {
             role: "user", 
@@ -50,6 +87,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const result = await mistralRes.json();
     res.status(200).json(result);
+
 
   } catch (error) {
     console.error("🔥 API 오류:", error);

@@ -2,82 +2,88 @@
 "use client";
 
 import React from "react";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { ProjectCard } from '@/components/ui/card';
 import { supabase } from '../lib/supabaseClient';
 import Footer from "@/pages/componects/Footer";
 import Link from "next/link";
-// zustand 스토어
 import { useAppStore } from '@/src/store/appStore';
 import AiProjectModal from "./componects/AiProjectModal";
 
 export default function HomePage() {
   const router = useRouter();
-  // zustand에서 꺼내기
-  const projects = useAppStore((s) => s.projects);
-  const setUser = useAppStore((s) => s.setUser);
-  const setProjects = useAppStore((s) => s.setProjects);
-
-  const [userName, setUserName] = useState('Guset');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { 
+    projects,
+    setUser,
+    setProjects,
+    dashboardState,
+    setUserName,
+    setDashboardIsLoading,
+    setDashboardError,
+    setSearchQuery
+  } = useAppStore();
 
   useEffect(() => {
     async function init() {
-      // 1) supabase auth에서 유저 가져오기
-      const {
-        data: { user: authUser },
-        error: userError,
-      } = await supabase.auth.getUser();
+      setDashboardIsLoading(true);
+      setDashboardError(null);
 
-      if (userError || !authUser) {
-        setError(userError?.message || '로그인 후 이용해주세요.');
-        setLoading(false);
-        router.push('/login');
-        return;
+      try {
+        // 1) supabase auth에서 유저 가져오기
+        const {
+          data: { user: authUser },
+          error: userError,
+        } = await supabase.auth.getUser();
+
+        if (userError || !authUser) {
+          setDashboardError(userError?.message || '로그인 후 이용해주세요.');
+          router.push('/login');
+          return;
+        }
+
+        // 스토어에 저장
+        setUser(authUser);
+
+        const { data: profile, error: profileError } = await supabase
+          .from('users')
+          .select('name')
+          .eq('id', authUser.id)
+          .single();
+
+        if (!profileError && profile?.name) {
+          setUserName(profile.name);
+        }
+
+        // 2) 프로젝트 불러오기
+        const { data: projData, error: projectError } = await supabase
+          .from('projects')
+          .select('*')
+          .eq('user_id', authUser.id);
+
+        if (projectError) {
+          setDashboardError(projectError.message);
+        } else if (projData) {
+          // tags 필드를 배열로 보장
+          const normalized = projData.map((p) => ({
+            ...p,
+            tags: Array.isArray(p.tags) ? p.tags : 
+                  typeof p.tags === 'string' ? JSON.parse(p.tags) : 
+                  []
+          }));
+          setProjects(normalized);
+        }
+      } catch {
+        setDashboardError('데이터를 불러오는 중 오류가 발생했습니다.');
+      } finally {
+        setDashboardIsLoading(false);
       }
-      // 스토어에 저장
-      setUser(authUser);
-
-      const { data: profile, error: profileError } = await supabase
-        .from('users')
-        .select('name')
-        .eq('id', authUser.id)
-        .single();
-
-      if (!profileError && profile?.name) {
-        setUserName(profile.name);
-      }
-
-    // 2) 프로젝트 불러오기
-    const { data: projData, error: projectError } = await supabase
-      .from('projects')
-      .select('*')
-      .eq('user_id', authUser.id);
-    
-
-    if (projectError) {
-      setError(projectError.message);
-    } else if (projData) {
-      // tags 필드를 배열로 보장
-      const normalized = projData.map((p) => ({
-        ...p,
-        tags: typeof p.tags === "string"
-          ? JSON.parse(p.tags)
-          : Array.isArray(p.tags)
-          ? p.tags
-          : [],
-      }));
-      setProjects(normalized);
     }
 
-    setLoading(false);
-  }
-  init();
-}, [router, setUser, setProjects]);
+    init();
+  }, [router, setUser, setProjects, setUserName, setDashboardIsLoading, setDashboardError]);
 
-  if (loading) return (
+  if (dashboardState.isLoading) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="text-center">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
@@ -86,12 +92,13 @@ export default function HomePage() {
       </div>
     </div>
   );
-  if (error) return (
+
+  if (dashboardState.error) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="p-8 bg-white rounded-lg shadow-lg max-w-md w-full">
         <div className="text-red-500 text-5xl mb-4">⚠️</div>
         <h2 className="text-2xl font-bold text-gray-800 mb-4">오류가 발생했습니다</h2>
-        <p className="text-gray-600 mb-6">{error}</p>
+        <p className="text-gray-600 mb-6">{dashboardState.error}</p>
         <button 
           onClick={() => window.location.reload()}
           className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors"
@@ -100,6 +107,10 @@ export default function HomePage() {
         </button>
       </div>
     </div>
+  );
+
+  const filteredProjects = projects.filter(project => 
+    project.title.toLowerCase().includes(dashboardState.searchQuery.toLowerCase())
   );
 
   return (
@@ -114,12 +125,12 @@ export default function HomePage() {
           <div className="flex items-center space-x-6">
             <div className="flex items-center space-x-4">
               <span className="text-gray-300">
-                환영합니다, <span className="font-semibold">{userName}</span>님
+                환영합니다, <span className="font-semibold">{dashboardState.userName}</span>님
               </span>
               <button
                 onClick={async () => {
                   await supabase.auth.signOut();
-                  localStorage.removeItem('isLoggedIn'); // 세션 제거
+                  localStorage.removeItem('isLoggedIn');
                   router.push('/');
                 }}
                 className="px-3 py-1 text-sm text-gray-300 hover:text-white border border-gray-600 rounded hover:bg-gray-700 transition-colors"
@@ -171,17 +182,19 @@ export default function HomePage() {
                 <input
                   type="search"
                   placeholder="프로젝트 검색..."
+                  value={dashboardState.searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {projects.map((proj) => (
+              {filteredProjects.map((proj) => (
                 <Link
                   href={`/project-workspace/${proj.id}`}
                   key={proj.id}
-                  >
+                >
                   <ProjectCard
                     name={proj.title}
                     status={proj.status}
@@ -193,7 +206,7 @@ export default function HomePage() {
                       minute: undefined,
                       second: undefined
                     }).replace(/\. /g, '/').replace(/\.$/, '')}
-                    tags={proj.tags || []}
+                    tags={Array.isArray(proj.tags) ? proj.tags : []}
                   />
                 </Link>
               ))}

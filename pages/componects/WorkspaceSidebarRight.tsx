@@ -1,10 +1,14 @@
 'use client'
-import React, { useState } from "react";
+import React from "react";
+import { useAppStore } from "@/src/store/appStore";
 // 우측 보조 패널: 프로젝트 상태 및 도구 제어
 function WorkspaceSidebarRight() {
-  const [activeMode, setActiveMode] = useState('normal');
-  const [emotionState, setEmotionState] = useState('focus_needed');
-  const [showArchiveModal, setShowArchiveModal] = useState(false);
+  const { 
+    projectState, 
+    setActiveMode, 
+    setEmotionState,
+    currentProject 
+  } = useAppStore();
 
   return (
     <aside className="w-64 bg-gray-50 p-4 h-full">
@@ -13,12 +17,12 @@ function WorkspaceSidebarRight() {
           🎯 Core 상태
           <span className="animate-pulse text-green-500 text-sm">•활성</span>
         </h3>
-        <p className="text-sm text-gray-600">PLR 마켓 최적화 프로젝트</p>
+        <p className="text-sm text-gray-600">{currentProject?.title || '프로젝트 로딩 중...'}</p>
         <button 
-          onClick={() => setActiveMode(prev => prev === 'normal' ? 'focus' : 'normal')}
+          onClick={() => setActiveMode(projectState.activeMode === 'normal' ? 'focus' : 'normal')}
           className="mt-2 px-3 py-1 bg-blue-100 rounded text-sm text-gray-600 hover:bg-blue-200"
         >
-          {activeMode === 'normal' ? '집중 모드' : '일반 모드'}
+          {projectState.activeMode === 'normal' ? '집중 모드' : '일반 모드'}
         </button>
       </div>
 
@@ -26,10 +30,13 @@ function WorkspaceSidebarRight() {
         <h3 className="font-bold text-gray-900">🔄 현재 Structure</h3>
         <div className="relative mt-1">
           <div className="absolute w-full h-2 bg-blue-100 rounded"></div>
-          <div className="absolute w-3/5 h-2 bg-blue-500 rounded animate-pulse"></div>
+          <div 
+            className="absolute h-2 bg-blue-500 rounded animate-pulse"
+            style={{ width: `${(projectState.currentStep / projectState.totalSteps) * 100}%` }}
+          ></div>
         </div>
         <p className="text-sm bg-blue-50 p-2 rounded mt-3 text-gray-600">
-          실험 루틴 진행중 (3/5 단계)
+          실험 루틴 진행중 ({projectState.currentStep}/{projectState.totalSteps} 단계)
         </p>
       </div>
 
@@ -47,35 +54,19 @@ function WorkspaceSidebarRight() {
         <h3 className="font-bold text-gray-900">💬 감정 상태</h3>
         <div className="flex flex-col gap-2 mt-2">
           <div className={`flex items-center justify-between p-2 rounded ${
-            emotionState === 'focus_needed' ? 'bg-yellow-50' : 'bg-green-50'
+            projectState.emotionState === 'focus_needed' ? 'bg-yellow-50' : 'bg-green-50'
           }`}>
             <span className="text-gray-600">
-              {emotionState === 'focus_needed' ? '😩 집중이 필요해요' : '🎯 집중 모드'}
+              {projectState.emotionState === 'focus_needed' ? '😩 집중이 필요해요' : '🎯 집중 모드'}
             </span>
             <button 
-              onClick={() => setEmotionState(prev => prev === 'focus_needed' ? 'focused' : 'focus_needed')}
+              onClick={() => setEmotionState(projectState.emotionState === 'focus_needed' ? 'focused' : 'focus_needed')}
               className="text-xs text-blue-600 hover:text-blue-800 transition-colors"
             >
-              {emotionState === 'focus_needed' ? '몰입 모드 켜기' : '모드 해제'}
+              {projectState.emotionState === 'focus_needed' ? '몰입 모드 켜기' : '모드 해제'}
             </button>
           </div>
         </div>
-      </div>
-
-      <div className="border-b py-3 hover:bg-gray-100 transition-colors rounded p-2">
-        <h3 className="font-bold text-gray-900">📌 Archive</h3>
-        <button 
-          onClick={() => setShowArchiveModal(true)}
-          className="text-sm text-gray-600 mt-1 hover:text-blue-600 transition-colors flex items-center gap-1"
-        >
-          이전 작업 루프 복원하기
-          <span className="transform transition-transform group-hover:translate-x-1">→</span>
-        </button>
-        {showArchiveModal && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            {/* 모달 내용 */}
-          </div>
-        )}
       </div>
 
       <div className="py-3 hover:bg-gray-100 transition-colors rounded p-2">
