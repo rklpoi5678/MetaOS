@@ -151,8 +151,7 @@ const ExperimentRunner: React.FC<ExperimentRunnerProps> = ({ onEmotionChange }) 
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleStartExperiment}
-            disabled={!currentExperiment.title || !currentExperiment.hypothesis}
-            className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50"
+            className={`w-full px-4 py-2 bg-blue-500 text-white rounded-lg ${(!currentExperiment.title || !currentExperiment.hypothesis) ? 'opacity-50 pointer-events-none' : ''}`}
           >
             실험 시작
           </motion.button>

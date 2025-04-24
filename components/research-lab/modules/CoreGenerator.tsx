@@ -113,8 +113,8 @@ const CoreGenerator: React.FC<CoreGeneratorProps> = ({ onEmotionChange }) => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleGenerate}
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg"
-            disabled={!philosophy || selectedVectors.length === 0}
+            className={`px-6 py-2 bg-blue-500 text-white rounded-lg ${!philosophy || selectedVectors.length === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+            aria-disabled={!philosophy || selectedVectors.length === 0}
           >
             코어 생성
           </motion.button>

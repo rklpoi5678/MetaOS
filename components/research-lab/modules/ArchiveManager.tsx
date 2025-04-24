@@ -193,8 +193,8 @@ const ArchiveManager: React.FC<ArchiveManagerProps> = ({ onEmotionChange }) => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleSaveArchive}
-            disabled={!currentArchive.title || !currentArchive.description}
-            className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50"
+            aria-disabled={!currentArchive.title || !currentArchive.description}
+            className={`w-full px-4 py-2 bg-blue-500 text-white rounded-lg ${!currentArchive.title || !currentArchive.description ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
           >
             아카이브 저장
           </motion.button>

@@ -192,8 +192,7 @@ const OpenSyncPanel: React.FC<OpenSyncPanelProps> = ({ onEmotionChange }) => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleConnect}
-            disabled={!currentConnection.name}
-            className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50"
+            className={`w-full px-4 py-2 bg-blue-500 text-white rounded-lg ${!currentConnection.name ? 'opacity-50 pointer-events-none' : ''}`}
           >
             연결
           </motion.button>
@@ -229,8 +228,7 @@ const OpenSyncPanel: React.FC<OpenSyncPanelProps> = ({ onEmotionChange }) => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleSync(connection.id)}
-                      disabled={connection.status === 'syncing'}
-                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-lg text-sm disabled:opacity-50"
+                      className={`px-3 py-1 bg-blue-100 text-blue-800 rounded-lg text-sm ${connection.status === 'syncing' ? 'opacity-50 pointer-events-none' : ''}`}
                     >
                       동기화
                     </motion.button>

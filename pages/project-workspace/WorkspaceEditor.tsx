@@ -20,7 +20,6 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
     setIsPreviewOpen,
     setSelectedTool,
     setIsSaving,
-    setShowTooltip,
     setDraggedItem
   } = useAppStore();
 
@@ -112,7 +111,7 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
         animate={{ y: 0, opacity: 1 }}
       >
         <motion.button 
-          onClick={() => setActiveStructure('mindmap')}
+          onTap={() => setActiveStructure('mindmap')}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className={`px-4 py-2 rounded-lg transition-all duration-200 ${
@@ -124,7 +123,7 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
           마인드맵 구조
         </motion.button>
         <motion.button 
-          onClick={() => setActiveStructure('flowchart')}
+          onTap={() => setActiveStructure('flowchart')}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className={`px-4 py-2 rounded-lg transition-all duration-200 ${
@@ -141,8 +140,10 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
       <motion.div 
         className="border rounded-lg p-6 bg-white"
         whileHover={{ boxShadow: "0 4px 15px rgba(0,0,0,0.1)" }}
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={handleDrop}
+        drag
+        onDragEnd={(e) => {
+          handleDrop(e as unknown as React.DragEvent<HTMLElement>);
+        }}
       >
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold text-gray-900">작업 도구</h3>
@@ -214,8 +215,12 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
                   >
                     키워드 분석 중... 
                     <motion.div 
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ repeat: Infinity }}
+                      animate={{ scale: 1.2 }}
+                      transition={{ 
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 0.5
+                      }}
                       className="loading-dots"
                     />
                   </motion.div>
@@ -282,25 +287,17 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
           className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2 relative"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
         >
           <span>저장하기</span>
-          <motion.svg 
-            className="w-4 h-4" 
-            fill="none" 
-            stroke="currentColor" 
+          <motion.svg
+            className="w-6 h-6"
+            style={{ fill: 'currentColor', stroke: 'currentColor' }}
             viewBox="0 0 24 24"
-            animate={{ rotate: editorState.isSaving ? 360 : 0 }}
-            transition={{ duration: 1, repeat: editorState.isSaving ? Infinity : 0 }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity }}
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
           </motion.svg>
-          {editorState.showTooltip && (
-            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white px-2 py-1 rounded text-sm">
-              작업 내용을 저장합니다
-            </div>
-          )}
         </motion.button>
         <motion.button 
           className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center gap-2"
@@ -308,13 +305,16 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
           whileTap={{ scale: 0.95 }}
         >
           <span>작업 로그 기록</span>
-          <motion.svg 
-            className="w-4 h-4" 
-            fill="none" 
-            stroke="currentColor" 
+          <motion.svg
+            className="w-6 h-6"
+            style={{ fill: 'currentColor', stroke: 'currentColor' }}
             viewBox="0 0 24 24"
-            animate={{ y: [0, -2, 0] }}
-            transition={{ duration: 1, repeat: Infinity }}
+            animate={{ y: -10 }}
+            transition={{ 
+              repeat: Infinity,
+              repeatType: "reverse",
+              duration: 0.5
+            }}
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </motion.svg>

@@ -102,7 +102,7 @@ export default function HomePage() {
             transition={{ delay: 1.2, duration: 0.8 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => router.push('/demo')}
+            onTap={() => router.push('/demo')}
             className="bg-green-500/20 text-green-400 px-4 py-2 rounded-full text-sm font-medium hover:bg-green-500/30 transition-all duration-300"
           >
             데모 체험하기

@@ -244,15 +244,14 @@ const AgentSimulator: React.FC<AgentSimulatorProps> = ({ onEmotionChange }) => {
             </div>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <div
             onClick={handleCreateAgent}
-            disabled={!currentAgent.name}
-            className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50"
+            aria-disabled={!currentAgent.name}
+            role="button"
+            className={`w-full px-4 py-2 bg-blue-500 text-white rounded-lg transition-transform duration-200 hover:scale-105 active:scale-95 ${!currentAgent.name ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
           >
             에이전트 생성
-          </motion.button>
+          </div>
         </div>
 
         {/* 시뮬레이션 패널 */}
@@ -304,15 +303,14 @@ const AgentSimulator: React.FC<AgentSimulatorProps> = ({ onEmotionChange }) => {
                        agent.status === 'thinking' ? '사고 중' :
                        agent.status === 'learning' ? '학습 중' : '실행 중'}
                     </span>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                    <div
                       onClick={() => handleStartSimulation(agent.id)}
-                      disabled={agent.status !== 'idle'}
-                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-lg text-sm disabled:opacity-50"
+                      aria-disabled={agent.status !== 'idle'}
+                      role="button"
+                      className={`px-3 py-1 bg-blue-100 text-blue-800 rounded-lg text-sm transition-transform duration-200 hover:scale-105 active:scale-95 ${agent.status !== 'idle' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                     >
                       시뮬레이션 시작
-                    </motion.button>
+                    </div>
                   </div>
                 </div>
 

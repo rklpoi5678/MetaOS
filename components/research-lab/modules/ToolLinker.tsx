@@ -154,15 +154,13 @@ const ToolLinker: React.FC<ToolLinkerProps> = ({ onEmotionChange }) => {
             </div>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <button
             onClick={handleAddTool}
             disabled={!currentTool.name}
-            className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50"
+            className={`w-full px-4 py-2 bg-blue-500 text-white rounded-lg transition-transform duration-200 hover:scale-105 active:scale-95 ${!currentTool.name ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
           >
             도구 추가
-          </motion.button>
+          </button>
         </div>
 
         {/* 도구 목록 */}

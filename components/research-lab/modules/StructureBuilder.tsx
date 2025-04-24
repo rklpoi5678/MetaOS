@@ -120,8 +120,8 @@ const StructureBuilder: React.FC<StructureBuilderProps> = ({ onEmotionChange }) 
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleAddNode}
-            disabled={!currentNode.label}
-            className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50"
+            aria-disabled={!currentNode.label}
+            className={`w-full px-4 py-2 bg-blue-500 text-white rounded-lg ${!currentNode.label ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
           >
             노드 추가
           </motion.button>
