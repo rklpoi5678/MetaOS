@@ -12,6 +12,7 @@ import { useAppStore } from '@/src/store/appStore';
 import AiProjectModal from "./componects/AiProjectModal";
 import RoutineDashboard from "./componects/flow/RoutineDashboard";
 import InfoStack from "./componects/info/InfoStack";
+import OutputEngine from "./componects/output/OutputEngine";
 
 export default function HomePage() {
   const router = useRouter();
@@ -162,7 +163,7 @@ export default function HomePage() {
               { name: "프로젝트", path: "/project-workspace", icon: "📁", tab: 'projects' },
               { name: "워크플로우", path: "/flow", icon: "🔄", tab: 'workflow' },
               { name: "정보 저장소", path: "/infostack", icon: "📚", tab: 'infostack' },
-              { name: "결과물", path: "/output", icon: "📤" },
+              { name: "결과물", path: "/output", icon: "📤", tab: 'output' },
             ].map(item => (
               <div 
                 key={item.name}
@@ -189,7 +190,8 @@ export default function HomePage() {
               <div className="flex justify-between items-center">
                 <h2 className="text-3xl font-bold text-gray-800">
                   {activeTab === 'workflow' ? '워크플로우' : 
-                   activeTab === 'infostack' ? '정보 저장소' : '프로젝트'}
+                   activeTab === 'infostack' ? '정보 저장소' :
+                   activeTab === 'output' ? '결과물' : '프로젝트'}
                 </h2>
                 <div className="flex space-x-4">
                   <input
@@ -197,6 +199,7 @@ export default function HomePage() {
                     placeholder={
                       activeTab === 'workflow' ? "루틴 검색..." :
                       activeTab === 'infostack' ? "노트 검색..." :
+                      activeTab === 'output' ? "템플릿 검색..." :
                       "프로젝트 검색..."
                     }
                     value={dashboardState.searchQuery}
@@ -213,6 +216,8 @@ export default function HomePage() {
               </div>
             ) : activeTab === 'infostack' ? (
               <InfoStack />
+            ) : activeTab === 'output' ? (
+              <OutputEngine />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {filteredProjects.map((proj) => (
