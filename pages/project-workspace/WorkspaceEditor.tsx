@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppStore } from "@/src/store/appStore";
@@ -41,17 +41,7 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
     })();
   }, [projectId, setCurrentProject]);
 
-  // 자동 저장 효과
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (editorState.editorContent) {
-        handleAutoSave();
-      }
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [editorState.editorContent]);
-
-  const handleAutoSave = async () => {
+  const handleAutoSave = useCallback(async () => {
     setIsSaving(true);
     try {
       const { error } = await supabase
@@ -67,7 +57,17 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
     } finally {
       setIsSaving(false);
     }
-  };
+  }, [projectId, editorState.editorContent, setIsSaving, updateProject]);
+
+  // 자동 저장 효과
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (editorState.editorContent) {
+        handleAutoSave();
+      }
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [editorState.editorContent, handleAutoSave]);
 
   const handleDragStart = (e: React.DragEvent<HTMLElement>, item: string) => {
     e.dataTransfer.setData('text/plain', item);
