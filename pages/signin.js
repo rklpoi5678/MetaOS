@@ -21,7 +21,6 @@ export default function Login() {
     if (isLoggedIn === 'true') {
       router.push('/dashboard');
     }
-
   }, [router]);
 
   const handleLogin = async (e) => {

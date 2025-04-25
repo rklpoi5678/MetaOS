@@ -1,28 +1,81 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
 import Footer from "@/components/research-lab/Footer";
+import { User } from "@supabase/supabase-js";
 
 export default function LandingPage() {
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    // 현재 로그인된 사용자 정보 가져오기
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+
+    // 인증 상태 변경 감지
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      localStorage.removeItem('isLoggedIn');
+      if (error) throw error;
+      router.push('/');
+    } catch (error) {
+      console.error('로그아웃 오류:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-sm z-50 border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/">
-          <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-            MetaOS
-          </div>
+            <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+              MetaOS
+            </div>
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/signin" className="text-gray-600 hover:text-blue-600">로그인</Link>
-            <Link href="/signup">
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                무료로 시작하기
-              </button>
-            </Link>
+            {user ? (
+              <>
+                <Link 
+                  href="/dashboard" 
+                  className="text-gray-600 hover:text-blue-600 flex items-center gap-2"
+                >
+                  <span className="font-medium">{user.email}</span>
+                  <span className="text-sm">대시보드</span>
+                </Link>
+                <button 
+                  onClick={handleLogout}
+                  className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  로그아웃
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/signin" className="text-gray-600 hover:text-blue-600">로그인</Link>
+                <Link href="/signup">
+                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    무료로 시작하기
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>

@@ -43,7 +43,8 @@ export default function HomePage() {
 
         if (userError || !authUser) {
           setDashboardError(userError?.message || '로그인 후 이용해주세요.');
-          router.push('/login');
+          localStorage.removeItem('isLoggedIn');
+          router.push('/signin');
           return;
         }
 
