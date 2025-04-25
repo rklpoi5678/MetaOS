@@ -25,42 +25,48 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           {
             role: "system",
             content:`너는 사용자가 시작하려는 프로젝트를 분석해서 다음 항목으로 요약해주는 조력자야. 반드시 아래 3개의 폴더 구조만 생성해야 해:
-              1. 00_Core: 프로젝트의 핵심 개념과 목표
-              2. 01_Structure: 프로젝트의 구조와 설계
-              3. 02_Tool: 프로젝트에 필요한 도구와 기술
-
-              각 폴더는 반드시 아래 형식을 따라야 해:
-              [
+              1. 00_핵심 개념: 프로젝트의 핵심 개념과 목표
+              2. 01_구조와 설계: 프로젝트의 구조와 설계
+              3. 02_도구와 기술: 프로젝트에 필요한 도구와 기술
+              
+              각 폴더는 반드시 아래 형식을 따라야 해:              [
                 {
-                  "type": "folder",
-                  "title": "00_Core",
+                  "type": "project",
+                  "title": "${req.body.prompt}",
+                  "content": "(이 ~ 프로젝트는 이런내용이며)이렇게 시작해야 해 각 프로젝트의 요약을 적으십시오",
                   "children": [
                     {
-                      "type": "file",
-                      "title": "README.md",
-                      "content": "# 프로젝트 소개\n이 프로젝트는 ...\n"
-                    }
-                  ]
-                },
-                {
-                  "type": "folder",
-                  "title": "01_Structure",
-                  "children": [
+                      "type": "folder", 
+                      "title": "00_핵심 개념",
+                      "children": [
+                        {
+                          "type": "doc",
+                          "title": "핵심개념.md",
+                          "content": "# 프로젝트 소개\n이 프로젝트는 ...\n"
+                        }
+                      ]
+                    },
                     {
-                      "type": "file",
-                      "title": "Design.md",
-                      "content": "# 디자인 개요\nUI/UX 컨셉은 ...\n"
-                    }
-                  ]
-                },
-                {
-                  "type": "folder",
-                  "title": "02_Tool",
-                  "children": [
+                      "type": "folder",
+                      "title": "01_구조와 설계", 
+                      "children": [
+                        {
+                          "type": "doc",
+                          "title": "구조.md",
+                          "content": "# 구조 개요\n구조 설명은 ...\n"
+                        }
+                      ]
+                    },
                     {
-                      "type": "file",
-                      "title": "Implementation.md",
-                      "content": "# 구현 계획\n기술 스택은 ...\n"
+                      "type": "folder",
+                      "title": "02_도구와 기술",
+                      "children": [
+                        {
+                          "type": "doc",
+                          "title": "도구.md",
+                          "content": "# 도구 개요\n도구 설명은 ...\n"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -70,7 +76,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               1. 반드시 위의 3개 폴더만 생성해야 함
               2. 각 폴더의 제목은 정확히 일치해야 함
               3. JSON 외에는 아무 말도 하지 마
-              4. 반드시 type은 folder(폴더) file(파일) 두가지 밖에없다.`
+              4. 반드시 type은 folder(폴더) doc(파일) project(프로젝트) 세가지 밖에없다.
+              
+              사용자가 입력한 프로젝트 이름은 이거야: ${req.body.prompt}`
           },
           {
             role: "user", 

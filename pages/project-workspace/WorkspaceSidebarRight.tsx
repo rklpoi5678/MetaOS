@@ -7,7 +7,6 @@ function WorkspaceSidebarRight() {
     projectState, 
     setActiveMode, 
     setEmotionState,
-    currentProject 
   } = useAppStore();
 
   return (
@@ -17,7 +16,6 @@ function WorkspaceSidebarRight() {
           🎯 Core 상태
           <span className="animate-pulse text-green-500 text-sm">•활성</span>
         </h3>
-        <p className="text-sm text-gray-600">{currentProject?.title || '프로젝트 로딩 중...'}</p>
         <button 
           onClick={() => setActiveMode(projectState.activeMode === 'normal' ? 'focus' : 'normal')}
           className="mt-2 px-3 py-1 bg-blue-100 rounded text-sm text-gray-600 hover:bg-blue-200"

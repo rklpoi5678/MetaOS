@@ -9,17 +9,17 @@ import { supabase } from '../lib/supabaseClient';
 import Footer from "@/components/research-lab/Footer";
 import Link from "next/link";
 import { useAppStore } from '@/src/store/appStore';
-import AiProjectModal from "../components/research-lab/AiProjectModal";
-import RoutineDashboard from "../components/research-lab/flow/RoutineDashboard";
-import InfoStack from "../components/research-lab/info/InfoStack";
-import OutputEngine from "../components/research-lab/output/OutputEngine";
+import RoutineDashboard from "@/components/research-lab/flow/RoutineDashboard";
+import InfoStack from "@/components/research-lab/info/InfoStack";
+import OutputEngine from "@/components/research-lab/output/OutputEngine";
+import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
   const router = useRouter();
   const { 
-    projects,
+    nodes,
     setUser,
-    setProjects,
+    setNodes,
     dashboardState,
     setUserName,
     setDashboardIsLoading,
@@ -62,23 +62,17 @@ export default function HomePage() {
         }
 
         // 2) 프로젝트 불러오기
-        const { data: projData, error: projectError } = await supabase
-          .from('projects')
+        const { data: nodesData, error: nodesError } = await supabase
+          .from('nodes')
           .select('*')
           .eq('user_id', authUser.id);
 
-        if (projectError) {
-          setDashboardError(projectError.message);
-        } else if (projData) {
-          // tags 필드를 배열로 보장
-          const normalized = projData.map((p) => ({
-            ...p,
-            tags: Array.isArray(p.tags) ? p.tags : 
-                  typeof p.tags === 'string' ? JSON.parse(p.tags) : 
-                  []
-          }));
-          setProjects(normalized);
+        if (nodesError) {
+          setDashboardError(nodesError.message);
+        } else if (nodesData) {
+          setNodes(nodesData);
         }
+        
       } catch {
         setDashboardError('데이터를 불러오는 중 오류가 발생했습니다.');
       } finally {
@@ -87,7 +81,7 @@ export default function HomePage() {
     }
 
     init();
-  }, [router, setUser, setProjects, setUserName, setDashboardIsLoading, setDashboardError]);
+  }, [router, setUser, setNodes, setUserName, setDashboardIsLoading, setDashboardError]);
 
   if (dashboardState.isLoading) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -115,8 +109,8 @@ export default function HomePage() {
     </div>
   );
 
-  const filteredProjects = projects.filter(project => 
-    project.title.toLowerCase().includes(dashboardState.searchQuery.toLowerCase())
+  const filteredProjects = nodes.filter(node => 
+    node.title.toLowerCase().includes(dashboardState.searchQuery.toLowerCase())
   );
 
   return (
@@ -144,15 +138,19 @@ export default function HomePage() {
                 로그아웃
               </button>
             </div>
-            <AiProjectModal className="
-              bg-gradient-to-r from-blue-500 to-purple-600 
-              text-white font-medium
-              px-4 py-2 rounded-lg
-              hover:from-blue-600 hover:to-purple-700
-              transform hover:scale-105
-              transition-all duration-200
-              shadow-lg hover:shadow-xl
-            "/>
+            <Link href="/project/new">
+              <Button className="
+                bg-gradient-to-r from-blue-500 to-purple-600 
+                text-white font-medium
+                px-4 py-2 rounded-lg
+                hover:from-blue-600 hover:to-purple-700
+                transform hover:scale-105
+                transition-all duration-200
+                shadow-lg hover:shadow-xl
+              ">
+                새 프로젝트
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
@@ -236,7 +234,6 @@ export default function HomePage() {
                   >
                     <ProjectCard
                       name={proj.title}
-                      status={proj.status}
                       createdAt={new Date(proj.created_at).toLocaleString('ko-KR', {
                         year: 'numeric',
                         month: '2-digit', 
@@ -245,7 +242,6 @@ export default function HomePage() {
                         minute: undefined,
                         second: undefined
                       }).replace(/\. /g, '/').replace(/\.$/, '')}
-                      tags={Array.isArray(proj.tags) ? proj.tags : []}
                     />
                   </Link>
                 ))}

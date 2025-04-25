@@ -2,22 +2,14 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { User } from '@supabase/supabase-js';
 
-interface Project { 
-  id: string; 
-  title: string; 
-  status: string; 
-  created_at: string; 
-  tags: string[];
-  content?: string;
-}
-
-interface ProjectNode {
+interface Node {
   id: string;
-  project_id: string;
-  type: string;
   title: string;
+  type: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
   parent_id?: string;
-  sort_order: number;
 }
 
 interface ProjectState {
@@ -28,30 +20,27 @@ interface ProjectState {
 }
 
 interface EditorState {
-  activeStructure: 'mindmap' | 'flowchart';
   editorContent: string;
-  isPreviewOpen: boolean;
+  activeStructure: 'mindmap' | 'flowchart';
   selectedTool: 'editor' | 'keyword';
+  isPreviewOpen: boolean;
   isSaving: boolean;
-  showTooltip: boolean;
   draggedItem: string | null;
 }
 
 interface AiProjectNode {
   type: 'folder' | 'file';
-  title: string,
-  content?: string, // file인 경우에만 들어갈 마크다운 본문
-  children?: AiProjectNode[]; //하위노드
+  title: string;
+  content?: string;
+  children?: AiProjectNode[];
 }
 
 interface AiProjectResponse {
   core: string;
   structure: string[];
   tool: string[];
-  tree?: AiProjectNode[]; // <- 여기에 AI의 JSON트리를 넣어 둡니다.
-
+  tree?: AiProjectNode[];
 }
-
 
 interface NewProjectState {
   projectName: string;
@@ -82,22 +71,19 @@ interface DashboardState {
 
 interface AppState {
   user: User | null;
-  projects: Project[];
-  currentProject: Project | null;
-  projectNodes: ProjectNode[];
+  nodes: Node[];
+  currentNode: Node | null;
   projectState: ProjectState;
   editorState: EditorState;
   newProjectState: NewProjectState;
   aiProjectState: AiProjectState;
   dashboardState: DashboardState;
   setUser: (u: User | null) => void;
-  setProjects: (p: Project[]) => void;
-  setCurrentProject: (p: Project | null) => void;
-  setProjectNodes: (nodes: ProjectNode[]) => void;
-  updateProject: (id: string, updates: Partial<Project>) => void;
-  addProjectNode: (node: ProjectNode) => void;
-  updateProjectNode: (id: string, updates: Partial<ProjectNode>) => void;
-  deleteProjectNode: (id: string) => void;
+  setNodes: (nodes: Node[]) => void;
+  setCurrentNode: (node: Node | null) => void;
+  updateNode: (nodeId: string, updates: Partial<Node>) => void;
+  addNode: (node: Node) => void;
+  deleteNode: (nodeId: string) => void;
   setActiveMode: (mode: 'normal' | 'focus') => void;
   setEmotionState: (state: 'focus_needed' | 'focused') => void;
   setCurrentStep: (step: number) => void;
@@ -107,7 +93,6 @@ interface AppState {
   setIsPreviewOpen: (isOpen: boolean) => void;
   setSelectedTool: (tool: 'editor' | 'keyword') => void;
   setIsSaving: (isSaving: boolean) => void;
-  setShowTooltip: (show: boolean) => void;
   setDraggedItem: (item: string | null) => void;
   setProjectName: (name: string) => void;
   setSelectedTemplate: (template: string) => void;
@@ -124,7 +109,7 @@ interface AppState {
   setAiSelectedTags: (tags: string[]) => void;
   toggleAiTag: (tag: string) => void;
   setAiIsLoading: (isLoading: boolean) => void;
-  setAiResponse: (response: { core: string; structure: string[]; tool: string[]; } | null) => void;
+  setAiResponse: (response: AiProjectResponse | null) => void;
   setAiError: (error: string | null) => void;
   resetAiProjectState: () => void;
   setUserName: (name: string) => void;
@@ -138,9 +123,8 @@ export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
       user: null,
-      projects: [],
-      currentProject: null,
-      projectNodes: [],
+      nodes: [],
+      currentNode: null,
       projectState: {
         activeMode: 'normal',
         emotionState: 'focus_needed',
@@ -148,13 +132,12 @@ export const useAppStore = create<AppState>()(
         totalSteps: 5
       },
       editorState: {
-        activeStructure: 'mindmap',
         editorContent: '',
-        isPreviewOpen: false,
+        activeStructure: 'mindmap',
         selectedTool: 'editor',
+        isPreviewOpen: false,
         isSaving: false,
-        showTooltip: false,
-        draggedItem: null
+        draggedItem: null,
       },
       newProjectState: {
         projectName: '',
@@ -181,27 +164,21 @@ export const useAppStore = create<AppState>()(
         searchQuery: ''
       },
       setUser: (u) => set({ user: u }),
-      setProjects: (p) => set({ projects: p }),
-      setCurrentProject: (p) => set({ currentProject: p }),
-      setProjectNodes: (nodes) => set({ projectNodes: nodes }),
-      updateProject: (id, updates) => set((state) => ({
-        projects: state.projects.map((p) => 
-          p.id === id ? { ...p, ...updates } : p
+      setNodes: (nodes) => set({ nodes }),
+      setCurrentNode: (node) => set({ currentNode: node }),
+      updateNode: (nodeId, updates) => set((state) => ({
+        nodes: state.nodes.map((n) => 
+          n.id === nodeId ? { ...n, ...updates } : n
         ),
-        currentProject: state.currentProject?.id === id 
-          ? { ...state.currentProject, ...updates }
-          : state.currentProject
+        currentNode: state.currentNode?.id === nodeId 
+          ? { ...state.currentNode, ...updates }
+          : state.currentNode
       })),
-      addProjectNode: (node) => set((state) => ({
-        projectNodes: [...state.projectNodes, node]
+      addNode: (node) => set((state) => ({
+        nodes: [...state.nodes, node]
       })),
-      updateProjectNode: (id, updates) => set((state) => ({
-        projectNodes: state.projectNodes.map((node) =>
-          node.id === id ? { ...node, ...updates } : node
-        )
-      })),
-      deleteProjectNode: (id) => set((state) => ({
-        projectNodes: state.projectNodes.filter((node) => node.id !== id)
+      deleteNode: (nodeId) => set((state) => ({
+        nodes: state.nodes.filter((n) => n.id !== nodeId)
       })),
       setActiveMode: (mode) => set((state) => ({
         projectState: { ...state.projectState, activeMode: mode }
@@ -229,9 +206,6 @@ export const useAppStore = create<AppState>()(
       })),
       setIsSaving: (isSaving) => set((state) => ({
         editorState: { ...state.editorState, isSaving }
-      })),
-      setShowTooltip: (show) => set((state) => ({
-        editorState: { ...state.editorState, showTooltip: show }
       })),
       setDraggedItem: (item) => set((state) => ({
         editorState: { ...state.editorState, draggedItem: item }
@@ -341,9 +315,8 @@ export const useAppStore = create<AppState>()(
       name: 'app-storage',
       partialize: (state) => ({ 
         user: state.user, 
-        projects: state.projects,
-        currentProject: state.currentProject,
-        projectNodes: state.projectNodes,
+        nodes: state.nodes,
+        currentNode: state.currentNode,
         projectState: state.projectState,
         editorState: state.editorState,
         newProjectState: state.newProjectState,

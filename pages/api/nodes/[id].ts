@@ -1,4 +1,4 @@
-// pages/api/project_nodes/[id].ts
+// pages/api/nodes/[id].ts
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { supabase } from '@/lib/supabaseClient'
 
@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { id } = req.query
     const { method } = req
 
-    console.log(`[${method} /api/project_nodes] id =`, id)
+    console.log(`[${method} /api/nodes] id =`, id)
 
     if (typeof id !== 'string') {
       return res.status(400).json({ error: 'id가 문자열이 아닙니다.' })
@@ -21,12 +21,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       case 'GET':
         {
           const { data, error } = await supabase
-            .from('project_nodes')
+            .from('nodes')
             .select('*')
             .eq('id', id)
-            .order('sort_order', { ascending: true })
           if (error) {
-            console.error('[GET project_nodes][ERROR]', error)
+            console.error('[GET nodes][ERROR]', error)
             return res.status(500).json({ error: error.message || '노드 조회 중 오류가 발생했습니다.' })
           }
           return res.status(200).json(data) // 배열로 반환
@@ -35,11 +34,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         {
           const updates = req.body
           const { data, error } = await supabase
-            .from('project_nodes')
+            .from('nodes')
             .update(updates)
-            .eq('id', id)
           if (error) {
-            console.error('[PATCH project_nodes][ERROR]', error)
+            console.error('[PATCH nodes][ERROR]', error)
             return res.status(500).json({ error: error.message || '노드 수정 중 오류가 발생했습니다.' })
           }
           return res.status(200).json(data) // 배열로 반환
@@ -47,11 +45,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       case 'DELETE':
         {
           const { data, error } = await supabase
-            .from('project_nodes')
+            .from('nodes')
             .delete()
-            .eq('id', id)
           if (error) {
-            console.error('[DELETE project_nodes][ERROR]', error)
+            console.error('[DELETE nodes][ERROR]', error)
             return res.status(500).json({ error: error.message || '노드 삭제 중 오류가 발생했습니다.' })
           }
           return res.status(200).json({ deleted: true, nodes: data }) // 배열로 반환
@@ -62,7 +59,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
   } catch (err: unknown) {
-    console.error('[project_nodes][ERROR]', err)
+    console.error('[nodes][ERROR]', err)
     if (err instanceof Error) {
       return res.status(500).json({ error: err.message || '서버 오류가 발생했습니다.' })
     }

@@ -7,36 +7,35 @@ import { useAppStore } from "@/src/store/appStore";
 import { supabase } from "@/lib/supabaseClient";
 
 interface WorkspaceSidebarProps {
-  projectId: string;
+  nodeId: string;
 }
 
-function WorkspaceSidebar({ projectId }: WorkspaceSidebarProps) {
+function WorkspaceSidebar({ nodeId }: WorkspaceSidebarProps) {
     const router = useRouter();
-    const { projectNodes, setProjectNodes } = useAppStore();
+    const { nodes, setNodes } = useAppStore();
     const [selectedFolder, setSelectedFolder] = useState("");
     const [isHovered, setIsHovered] = useState("");
     
     useEffect(() => {
-      if (!projectId) return;
+      if (!nodeId) return;
       (async () => {
         const { data, error } = await supabase
-          .from("project_nodes")
+          .from("nodes")
           .select("*")
-          .eq("project_id", projectId)
-          .order("sort_order", { ascending: true });
+          .eq("user_id", (await supabase.auth.getUser()).data.user?.id)
 
         if (error) {
           console.error("프로젝트 노드 조회 오류:", error);
           return;
         }
 
-        setProjectNodes(data);
+        setNodes(data);
       })();
-    }, [projectId, setProjectNodes]);
+    }, [nodeId, setNodes]);
 
-    if (!router.isReady) return <p>프로젝트 로딩중 ...</p>;
+    if (!router.isReady) return <p>프로젝트 로딩중 ...2</p>;
 
-    const folders = projectNodes.filter(node => node.type === 'folder');
+    const folders = nodes.filter(node => node.type === 'folder');
 
     return (
       <motion.aside 
@@ -105,7 +104,7 @@ function WorkspaceSidebar({ projectId }: WorkspaceSidebarProps) {
                       exit={{ opacity: 0, height: 0 }}
                       className="ml-6 space-y-1"
                     >
-                      {projectNodes
+                      {nodes
                         .filter(node => node.type === 'file' && node.parent_id === folder.id)
                         .map((file, fileIndex) => (
                           <motion.li

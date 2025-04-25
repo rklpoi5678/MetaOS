@@ -6,14 +6,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAppStore } from "@/src/store/appStore";
 
 interface WorkspaceEditorProps {
-  projectId: string;
+  nodeId: string;
 }
 
-const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {projectId: string}) => {
+const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ nodeId }: {nodeId: string}) => {
   const { 
-    currentProject, 
-    setCurrentProject, 
-    updateProject,
+    currentNode, 
+    setCurrentNode, 
+    updateNode,
     editorState,
     setActiveStructure,
     setEditorContent,
@@ -24,40 +24,49 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
   } = useAppStore();
 
   useEffect(() => {
-    if (!projectId) return;
+    if (!nodeId) return;
     (async () => {
       const { data, error } = await supabase
-        .from("projects")
-        .select("id, title, status, created_at, tags")
-        .eq("id", projectId)
+        .from("nodes")
+        .select("id, title, type, content, parent_id, created_at,updated_at, user_id")
+        .eq("id", nodeId)
         .single();
 
       if (error) {
-        console.error("프로젝트 조회 오류:", error);
+        console.error("노드 조회 오류:", error);
         return;
       }
 
-      setCurrentProject(data);
+      setCurrentNode(data);
+      if (data.content) {
+        setEditorContent(data.content);
+      }
     })();
-  }, [projectId, setCurrentProject]);
+  }, [nodeId, setCurrentNode, setEditorContent]);
 
   const handleAutoSave = useCallback(async () => {
     setIsSaving(true);
     try {
       const { error } = await supabase
-        .from("projects")
-        .update({ content: editorState.editorContent })
-        .eq("id", projectId);
+        .from("nodes")
+        .update({ 
+          content: editorState.editorContent,
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", nodeId);
 
       if (error) throw error;
       
-      updateProject(projectId, { content: editorState.editorContent });
+      updateNode(nodeId, { 
+        content: editorState.editorContent,
+        updated_at: new Date().toISOString()
+      });
     } catch (error) {
       console.error("자동 저장 실패:", error);
     } finally {
       setIsSaving(false);
     }
-  }, [projectId, editorState.editorContent, setIsSaving, updateProject]);
+  }, [nodeId, editorState.editorContent, setIsSaving, updateNode]);
 
   // 자동 저장 효과
   useEffect(() => {
@@ -82,8 +91,8 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
     }
   };
 
-  if (!projectId) {
-    return <p>프로젝트 ID를 불러오는 중...</p>;
+  if (!nodeId) {
+    return <p>노드 ID를 불러오는 중...</p>;
   }
 
   return (
@@ -92,7 +101,7 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
       animate={{ opacity: 1 }}
       className="p-4 space-y-6"
     >
-      {/* 프로젝트 제목 및 핵심 문장 - 편집 가능 */}
+      {/* 노드 제목 및 핵심 문장 - 편집 가능 */}
       <motion.div 
         className="border-b pb-4"
         whileHover={{ scale: 1.01 }}
@@ -100,7 +109,7 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ projectId }: {project
         <div
           className="text-2xl font-bold mb-2 text-gray-900 w-full border-b border-transparent"
         >
-          {currentProject?.title || "불러오는 중..."}
+          {currentNode?.title || "불러오는 중..."}
         </div>
       </motion.div>
   
