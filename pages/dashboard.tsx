@@ -6,13 +6,11 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { ProjectCard } from '@/components/ui/card';
 import { supabase } from '../lib/supabaseClient';
-import Footer from "@/components/research-lab/Footer";
 import Link from "next/link";
 import { useAppStore } from '@/src/store/appStore';
 import RoutineDashboard from "@/components/research-lab/flow/RoutineDashboard";
 import InfoStack from "@/components/research-lab/info/InfoStack";
 import OutputEngine from "@/components/research-lab/output/OutputEngine";
-import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
   const router = useRouter();
@@ -27,7 +25,7 @@ export default function HomePage() {
     setSearchQuery
   } = useAppStore();
 
-  const [activeTab, setActiveTab] = React.useState('workflow'); // 'workflow' 또는 'projects'
+  const [activeTab] = React.useState('projects'); // 초기값을 'projects'로 설정
 
   useEffect(() => {
     async function init() {
@@ -110,89 +108,95 @@ export default function HomePage() {
   );
 
   const filteredProjects = nodes.filter(node => 
+    node.parent_id === null && 
     node.title.toLowerCase().includes(dashboardState.searchQuery.toLowerCase())
   );
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="bg-gray-900 text-white shadow-lg">
-        <div className="flex justify-between items-center p-4 max-w-7xl mx-auto w-full">
-          <Link href="/" className="transform hover:scale-105 transition-transform duration-200">
-            <span className="font-bold text-2xl bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-              MetaOS
+      <header className="fixed left-64 top-0 right-0 bg-white z-40 border-b">
+        <div className="container mx-auto px-4 py-2 flex justify-end">
+          <div className="flex items-center space-x-4">
+            <span className="text-gray-600 text-sm">
+              환영합니다, <span className="font-semibold">{dashboardState.userName}</span>님
             </span>
-          </Link>
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-300">
-                환영합니다, <span className="font-semibold">{dashboardState.userName}</span>님
-              </span>
-              <button
-                onClick={async () => {
-                  await supabase.auth.signOut();
-                  localStorage.removeItem('isLoggedIn');
-                  router.push('/');
-                }}
-                className="px-3 py-1 text-sm text-gray-300 hover:text-white border border-gray-600 rounded hover:bg-gray-700 transition-colors"
-              >
-                로그아웃
-              </button>
-            </div>
-            <Link href="/project/new">
-              <Button className="
-                bg-gradient-to-r from-blue-500 to-purple-600 
-                text-white font-medium
-                px-4 py-2 rounded-lg
-                hover:from-blue-600 hover:to-purple-700
-                transform hover:scale-105
-                transition-all duration-200
-                shadow-lg hover:shadow-xl
-              ">
-                새 프로젝트
-              </Button>
-            </Link>
+            <button
+              onClick={async () => {
+                await supabase.auth.signOut();
+                localStorage.removeItem('isLoggedIn');
+                router.push('/');
+              }}
+              className="px-3 py-1 text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
+            >
+              로그아웃
+            </button>
+            <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+              <span className="text-xl">⚙️</span>
+            </button>
           </div>
         </div>
       </header>
 
-      <div className="flex flex-1 overflow-hidden">
-        <aside className="w-64 bg-gray-800 text-gray-100 shadow-lg">
-          <nav className="p-4 space-y-2">
-            {[
-              { name: "프로젝트", path: "/project-workspace", icon: "📁", tab: 'projects' },
-              { name: "워크플로우", path: "/flow", icon: "🔄", tab: 'workflow' },
-              { name: "정보 저장소", path: "/infostack", icon: "📚", tab: 'infostack' },
-              { name: "결과물", path: "/output", icon: "📤", tab: 'output' },
-              { name: "연구실", path: "/research-lab", icon: "🧪", tab: 'research' },
-            ].map(item => (
-              <div 
-                key={item.name}
-                onClick={() => {
-                  if (item.tab) {
-                    setActiveTab(item.tab);
-                  }
-                  if (item.path && !['projects', 'workflow', 'infostack', 'output'].includes(item.tab)) {
-                    router.push(item.path);
-                  }
-                }}
-                className={`
-                  flex items-center space-x-3 p-3 rounded-lg 
-                  hover:bg-gray-700 transition-colors duration-200 cursor-pointer
-                  ${activeTab === item.tab ? 'bg-gray-700' : ''}
-                `}
-              >
-                <span className="text-xl">{item.icon}</span>
-                <span>{item.name}</span>
-                {activeTab === item.tab && (
-                  <span className="ml-auto w-2 h-2 bg-blue-500 rounded-full"></span>
-                )}
+      <div className="flex flex-1 overflow-hidden pt-10">
+        <aside className="fixed left-0 top-0 h-screen w-64 bg-white border-r z-50">
+          <div className="p-4 border-b">
+            <Link href="/" className="transform hover:scale-105 transition-transform duration-200 pl-3">
+              <span className="font-bold text-2xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                MetaOS
+              </span>
+            </Link>
+          </div>
+          <nav className="p-4 space-y-4 overflow-y-auto h-[calc(100vh-4rem)]">
+            {/* 새 프로젝트 만들기 */}
+            <div>
+              <Link href="/project/new" className="w-full">
+                <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
+                  <span>➕</span>
+                  <span>새 프로젝트</span>
+                </div>
+              </Link>
+            </div>
+
+            {/* 최근 작업 항목 */}
+            <div>
+              <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
+                <span>🕒</span>
+                <span>최근 작업</span>
               </div>
-            ))}
+            </div>
+
+            {/* 즐겨찾기/핀 고정 */}
+            <div>
+              <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
+                <span>📌</span>
+                <span>즐겨찾기</span>
+              </div>
+            </div>
+
+            {/* 프로젝트 리스트 */}
+            <div>
+              <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
+                <span>📁</span>
+                <span>프로젝트</span>
+              </div>
+
+              {/* 프로젝트 하위 항목 */}
+              <div className="pl-3 space-y-1 mt-1">
+                {nodes.filter(node => node.parent_id === null).map(node => (
+                  <Link href={`/project-workspace/${node.id}`} key={node.id} className="w-full">
+                    <div className="flex items-center space-x-2 py-1.5 px-3 rounded-lg hover:bg-gray-100 text-gray-600 text-xs">
+                      <span>📄</span>
+                      <span className="truncate">{node.title}</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </nav>
         </aside>
 
-        <main className="flex-1 bg-gray-100 overflow-auto">
-          <div className="max-w-7xl mx-auto py-6">
+        <main className="flex-1 bg-gray-50 overflow-auto ml-64 pt-10">
+          <div className="max-w-7xl mx-auto py-6 px-4">
             <div className="mb-8">
               <div className="flex justify-between items-center">
                 <h2 className="text-3xl font-bold text-gray-800">
@@ -203,22 +207,17 @@ export default function HomePage() {
                 <div className="flex space-x-4">
                   <input
                     type="search"
-                    placeholder={
-                      activeTab === 'workflow' ? "루틴 검색..." :
-                      activeTab === 'infostack' ? "노트 검색..." :
-                      activeTab === 'output' ? "템플릿 검색..." :
-                      "프로젝트 검색..."
-                    }
+                    placeholder="프로젝트 검색..."
                     value={dashboardState.searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
                   />
                 </div>
               </div>
             </div>
 
             {activeTab === 'workflow' ? (
-              <div className="bg-white rounded-lg shadow-lg p-6">
+              <div className="bg-white rounded-xl shadow-lg p-6">
                 <RoutineDashboard />
               </div>
             ) : activeTab === 'infostack' ? (
@@ -226,7 +225,7 @@ export default function HomePage() {
             ) : activeTab === 'output' ? (
               <OutputEngine />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredProjects.map((proj) => (
                   <Link
                     href={`/project-workspace/${proj.id}`}
@@ -250,8 +249,6 @@ export default function HomePage() {
           </div>
         </main>
       </div>
-
-      <Footer />
     </div>
   );
 }

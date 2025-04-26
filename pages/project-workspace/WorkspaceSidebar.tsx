@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAppStore } from "@/src/store/appStore";
 import { supabase } from "@/lib/supabaseClient";
+import Link from "next/link";
 
 interface WorkspaceSidebarProps {
   nodeId: string;
@@ -12,9 +12,7 @@ interface WorkspaceSidebarProps {
 
 function WorkspaceSidebar({ nodeId }: WorkspaceSidebarProps) {
     const router = useRouter();
-    const { nodes, setNodes } = useAppStore();
-    const [selectedFolder, setSelectedFolder] = useState("");
-    const [isHovered, setIsHovered] = useState("");
+    const { nodes, setNodes, currentNode, isSidebarHovered, setSidebarHovered } = useAppStore();
     
     useEffect(() => {
       if (!nodeId) return;
@@ -33,99 +31,69 @@ function WorkspaceSidebar({ nodeId }: WorkspaceSidebarProps) {
       })();
     }, [nodeId, setNodes]);
 
-    if (!router.isReady) return <p>프로젝트 로딩중 ...2</p>;
-
-    const folders = nodes.filter(node => node.type === 'folder');
+    if (!router.isReady) return <p>프로젝트 로딩중 ...</p>;
 
     return (
-      <motion.aside 
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        className="w-64 bg-gray-800 p-4 h-screen text-gray-100"
+      <aside 
+        className={`fixed left-0 top-0 h-screen bg-white border-r z-50 transition-all duration-300 ${
+          isSidebarHovered ? 'w-64' : 'w-16'
+        }`}
+        onMouseEnter={() => setSidebarHovered(true)}
+        onMouseLeave={() => setSidebarHovered(false)}
       >
-        <motion.h1 
-          className="text-2xl font-bold text-gray-100"
-          whileHover={{ scale: 1.05 }}
-        >
-          프로젝트 작업공간
-        </motion.h1>
+        <div className="p-4 border-b">
+          <Link href="/dashboard" className="transform hover:scale-105 transition-transform duration-200">
+            <span className="font-bold text-2xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              {isSidebarHovered ? 'MetaOS' : 'M'}
+            </span>
+          </Link>
+        </div>
+        <nav className="p-4 space-y-4 overflow-y-auto h-[calc(100vh-4rem)]">
+          {/* 프로젝트 정보 */}
+          <div>
+            <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
+              <span>ℹ️</span>
+              {isSidebarHovered && <span>프로젝트 정보</span>}
+            </div>
+          </div>
 
-        <motion.div 
-          className="mt-4"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <ul className="space-y-1">
-            <AnimatePresence>
-              {folders.map((folder, index) => (
-                <motion.li
-                  key={folder.id}
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                  onClick={() => setSelectedFolder(folder.id)}
-                  onHoverStart={() => setIsHovered(folder.id)}
-                  onHoverEnd={() => setIsHovered("")}
-                  whileHover={{ scale: 1.02, x: 5 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`
-                    p-2 cursor-pointer rounded-md
-                    flex flex-col gap-2 text-gray-100
-                    ${selectedFolder === folder.id ? 'bg-gray-700' : 'hover:bg-gray-700'}
-                    transition-all duration-200
-                  `}
-                >
-                  <div className="flex items-center gap-2">
-                    <motion.div 
-                      animate={{
-                        scale: isHovered === folder.id ? 1.2 : 1,
-                        backgroundColor: selectedFolder === folder.id ? "#3B82F6" : "#D1D5DB"
-                      }}
-                      className="w-3 h-3 rounded-full"
-                    />
-                    <span>{folder.title}</span>
-                    
-                    {selectedFolder === folder.id && (
-                      <motion.div
-                        layoutId="activeIndicator"
-                        className="absolute right-2 w-1 h-6 bg-blue-500 rounded-full"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      />
+          {/* 문서 구조 */}
+          <div>
+            <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
+              <span>📑</span>
+              {isSidebarHovered && <span>문서 구조</span>}
+            </div>
+            {isSidebarHovered && (
+              <div className="pl-3 space-y-1 mt-1">
+                {nodes.filter(node => node.parent_id === currentNode?.id).map(node => (
+                  <Link href={`/project-workspace/${node.id}`} key={node.id} className="w-full">
+                    <div className="flex items-center space-x-2 py-1.5 px-3 rounded-lg hover:bg-gray-100 text-gray-600 text-xs">
+                      <span>📄</span>
+                      <span className="truncate">{node.title}</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
                     )}
                   </div>
 
-                  {selectedFolder === folder.id && (
-                    <motion.ul
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="ml-6 space-y-1"
-                    >
-                      {nodes
-                        .filter(node => node.type === 'file' && node.parent_id === folder.id)
-                        .map((file, fileIndex) => (
-                          <motion.li
-                            key={file.id}
-                            initial={{ x: -10, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ delay: fileIndex * 0.05 }}
-                            className="p-2 cursor-pointer text-gray-300 hover:text-gray-100 hover:bg-gray-700 rounded-md flex items-center gap-2"
-                          >
-                            <div className="w-2 h-2 rounded-full bg-gray-400" />
-                            <span>{file.title}</span>
-                          </motion.li>
-                        ))}
-                    </motion.ul>
-                  )}
-                </motion.li>
-              ))}
-            </AnimatePresence>
-          </ul>
-        </motion.div>
-      </motion.aside>
+          {/* 작업 기록 */}
+          <div>
+            <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
+              <span>📝</span>
+              {isSidebarHovered && <span>작업 기록</span>}
+            </div>
+          </div>
+
+          {/* 협업 */}
+          <div>
+            <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
+              <span>👥</span>
+              {isSidebarHovered && <span>협업</span>}
+            </div>
+          </div>
+        </nav>
+      </aside>
     );
 }
 

@@ -63,6 +63,7 @@ interface AiProjectState {
 }
 
 interface DashboardState {
+  currentNode: Node | null;
   userName: string;
   isLoading: boolean;
   error: string | null;
@@ -78,6 +79,7 @@ interface AppState {
   newProjectState: NewProjectState;
   aiProjectState: AiProjectState;
   dashboardState: DashboardState;
+  isSidebarHovered: boolean;
   setUser: (u: User | null) => void;
   setNodes: (nodes: Node[]) => void;
   setCurrentNode: (node: Node | null) => void;
@@ -117,6 +119,7 @@ interface AppState {
   setDashboardError: (error: string | null) => void;
   setSearchQuery: (query: string) => void;
   resetDashboardState: () => void;
+  setSidebarHovered: (hovered: boolean) => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -161,8 +164,10 @@ export const useAppStore = create<AppState>()(
         userName: '',
         isLoading: true,
         error: null,
-        searchQuery: ''
+        searchQuery: '',
+        currentNode: null
       },
+      isSidebarHovered: false,
       setUser: (u) => set({ user: u }),
       setNodes: (nodes) => set({ nodes }),
       setCurrentNode: (node) => set({ currentNode: node }),
@@ -307,9 +312,11 @@ export const useAppStore = create<AppState>()(
           userName: '',
           isLoading: true,
           error: null,
-          searchQuery: ''
+          searchQuery: '',
+          currentNode: null
         }
       })),
+      setSidebarHovered: (hovered) => set({ isSidebarHovered: hovered }),
     }),
     {
       name: 'app-storage',
