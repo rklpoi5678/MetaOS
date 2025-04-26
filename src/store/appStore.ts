@@ -80,6 +80,8 @@ interface AppState {
   aiProjectState: AiProjectState;
   dashboardState: DashboardState;
   isSidebarHovered: boolean;
+  isAdmin: boolean;
+  activeTab: 'info' | 'document';
   setUser: (u: User | null) => void;
   setNodes: (nodes: Node[]) => void;
   setCurrentNode: (node: Node | null) => void;
@@ -120,6 +122,8 @@ interface AppState {
   setSearchQuery: (query: string) => void;
   resetDashboardState: () => void;
   setSidebarHovered: (hovered: boolean) => void;
+  setAdmin: (isAdmin: boolean) => void;
+  setActiveTab: (tab: 'info' | 'document') => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -168,6 +172,8 @@ export const useAppStore = create<AppState>()(
         currentNode: null
       },
       isSidebarHovered: false,
+      isAdmin: false,
+      activeTab: 'info',
       setUser: (u) => set({ user: u }),
       setNodes: (nodes) => set({ nodes }),
       setCurrentNode: (node) => set({ currentNode: node }),
@@ -317,6 +323,8 @@ export const useAppStore = create<AppState>()(
         }
       })),
       setSidebarHovered: (hovered) => set({ isSidebarHovered: hovered }),
+      setAdmin: (isAdmin) => set({ isAdmin }),
+      setActiveTab: (tab) => set({ activeTab: tab }),
     }),
     {
       name: 'app-storage',
@@ -328,7 +336,8 @@ export const useAppStore = create<AppState>()(
         editorState: state.editorState,
         newProjectState: state.newProjectState,
         aiProjectState: state.aiProjectState,
-        dashboardState: state.dashboardState
+        dashboardState: state.dashboardState,
+        activeTab: state.activeTab
       }),
     }
   )

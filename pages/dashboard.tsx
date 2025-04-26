@@ -22,7 +22,8 @@ export default function HomePage() {
     setUserName,
     setDashboardIsLoading,
     setDashboardError,
-    setSearchQuery
+    setSearchQuery,
+    isAdmin
   } = useAppStore();
 
   const [activeTab] = React.useState('projects'); // 초기값을 'projects'로 설정
@@ -51,9 +52,13 @@ export default function HomePage() {
 
         const { data: profile, error: profileError } = await supabase
           .from('users')
-          .select('name')
+          .select('name, role')
           .eq('id', authUser.id)
           .single();
+
+        // admin 권한 체크 및 상태 저장
+        const isAdmin = profile?.role === 'admin';
+        useAppStore.setState({ isAdmin });
 
         if (!profileError && profile?.name) {
           setUserName(profile.name);
@@ -157,6 +162,18 @@ export default function HomePage() {
               </Link>
             </div>
 
+            {/* 연구실 (admin 전용) */}
+            {isAdmin && (
+              <div>
+                <Link href="/research-lab" className="w-full">
+                  <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
+                    <span>🔬</span>
+                    <span>연구실</span>
+                  </div>
+                </Link>
+              </div>
+            )}
+
             {/* 최근 작업 항목 */}
             <div>
               <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
@@ -233,14 +250,7 @@ export default function HomePage() {
                   >
                     <ProjectCard
                       name={proj.title}
-                      createdAt={new Date(proj.created_at).toLocaleString('ko-KR', {
-                        year: 'numeric',
-                        month: '2-digit', 
-                        day: '2-digit',
-                        hour12: false,
-                        minute: undefined,
-                        second: undefined
-                      }).replace(/\. /g, '/').replace(/\.$/, '')}
+                      createdAt={proj.created_at}
                     />
                   </Link>
                 ))}

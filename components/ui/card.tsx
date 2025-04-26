@@ -93,7 +93,7 @@ function ProjectCard({ name, createdAt}: ProjectCardProps) {
         <CardTitle>{name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p>생성일: {createdAt}</p>
+        <p>생성시간: {createdAt}</p>
       </CardContent>
     </Card>
   );

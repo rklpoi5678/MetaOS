@@ -2,9 +2,9 @@
 "use client";
 
 import React from "react";
-import WorkspaceSidebar from "./WorkspaceSidebar"
-import WorkspaceEditor from "./WorkspaceEditor"
-import WorkspaceSidebarRight from "./WorkspaceSidebarRight";
+import WorkspaceSidebar from "./components/WorkspaceSidebar"
+import WorkspaceEditor from "./components/WorkspaceEditor"
+import WorkspaceSidebarRight from "./components/WorkspaceSidebarRight";
 import { useRouter } from "next/router";
 import { useAppStore } from "@/src/store/appStore";
 
@@ -44,9 +44,8 @@ export default function ProjectWorkspacePage() {
           </div>
         </div>
       </header>
-
+      <WorkspaceSidebar nodeId={nodeId} />
       <div className="flex flex-1 overflow-hidden pt-10">
-        <WorkspaceSidebar nodeId={nodeId} />
         <div className={`flex-1 bg-gray-50 overflow-auto ${isSidebarHovered ? 'ml-64' : 'ml-16'} transition-all duration-300`}>
           <WorkspaceEditor nodeId={nodeId} />
         </div>
