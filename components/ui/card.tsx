@@ -84,16 +84,18 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
 interface ProjectCardProps {
   name: string;
   createdAt: string;
+  updatedAt: string;
 }
 
-function ProjectCard({ name, createdAt}: ProjectCardProps) {
+function ProjectCard({ name, createdAt, updatedAt}: ProjectCardProps) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>{name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p>생성시간: {createdAt}</p>
+        <p>생성일: {createdAt}</p>
+        <p>수정일: {updatedAt}</p>
       </CardContent>
     </Card>
   );

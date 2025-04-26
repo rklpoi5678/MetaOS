@@ -81,7 +81,7 @@ interface AppState {
   dashboardState: DashboardState;
   isSidebarHovered: boolean;
   isAdmin: boolean;
-  activeTab: 'info' | 'document';
+  activeTab: 'info' | 'document' | 'project';
   setUser: (u: User | null) => void;
   setNodes: (nodes: Node[]) => void;
   setCurrentNode: (node: Node | null) => void;

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React from "react";
 
 export default function Footer() {
@@ -15,15 +16,12 @@ export default function Footer() {
 
           {/* 네비게이션 */}
           <nav className="flex space-x-6">
-            <a href="#" className="text-gray-400 hover:text-white">
+            <Link href="/about" className="text-gray-400 hover:text-white">
               About
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white">
+            </Link>
+            <Link href="/blog" className="text-gray-400 hover:text-white">
               Blog
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white">
-              Contact
-            </a>
+            </Link>
           </nav>
         </div>
 

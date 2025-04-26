@@ -111,14 +111,11 @@ function WorkspaceSidebar({ nodeId }: WorkspaceSidebarProps) {
           
           {/* 문서 구조 */}
           <div>
-            <div 
-              className={`flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm ${
-                activeTab === 'document' ? 'bg-blue-50 text-blue-600' : ''
-              }`}
-              onClick={() => setActiveTab('document')}
-            >
+            <div className="border-t my-3"></div>
+            <div className="flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-600 text-sm">
               <span>📑</span>
-              {isSidebarHovered && <span>문서 구조</span>}
+              <span>문서 구조</span>
+
             </div>
             <div className="pl-3 space-y-1 mt-1">
               {nodes
@@ -146,6 +143,9 @@ function WorkspaceSidebar({ nodeId }: WorkspaceSidebarProps) {
                       </div>
                       {isFolder && isExpanded && (
                         <div className="pl-4 space-y-1 mt-1">
+                          <div 
+                            onClick={() => setActiveTab('document')}
+                            >
                           {nodes
                             .filter(child => child.parent_id === node.id)
                             .map(child => (
@@ -156,6 +156,7 @@ function WorkspaceSidebar({ nodeId }: WorkspaceSidebarProps) {
                                 </div>
                               </Link>
                             ))}
+                        </div>
                         </div>
                       )}
                     </div>

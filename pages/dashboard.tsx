@@ -250,7 +250,8 @@ export default function HomePage() {
                   >
                     <ProjectCard
                       name={proj.title}
-                      createdAt={proj.created_at}
+                      createdAt={`${proj.created_at.substring(0,4)}년 ${proj.created_at.substring(5,7)}월 ${proj.created_at.substring(8,10)}일`}
+                      updatedAt={`${proj.updated_at.substring(0,4)}년 ${proj.updated_at.substring(5,7)}월 ${proj.updated_at.substring(8,10)}일`}
                     />
                   </Link>
                 ))}
