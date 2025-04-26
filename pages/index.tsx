@@ -43,39 +43,62 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-sm z-50 border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/">
-            <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-              MetaOS
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex justify-between items-center">
+            {/* 로고 */}
+            <Link href="/">
+              <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                MetaOS
+              </div>
+            </Link>
+
+            {/* 중앙 메뉴 */}
+            <div className="hidden md:flex items-center space-x-8">
+              <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">
+                About
+              </Link>
+              <Link href="#Pricing" className="text-gray-600 hover:text-blue-600 transition-colors">
+                Pricing
+              </Link>
+              <Link href="/blog" className="text-gray-600 hover:text-blue-600 transition-colors">
+                Blog
+              </Link>
             </div>
-          </Link>
-          <div className="flex items-center gap-6">
-            {user ? (
-              <>
-                <Link 
-                  href="/dashboard" 
-                  className="text-gray-600 hover:text-blue-600 flex items-center gap-2"
-                >
-                  <span className="font-medium">{user.email}</span>
-                  <span className="text-sm">대시보드</span>
-                </Link>
-                <button 
-                  onClick={handleLogout}
-                  className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
-                >
-                  로그아웃
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/signin" className="text-gray-600 hover:text-blue-600">로그인</Link>
-                <Link href="/signup">
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    무료로 시작하기
+
+            {/* 오른쪽 메뉴 */}
+            <div className="flex items-center space-x-4">
+              {user ? (
+                <>
+                  <Link 
+                    href="/dashboard" 
+                    className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                  >
+                    대시보드
+                  </Link>
+                  <button 
+                    onClick={handleLogout}
+                    className="text-sm px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    로그아웃
                   </button>
-                </Link>
-              </>
-            )}
+                </>
+              ) : (
+                <>
+                  <Link 
+                    href="/signin" 
+                    className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                  >
+                    로그인
+                  </Link>
+                  <Link 
+                    href="/signup"
+                    className="text-sm px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    시작하기
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </nav>
@@ -102,7 +125,7 @@ export default function LandingPage() {
                 whileHover={{ scale: 1.05 }}
                 className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm text-blue-400 px-4 py-2 rounded-full text-sm font-medium border border-blue-400/20 inline-block"
               >
-                Alpha v0.1.2
+                Alpha v0.1.3
               </motion.span>
             </motion.div>
             <p className="text-xl text-gray-600 mb-8">
@@ -184,6 +207,42 @@ export default function LandingPage() {
               감정과 구조의 조화를 통해 더 나은 프로젝트를 만들어갑니다.
             </p>
           </div>
+
+          {/* 새로운 SaaS 기능 섹션 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-white p-8 rounded-xl shadow-sm"
+            >
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white text-xl mr-4">
+                  🎯
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800">프로젝트 관리</h3>
+              </div>
+              <p className="text-gray-600">
+                AI가 프로젝트의 구조를 자동으로 설계하고 최적화합니다.
+                실시간으로 진행 상황을 모니터링하고 개선점을 제안합니다.
+              </p>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-white p-8 rounded-xl shadow-sm"
+            >
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center text-white text-xl mr-4">
+                  🤖
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800">AI 기반 자동화</h3>
+              </div>
+              <p className="text-gray-600">
+                반복적인 작업을 자동화하고, AI가 최적의 워크플로우를 제안합니다.
+                시간을 절약하고 효율성을 높이세요.
+              </p>
+            </motion.div>
+          </div>
+
           {/* 감정 그래프 애니메이션 */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -195,6 +254,66 @@ export default function LandingPage() {
               <p className="text-gray-500">감정 그래프 애니메이션</p>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* 새로운 SaaS 가격 정책 섹션 */}
+      <section id="Pricing" className="py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-16 text-gray-800">가격 정책</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-gray-700">
+            {[
+              {
+                name: "스타터",
+                price: "무료",
+                features: ["기본 프로젝트 관리", "최대 3명 팀원", "1GB 저장공간"]
+              },
+              {
+                name: "프로",
+                price: "₩29,900",
+                period: "/월",
+                features: ["모든 스타터 기능", "무제한 팀원", "10GB 저장공간", "고급 분석"]
+              },
+              {
+                name: "엔터프라이즈",
+                price: "₩99,900",
+                period: "/월",
+                features: ["모든 프로 기능", "우선 지원", "무제한 저장공간", "커스텀 통합"]
+              }
+            ].map((plan, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ scale: 1.02 }}
+                className={`bg-white p-8 rounded-xl shadow-sm ${
+                  index === 1 ? 'border-2 border-blue-500' : ''
+                }`}
+              >
+                <h3 className="text-xl font-semibold mb-4">{plan.name}</h3>
+                <div className="mb-6">
+                  <span className="text-3xl font-bold">{plan.price}</span>
+                  {plan.period && <span className="text-gray-600">{plan.period}</span>}
+                </div>
+                <ul className="space-y-2 mb-6">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-center text-gray-600">
+                      <span className="mr-2">✓</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <Link 
+                  href="/signup" 
+                  className={`block text-center py-2 rounded-lg ${
+                    index === 1 
+                      ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                  } transition-colors`}
+                >
+                  시작하기
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

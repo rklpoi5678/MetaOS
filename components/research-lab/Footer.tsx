@@ -28,11 +28,7 @@ export default function Footer() {
         </div>
 
         {/* 소셜 미디어 아이콘 */}
-        <div className="mt-4 flex space-x-4">
-          <a href="#" className="text-gray-400 hover:text-white">🔵 Twitter</a>
-          <a href="#" className="text-gray-400 hover:text-white">🔗 LinkedIn</a>
-          <a href="#" className="text-gray-400 hover:text-white">📘 Facebook</a>
-        </div>
+      
 
         {/* 저작권 및 추가 링크 */}
         <div className="border-t border-gray-700 mt-6 pt-4 text-center text-sm text-gray-400">

@@ -33,9 +33,12 @@ const InfoStack: React.FC = () => {
         className="bg-white rounded-lg shadow-lg p-6"
       >
         <div className="flex justify-between items-center mb-6">
-          <Link href="/dashboard">
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard" className="px-3 py-1 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors">
+              ← 뒤로가기
+            </Link>
             <h2 className="text-2xl font-bold text-gray-800">정보 저장소</h2>
-          </Link>
+          </div>
           <div className="flex items-center gap-4">
             <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
               + 새 노트

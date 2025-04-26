@@ -99,6 +99,15 @@ function WorkspaceSidebar({ nodeId }: WorkspaceSidebarProps) {
               {isSidebarHovered && <span>협업</span>}
             </div>
           </div>
+          {/* 워크 플로우 */}
+          <div>
+            <Link href="/project-workspace/infostack">
+            <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
+              <span>🔄</span>
+              {isSidebarHovered && <span>워크 플로우</span>}
+            </div>
+            </Link>
+          </div>
           
           {/* 문서 구조 */}
           <div>
