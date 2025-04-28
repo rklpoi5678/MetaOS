@@ -4,7 +4,6 @@ import React from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
-import Footer from '@/components/landing/Footer';
 import Navigation from '@/components/landing/Navigation';
 
 export default function Blog() {
@@ -138,7 +137,6 @@ export default function Blog() {
           </motion.div>
         </motion.div>
       </main>
-      <Footer />
     </div>
   );
 } 

@@ -3,7 +3,6 @@
 import React from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import Footer from '@/components/landing/Footer';
 import Navigation from '@/components/landing/Navigation';
 import CTASection from '@/components/landing/CTASection';
 
@@ -187,7 +186,6 @@ export default function AboutPage() {
           <CTASection />
         </motion.div>
       </main>
-      <Footer />
     </div>
   );
 } 
