@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { User } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabaseClient';
 
 interface Node {
   id: string;
@@ -124,6 +125,7 @@ interface AppState {
   setSidebarHovered: (hovered: boolean) => void;
   setAdmin: (isAdmin: boolean) => void;
   setActiveTab: (tab: 'info' | 'document') => void;
+  handleLogout: () => Promise<void>;
 }
 
 export const useAppStore = create<AppState>()(
@@ -325,6 +327,16 @@ export const useAppStore = create<AppState>()(
       setSidebarHovered: (hovered) => set({ isSidebarHovered: hovered }),
       setAdmin: (isAdmin) => set({ isAdmin }),
       setActiveTab: (tab) => set({ activeTab: tab }),
+      handleLogout: async () => {
+        try {
+          const { error } = await supabase.auth.signOut();
+          localStorage.removeItem('isLoggedIn');
+          if (error) throw error;
+          set({ user: null });
+        } catch (error) {
+          console.error('로그아웃 오류:', error);
+        }
+      },
     }),
     {
       name: 'app-storage',
