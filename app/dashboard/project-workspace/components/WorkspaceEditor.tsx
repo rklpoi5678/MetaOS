@@ -2,7 +2,8 @@
 
 import React, { useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { useAppStore } from "@/src/store/appStore";
 import TiptapEditor from "@/app/dashboard/project-workspace/components/Workspace/TiptapEditor";
 import ProjectDashboard from "@/app/dashboard/project-workspace/components/Workspace/ProjectDashboard";
@@ -22,6 +23,40 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ nodeId }) => {
     setIsSaving,
     activeTab
   } = useAppStore();
+
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1
+  });
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  const containerVariants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 1 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
 
   const rootProjectNode = nodes.find(node => node.type === 'project');
 
@@ -84,14 +119,15 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ nodeId }) => {
     return <p>노드 ID를 불러오는 중...</p>;
   }
 
-
   return (
     <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={containerVariants}
       className="p-4 space-y-6"
     >
-      <AnimatePresence>
+      <motion.div variants={itemVariants}>
         {activeTab === 'info' ? (
           rootProjectNode ? (
             <ProjectDashboard nodeId={currentNode?.id || ''} />
@@ -101,7 +137,7 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ nodeId }) => {
         ) : (
           <TiptapEditor nodeId={currentNode?.id || ''} />
         )}
-      </AnimatePresence>
+      </motion.div>
     </motion.div>
   );
 };

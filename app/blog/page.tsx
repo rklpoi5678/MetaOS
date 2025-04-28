@@ -1,12 +1,46 @@
 'use client'
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
 import Footer from '@/components/landing/Footer';
 import Navigation from '@/components/landing/Navigation';
 
 export default function Blog() {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1
+  });
+
+  React.useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  const containerVariants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 1 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
     
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -15,12 +49,16 @@ export default function Blog() {
 
       {/* 메인 컨텐츠 */}
       <main className="pt-32 pb-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          ref={ref}
+          initial="hidden"
+          animate={controls}
+          variants={containerVariants}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+        >
           {/* 블로그 헤더 */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            variants={itemVariants}
             className="text-center mb-16"
           >
             <h1 className="text-4xl font-bold text-gray-900 mb-6">MetaOS 블로그</h1>
@@ -56,9 +94,7 @@ export default function Blog() {
             ].map((post, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                variants={itemVariants}
                 className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
               >
                 <div className="p-6">
@@ -82,9 +118,7 @@ export default function Blog() {
 
           {/* 뉴스레터 구독 */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            variants={itemVariants}
             className="mt-20 bg-blue-600 rounded-2xl p-8 text-center text-white"
           >
             <h2 className="text-2xl font-bold mb-4">최신 소식을 놓치지 마세요</h2>
@@ -102,7 +136,7 @@ export default function Blog() {
               </button>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </main>
       <Footer />
     </div>

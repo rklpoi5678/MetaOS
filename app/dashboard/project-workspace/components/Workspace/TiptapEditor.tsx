@@ -3,7 +3,8 @@
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useAppStore } from "@/src/store/appStore"
-import { motion } from 'framer-motion'
+import { motion, useAnimation } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
 import { 
   Bold, 
   Italic, 
@@ -29,6 +30,33 @@ interface TiptapEditorProps {
 
 export default function TiptapEditor({ nodeId }: TiptapEditorProps) {
   const { editorState, setEditorContent } = useAppStore();
+
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1
+  });
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  const containerVariants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 1 },
+    visible: { y: 0, opacity: 1 }
+  };
 
   const editor = useEditor({
     extensions: [
@@ -87,12 +115,14 @@ export default function TiptapEditor({ nodeId }: TiptapEditorProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={containerVariants}
       className="space-y-4"
     >
-      {/* 툴바 */}
+      <motion.div variants={itemVariants}>
+        {/* 툴바 */}
       <div className="flex flex-wrap gap-2 p-2 bg-white border rounded-lg shadow-sm">
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -192,6 +222,7 @@ export default function TiptapEditor({ nodeId }: TiptapEditorProps) {
         editor={editor} 
         className="border rounded-lg p-4 bg-white min-h-[500px] shadow-sm hover:shadow-md transition-shadow prose max-w-none text-gray-800" 
       />
+    </motion.div>
     </motion.div>
   )
 } 

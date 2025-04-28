@@ -1,13 +1,46 @@
-
 'use client'
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import Footer from '@/components/landing/Footer';
 import Navigation from '@/components/landing/Navigation';
 import CTASection from '@/components/landing/CTASection';
 
 export default function AboutPage() {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1
+  });
+
+  React.useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  const containerVariants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 1 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -16,12 +49,16 @@ export default function AboutPage() {
 
       {/* 메인 컨텐츠 */}
       <main className="pt-32 pb-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          ref={ref}
+          initial="hidden"
+          animate={controls}
+          variants={containerVariants}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+        >
           {/* 히어로 섹션 */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            variants={itemVariants}
             className="text-center mb-20"
           >
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
@@ -40,9 +77,7 @@ export default function AboutPage() {
           {/* 미션 & 비전 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              variants={itemVariants}
               className="bg-white p-8 rounded-xl shadow-sm"
             >
               <div className="text-4xl mb-4">🎯</div>
@@ -54,9 +89,7 @@ export default function AboutPage() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              variants={itemVariants}
               className="bg-white p-8 rounded-xl shadow-sm"
             >
               <div className="text-4xl mb-4">🚀</div>
@@ -70,7 +103,12 @@ export default function AboutPage() {
 
           {/* 핵심 가치 */}
           <section className="mb-20">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">핵심 가치</h2>
+            <motion.h2
+              variants={itemVariants}
+              className="text-3xl font-bold text-center mb-12 text-gray-900"
+            >
+              핵심 가치
+            </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-gray-800">
               {[
                 {
@@ -91,9 +129,7 @@ export default function AboutPage() {
               ].map((value, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  variants={itemVariants}
                   className="bg-white p-6 rounded-xl shadow-sm text-center"
                 >
                   <div className="text-4xl mb-4">{value.icon}</div>
@@ -106,7 +142,12 @@ export default function AboutPage() {
 
           {/* 팀 소개 */}
           <section>
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">우리의 팀</h2>
+            <motion.h2
+              variants={itemVariants}
+              className="text-3xl font-bold text-center mb-12 text-gray-900"
+            >
+              우리의 팀
+            </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-gray-800">
               {[
                 {
@@ -132,9 +173,7 @@ export default function AboutPage() {
               ].map((member, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  variants={itemVariants}
                   className="bg-white p-6 rounded-xl shadow-sm text-center"
                 >
                   <div className="text-6xl mb-4">{member.image}</div>
@@ -146,7 +185,7 @@ export default function AboutPage() {
           </section>
           {/* CTA 섹션 */}
           <CTASection />
-        </div>
+        </motion.div>
       </main>
       <Footer />
     </div>

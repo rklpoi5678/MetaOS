@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function CTASection() {
   return (
-    <section className="py-20 bg-blue-600 text-white">
+    <motion.section className="py-20 bg-blue-600 text-white">
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl font-bold mb-8">지금 바로 시작하세요</h2>
         <p className="text-xl mb-8">AI Agent와 함께 당신의 프로젝트를 시작하세요</p>
@@ -30,6 +30,6 @@ export default function CTASection() {
           </Link>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 } 

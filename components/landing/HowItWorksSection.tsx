@@ -3,37 +3,56 @@
 import { motion } from 'framer-motion'
 
 export default function HowItWorksSection() {
-  const steps = [
-    {
-      title: "Core",
-      description: "프로젝트의 핵심 가치와 목표를 정의합니다"
-    },
-    {
-      title: "Structure",
-      description: "체계적인 프로젝트 구조를 설계합니다"
-    },
-    {
-      title: "Tool",
-      description: "필요한 도구와 리소스를 자동으로 구성합니다"
-    },
-    {
-      title: "Experiment",
-      description: "지속적인 실험과 개선을 통해 진화합니다"
-    }
-  ]
-
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-16 text-gray-800">작동 방식</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {steps.map((step, index) => (
+    <section className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+            작동 방식
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            MetaOS가 어떻게 당신의 프로젝트를 도와드리는지 알아보세요.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              step: "1",
+              title: "프로젝트 생성",
+              description: "간단한 설명으로 프로젝트를 시작하세요",
+              icon: "🚀"
+            },
+            {
+              step: "2",
+              title: "AI 분석",
+              description: "AI가 프로젝트 구조를 분석하고 최적화합니다",
+              icon: "🤖"
+            },
+            {
+              step: "3",
+              title: "실행 및 관리",
+              description: "최적화된 워크플로우로 프로젝트를 진행하세요",
+              icon: "📈"
+            }
+          ].map((step, index) => (
             <motion.div
               key={index}
-              whileHover={{ scale: 1.02 }}
-              className="bg-white p-8 rounded-xl shadow-sm"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              className="bg-gray-50 p-8 rounded-xl shadow-sm text-center"
             >
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">{step.title}</h3>
+              <div className="text-4xl mb-4">{step.icon}</div>
+              <div className="text-2xl font-bold text-blue-600 mb-2">Step {step.step}</div>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900">{step.title}</h3>
               <p className="text-gray-600">{step.description}</p>
             </motion.div>
           ))}
