@@ -2,9 +2,17 @@
 
 import Link from 'next/link'
 import { useAppStore } from '@/src/store/appStore'
+import { useEffect } from 'react'
 
 export default function Navigation() {
-  const { user, handleLogout } = useAppStore();
+  const { user, handleLogout, setUser } = useAppStore();
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (!isLoggedIn && user) {
+      setUser(null);
+    }
+  }, [user, setUser]);
 
   return (
     <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-sm z-50 border-b">
