@@ -65,7 +65,6 @@ export default function SignIn() {
     setLoading(true);
     setMessage('');
 
-    try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -79,11 +78,6 @@ export default function SignIn() {
         setMessage('로그인 성공!');
         router.push('/dashboard');
       }
-    } catch (error) {
-      setMessage('로그인 중 오류가 발생했습니다.');
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
