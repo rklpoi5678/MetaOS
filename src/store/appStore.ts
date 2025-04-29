@@ -3,14 +3,14 @@ import { persist } from 'zustand/middleware';
 import { User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabaseClient';
 
-interface Node {
+export interface Node {
   id: string;
   title: string;
-  type: string;
   content: string;
+  type: string;
+  parent_id: string | null;
   created_at: string;
   updated_at: string;
-  parent_id?: string;
 }
 
 interface ProjectState {
@@ -178,7 +178,12 @@ export const useAppStore = create<AppState>()(
       activeTab: 'info',
       setUser: (u) => set({ user: u }),
       setNodes: (nodes) => set({ nodes }),
-      setCurrentNode: (node) => set({ currentNode: node }),
+      setCurrentNode: (node) => set((state) => ({
+        dashboardState: {
+          ...state.dashboardState,
+          currentNode: node
+        }
+      })),
       updateNode: (nodeId, updates) => set((state) => ({
         nodes: state.nodes.map((n) => 
           n.id === nodeId ? { ...n, ...updates } : n

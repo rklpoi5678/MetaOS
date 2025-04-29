@@ -7,16 +7,18 @@ import Link from "next/link";
 
 interface WorkspaceSidebarProps {
   nodeId: string;
+  rootProjectId: string | null;
 }
 
-function WorkspaceSidebar({ nodeId }: WorkspaceSidebarProps) {
+function WorkspaceSidebar({ nodeId, rootProjectId }: WorkspaceSidebarProps) {
     const { 
       nodes, 
       setNodes, 
       isSidebarHovered, 
       setSidebarHovered,
       activeTab,
-      setActiveTab
+      setActiveTab,
+      setCurrentNode
     } = useAppStore();
     const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
     
@@ -33,9 +35,10 @@ function WorkspaceSidebar({ nodeId }: WorkspaceSidebarProps) {
           return;
         }
 
+        setCurrentNode(data.find(node => node.id === nodeId));
         setNodes(data);
       })();
-    }, [nodeId, setNodes]);
+    }, [nodeId, setNodes, setCurrentNode]);
 
     const toggleFolder = (folderId: string) => {
       setExpandedFolders(prev => {
@@ -48,8 +51,6 @@ function WorkspaceSidebar({ nodeId }: WorkspaceSidebarProps) {
         return newSet;
       });
     };
-
-    const rootProjectNode = nodes.find(node => node.type === 'project');
 
     return (
       <aside 
@@ -115,7 +116,7 @@ function WorkspaceSidebar({ nodeId }: WorkspaceSidebarProps) {
             </div>
             <div className="pl-3 space-y-1 mt-1">
               {nodes
-                .filter(node => node.parent_id === rootProjectNode?.id)
+                .filter(node => node.parent_id === rootProjectId)
                 .map(node => {
                   const isFolder = node.type === 'folder';
                   const isExpanded = expandedFolders.has(node.id);
@@ -137,22 +138,26 @@ function WorkspaceSidebar({ nodeId }: WorkspaceSidebarProps) {
                           </Link>
                         )}
                       </div>
+
                       {isFolder && isExpanded && (
                         <div className="pl-4 space-y-1 mt-1">
-                          <div 
-                            onClick={() => setActiveTab('document')}
-                            >
                           {nodes
                             .filter(child => child.parent_id === node.id)
                             .map(child => (
-                              <Link href={`/dashboard/project-workspace/${child.id}`} key={child.id} className="w-full">
-                                <div className="flex items-center space-x-2 py-1.5 px-3 rounded-lg hover:bg-gray-100 text-gray-600 text-xs">
+                              <Link 
+                                key={child.id} 
+                                href={`/dashboard/project-workspace/${child.id}`} 
+                                className="w-full"
+                              >
+                                <div 
+                                  className="flex items-center space-x-2 py-1.5 px-3 rounded-lg hover:bg-gray-100 text-gray-600 text-xs"
+                                  onClick={() => setActiveTab('document')}
+                                >
                                   <span>📄</span>
                                   <span className="truncate">{child.title}</span>
                                 </div>
                               </Link>
                             ))}
-                        </div>
                         </div>
                       )}
                     </div>

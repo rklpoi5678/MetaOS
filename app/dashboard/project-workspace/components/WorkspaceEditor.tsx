@@ -5,17 +5,16 @@ import { supabase } from "@/lib/supabaseClient";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useAppStore } from "@/src/store/appStore";
-import TiptapEditor from "@/app/dashboard/project-workspace/components/Workspace/TiptapEditor";
-import ProjectDashboard from "@/app/dashboard/project-workspace/components/Workspace/ProjectDashboard";
+import TiptapEditor from "@/components/projecct-workspace/TiptapEditor";
+import ProjectDashboard from "@/components/projecct-workspace/ProjectDashboard";
 
 interface WorkspaceEditorProps {
   nodeId: string;
+  rootProjectId: string | null;
 }
 
-const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ nodeId }) => {
+const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ nodeId, rootProjectId }) => {
   const { 
-    nodes,
-    currentNode, 
     setCurrentNode, 
     updateNode,
     editorState,
@@ -57,8 +56,6 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ nodeId }) => {
       }
     }
   };
-
-  const rootProjectNode = nodes.find(node => node.type === 'project');
 
   useEffect(() => {
     if (!nodeId) return;
@@ -128,14 +125,10 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ nodeId }) => {
       className="p-4 space-y-6"
     >
       <motion.div variants={itemVariants}>
-        {activeTab === 'info' ? (
-          rootProjectNode ? (
-            <ProjectDashboard nodeId={currentNode?.id || ''} />
-          ) : (
-            <div>프로젝트를 찾을 수 없습니다.</div>          
-          )
-        ) : (
-          <TiptapEditor nodeId={currentNode?.id || ''} />
+        {activeTab === 'info' && rootProjectId ? (
+            <ProjectDashboard nodeId={rootProjectId} />
+          ) : ( 
+          <TiptapEditor nodeId={nodeId} />
         )}
       </motion.div>
     </motion.div>

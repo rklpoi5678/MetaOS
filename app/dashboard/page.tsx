@@ -240,15 +240,15 @@ export default function HomePage() {
               <OutputEngine />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filteredProjects.map((proj) => (
+                {filteredProjects.map((node) => (
                   <Link
-                    href={`/dashboard/project-workspace/${proj.id}`}
-                    key={proj.id}
+                    href={`/dashboard/project-workspace/${node.id}`}
+                    key={node.id}
                   >
                     <ProjectCard
-                      name={proj.title}
-                      createdAt={`${proj.created_at.substring(0,4)}년 ${proj.created_at.substring(5,7)}월 ${proj.created_at.substring(8,10)}일`}
-                      updatedAt={`${proj.updated_at.substring(0,4)}년 ${proj.updated_at.substring(5,7)}월 ${proj.updated_at.substring(8,10)}일`}
+                      name={node.title}
+                      createdAt={`${node.created_at.substring(0,4)}년 ${node.created_at.substring(5,7)}월 ${node.created_at.substring(8,10)}일`}
+                      updatedAt={`${node.updated_at.substring(0,4)}년 ${node.updated_at.substring(5,7)}월 ${node.updated_at.substring(8,10)}일`}
                     />
                   </Link>
                 ))}

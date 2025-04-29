@@ -7,6 +7,7 @@ interface ProjectDashboardProps {
   nodeId: string;
 }
 
+
 export default function ProjectDashboard({ nodeId }: ProjectDashboardProps) {
   const { 
     nodes,

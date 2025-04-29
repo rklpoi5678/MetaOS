@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import LabSidebar from '@/components/research-lab/LabSidebar';
-import MainPanel from '@/components/research-lab/MainPanel';
-import RightDock from '@/components/research-lab/RightDock';
+import LabSidebar from '@/components/research-lab/layout/LabSidebar';
+import MainPanel from '@/components/research-lab/layout/MainPanel';
+import RightDock from '@/components/research-lab/layout/RightDock';
 
 const ResearchLab: React.FC = () => {
   const [selectedModule, setSelectedModule] = useState<string>('core-generator');
