@@ -4,11 +4,11 @@ import "@/styles/globals.css";
 import { ReactNode } from 'react';
 
 export const metadata = {
-  title: "MetaOS | AI 기반 프로젝트 관리 시스템",
-  description: "AI 기반 프로젝트 관리 시스템",
+  title: "MetaOS | 대시보드",
+  description: "MetaOS 대시보드",
   openGraph: {
-    title: "MetaOS | AI 기반 프로젝트 관리 시스템",
-    description: "AI 기반 프로젝트 관리 시스템",
+    title: "MetaOS | 대시보드",
+    description: "MetaOS 대시보드",
     type: "website"
   },
   icons: {
@@ -17,12 +17,10 @@ export const metadata = {
 };
 
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ko">
-      <body>
-          {children}
-      </body>
-    </html>
+    <div className="min-h-screen bg-gray-100">
+      {children}
+    </div>
   )
 }

@@ -55,8 +55,8 @@ const LabSidebar: React.FC<LabSidebarProps> = ({
 
       <div className="mt-auto pt-8">
         <div className="text-xs text-gray-500">
-          <p>버전: v0.1.0</p>
-          <p className="mt-1">마지막 업데이트: 2024.03</p>
+          <p>버전: v0.1.1</p>
+          <p className="mt-1">마지막 업데이트: 2025.04.29</p>
         </div>
       </div>
     </div>

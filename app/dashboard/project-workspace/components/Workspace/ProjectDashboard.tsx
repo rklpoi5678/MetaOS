@@ -14,10 +14,11 @@ export default function ProjectDashboard({ nodeId }: ProjectDashboardProps) {
     projectState,
   } = useAppStore();
 
-  return (
+  return (          
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       className="space-y-6"
     >
@@ -27,6 +28,7 @@ export default function ProjectDashboard({ nodeId }: ProjectDashboardProps) {
         <motion.div 
           className="bg-white rounded-lg shadow-lg p-6 border border-gray-100"
           whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}
+          viewport={{ once: true }}
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-800">프로젝트 개요</h3>
@@ -52,6 +54,7 @@ export default function ProjectDashboard({ nodeId }: ProjectDashboardProps) {
         <motion.div 
           className="bg-white rounded-lg shadow-lg p-6 border border-gray-100"
           whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}
+          viewport={{ once: true }}
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-800">작업 상태</h3>
@@ -95,6 +98,7 @@ export default function ProjectDashboard({ nodeId }: ProjectDashboardProps) {
         <motion.div 
           className="bg-white rounded-lg shadow-lg p-6 border border-gray-100"
           whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}
+          viewport={{ once: true }}
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-800">진행 상황</h3>
@@ -139,6 +143,7 @@ export default function ProjectDashboard({ nodeId }: ProjectDashboardProps) {
       <motion.div 
         className="bg-white rounded-lg shadow-lg p-6 border border-gray-100"
         whileHover={{ boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}
+        viewport={{ once: true }}
       >
         <h3 className="text-lg font-semibold text-gray-800 mb-4">문서 구조</h3>
         <div className="flex gap-4">

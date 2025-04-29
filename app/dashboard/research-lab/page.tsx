@@ -15,7 +15,7 @@ const ResearchLab: React.FC = () => {
   });
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-full bg-gray-100">
       {/* 좌측 사이드바 */}
       <LabSidebar 
         selectedModule={selectedModule}
@@ -24,11 +24,12 @@ const ResearchLab: React.FC = () => {
 
       {/* 메인 패널 */}
       <motion.div 
-        className="flex-1 p-6"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.3 }}
-      >
+        className="flex-1 p-6 h-full"
+        >
         <MainPanel 
           currentModule={selectedModule}
           onEmotionChange={setEmotionState}

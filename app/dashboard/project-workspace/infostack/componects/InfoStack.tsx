@@ -33,7 +33,9 @@ const InfoStack: React.FC<InfoStackProps> = ({ nodeId }) => {
     <div className="p-6 max-w-7xl mx-auto">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.3 }}
         className="bg-white rounded-lg shadow-lg p-6"
       >
         <div className="flex justify-between items-center mb-6">
