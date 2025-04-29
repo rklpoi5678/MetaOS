@@ -32,7 +32,7 @@
       "./node_modules/@types",
       "./src/types"
     ],
-    "noImplicitAny": false
+    "noImplicitAny": false,
   },
   "include": [
     "**/*.ts",

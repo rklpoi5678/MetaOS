@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import InfoStack from '@/app/dashboard/project-workspace/infostack/components/InfoStack';
+import InfoStack from '@/components/infostack/components/InfoStack';
 import { useParams } from 'next/navigation';
 
 export default function InfostackPage() {

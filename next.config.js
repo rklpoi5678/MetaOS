@@ -6,6 +6,8 @@ const nextConfig = {
       ...config.resolve.fallback,
       fs: false,
       path: false,
+      canvas: false,
+      encoding: false,
     };
     config.module.rules.push({
       test: /\.mjs$/,

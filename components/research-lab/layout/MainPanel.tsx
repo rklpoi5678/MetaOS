@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import CoreGenerator from './modules/CoreGenerator';
-import StructureBuilder from './modules/StructureBuilder';
-import ToolLinker from './modules/ToolLinker';
-import ExperimentRunner from './modules/ExperimentRunner';
-import ArchiveManager from './modules/ArchiveManager';
-import OpenSyncPanel from './modules/OpenSyncPanel';
-import AgentSimulator from './modules/AgentSimulator';
+import CoreGenerator from '@/components/research-lab/modules/CoreGenerator';
+import StructureBuilder from '@/components/research-lab/modules/StructureBuilder';
+import ToolLinker from '@/components/research-lab/modules/ToolLinker';
+import ExperimentRunner from '@/components/research-lab/modules/ExperimentRunner';
+import ArchiveManager from '@/components/research-lab/modules/ArchiveManager';
+import OpenSyncPanel from '@/components/research-lab/modules/OpenSyncPanel';
+import AgentSimulator from '@/components/research-lab/modules/AgentSimulator';
 
 interface MainPanelProps {
   currentModule: string;

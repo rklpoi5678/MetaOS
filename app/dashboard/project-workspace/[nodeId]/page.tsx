@@ -1,7 +1,7 @@
 // app/dashboard/project-workspace/[nodeId]/page.tsx
 'use client'
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import WorkspaceSidebar from "@/components/projecct-workspace/WorkspaceSidebar"
 import WorkspaceEditor from "@/app/dashboard/project-workspace/components/WorkspaceEditor"
 import WorkspaceSidebarRight from "@/components/projecct-workspace/WorkspaceSidebarRight";
