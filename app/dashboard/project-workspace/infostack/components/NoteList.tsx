@@ -2,30 +2,21 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-
-interface Note {
-  id: string;
-  title: string;
-  content: string;
-  tags: string[];
-  structure: string;
-  backlinks: string[];
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { Note } from './InfoStack';
 
 interface NoteListProps {
-  notes?: Note[];
+  notes: Note[];
   searchQuery: string;
   selectedTags: string[];
   selectedStructure: string;
+  onUpdate: () => void;
 }
 
 const NoteList: React.FC<NoteListProps> = ({
   notes = [],
   searchQuery,
   selectedTags,
-  selectedStructure
+  selectedStructure,
 }) => {
   const filteredNotes = React.useMemo(() => {
     if (!notes) return [];
@@ -72,7 +63,9 @@ const NoteList: React.FC<NoteListProps> = ({
             ))}
           </div>
           <div className="flex justify-between items-center mt-2 text-xs text-gray-500">
-            <span>{new Date(note.updatedAt).toLocaleDateString()}</span>
+            <div className="text-sm text-gray-500">
+              {new Date(note.created_at).toLocaleDateString()}
+            </div>
             <span>{note.backlinks.length} 백링크</span>
           </div>
         </motion.div>

@@ -23,6 +23,7 @@ import {
 import LinkExtension from '@tiptap/extension-link'
 import ImageExtension from '@tiptap/extension-image'
 import { useEffect } from 'react'
+import { supabase } from '@/lib/supabaseClient'
 
 interface TiptapEditorProps {
   nodeId: string;
@@ -86,6 +87,28 @@ export default function TiptapEditor({ nodeId }: TiptapEditorProps) {
     immediatelyRender: false,
   })
   
+
+  const handleSave = async() => {
+    if (!editor) return; //에디터 로드 안되면 막기
+    const content = editor.getHTML(); // 현재 작성된 HTML가져오기
+
+    const {error} = await supabase
+      .from('nodes')
+      .update({
+        content: content,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', nodeId)
+
+    if (error) {
+      console.error('저장 오류:', error);
+      alert('저장 중 오류가 발생했습니다.');
+    } else {
+      console.log('저장 성공');
+      alert('저장되었습니다.');
+    }
+
+  }
 
   useEffect(() => {
     if (editor && editorState.editorContent !== undefined) {
@@ -223,6 +246,13 @@ export default function TiptapEditor({ nodeId }: TiptapEditorProps) {
         className="border rounded-lg p-4 bg-white min-h-[500px] shadow-sm hover:shadow-md transition-shadow prose max-w-none text-gray-800" 
       />
     </motion.div>
+    <button
+      onClick={handleSave}
+      className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+    >
+      저장하기
+    </button>
+
     </motion.div>
   )
 } 

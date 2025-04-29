@@ -4,14 +4,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 interface TagFilterProps {
-  selectedTags?: string[];
+  selectedTags: string[];
   onTagsChange: (tags: string[]) => void;
+  tags: string[];
 }
 
-const TagFilter: React.FC<TagFilterProps> = ({ 
-  selectedTags = [],
-  onTagsChange 
-}) => {
+const TagFilter: React.FC<TagFilterProps> = ({ selectedTags, onTagsChange }) => {
   const [availableTags] = React.useState<string[]>([
     '프로젝트', '아이디어', '참고자료', '회의록', '리서치'
   ]);

@@ -5,11 +5,12 @@ import React from "react";
 import WorkspaceSidebar from "@/app/dashboard/project-workspace/components/WorkspaceSidebar"
 import WorkspaceEditor from "@/app/dashboard/project-workspace/components/WorkspaceEditor"
 import WorkspaceSidebarRight from "@/app/dashboard/project-workspace/components/WorkspaceSidebarRight";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useAppStore } from "@/src/store/appStore";
 
 export default function ProjectWorkspacePage() {
   const params = useParams();
+  const router = useRouter();
   const { dashboardState, isSidebarHovered } = useAppStore();
   
   if (!params) {
@@ -38,7 +39,10 @@ export default function ProjectWorkspacePage() {
             <span className="text-gray-600 text-sm">
               마지막 저장: {new Date().toLocaleString('ko-KR')}
             </span>
-            <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+            <button 
+              onClick={() => router.push('/settings')}
+              className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            >
               <span className="text-xl">⚙️</span>
             </button>
           </div>

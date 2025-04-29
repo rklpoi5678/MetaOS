@@ -134,7 +134,7 @@ export default function HomePage() {
             >
               로그아웃
             </button>
-            <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+            <button onClick={() => router.push('/settings')} className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
               <span className="text-xl">⚙️</span>
             </button>
           </div>
