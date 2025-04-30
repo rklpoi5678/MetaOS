@@ -12,6 +12,8 @@ import RoutineDashboard from "@/components/research-lab/flow/RoutineDashboard";
 import OutputEngine from "@/components/research-lab/output/OutputEngine";
 import MobileNavigation from "@/components/dashboard/mobile-components/MobileNavigation";
 import MobileSidebar from "@/components/dashboard/mobile-components/MobileSidebar";
+import Navigation from "@/components/dashboard/dashboard-components/Navigation";
+import Sidebar from "@/components/dashboard/dashboard-components/Sidebar";
 
 export default function HomePage() {
   const router = useRouter();
@@ -121,102 +123,14 @@ export default function HomePage() {
       <MobileNavigation isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* 데스크톱 헤더 */}
-      <header className="hidden sm:block fixed left-64 top-0 right-0 bg-white z-40 border-b">
-        <div className="container mx-auto px-4 py-2 flex justify-end">
-          <div className="flex items-center space-x-4">
-            <span className="text-gray-600 text-sm">
-              환영합니다, <span className="font-semibold">{dashboardState.userName}</span>님
-            </span>
-            <button
-              onClick={async () => {
-                await supabase.auth.signOut();
-                localStorage.removeItem('isLoggedIn');
-                router.push('/');
-              }}
-              className="px-3 py-1 text-sm bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
-            >
-              로그아웃
-            </button>
-            <button onClick={() => router.push('/settings')} className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
-              <span className="text-xl">⚙️</span>
-            </button>
-          </div>
-        </div>
-      </header>
+      <Navigation dashboardState={dashboardState} />
 
       <div className="flex flex-1 overflow-hidden pt-12 sm:pt-10">
-        {/* 모바일 사이드바 */}
-        <MobileSidebar nodes={nodes} dashboardState={dashboardState} isAdmin={isAdmin} isSidebarOpen={isSidebarOpen}/>
+      {/* 모바일 사이드바 */}
+      <MobileSidebar nodes={nodes} dashboardState={dashboardState} isAdmin={isAdmin} isSidebarOpen={isSidebarOpen}/>
 
-        {/* 데스크톱 사이드바 */}
-        <aside className="hidden sm:block fixed left-0 top-0 h-screen w-64 bg-white border-r z-50">
-          <div className="p-4 border-b">
-            <Link href="/" className="transform hover:scale-105 transition-transform duration-200 pl-3">
-              <span className="font-bold text-2xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                MetaOS
-              </span>
-            </Link>
-          </div>
-          <nav className="p-4 space-y-4 overflow-y-auto h-[calc(100vh-4rem)]">
-            {/* 데스크톱 사이드바 내용은 기존과 동일 */}
-            <div>
-              <Link href="/dashboard/project" className="w-full">
-                <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
-                  <span>➕</span>
-                  <span>새 프로젝트</span>
-                </div>
-              </Link>
-            </div>
-
-            {/* 연구실 (admin 전용) */}
-            {isAdmin && (
-              <div>
-                <Link href="/dashboard/research-lab" className="w-full">
-                  <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
-                    <span>🔬</span>
-                    <span>연구실</span>
-                  </div>
-                </Link>
-              </div>
-            )}
-
-            {/* 최근 작업 항목 */}
-            <div>
-              <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
-                <span>🕒</span>
-                <span>최근 작업</span>
-              </div>
-            </div>
-
-            {/* 즐겨찾기/핀 고정 */}
-            <div>
-              <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
-                <span>📌</span>
-                <span>즐겨찾기</span>
-              </div>
-            </div>
-
-            {/* 프로젝트 리스트 */}
-            <div>
-              <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
-                <span>📁</span>
-                <span>프로젝트</span>
-              </div>
-
-              {/* 프로젝트 하위 항목 */}
-              <div className="pl-3 space-y-1 mt-1">
-                {nodes.filter(node => node.parent_id === null).map(node => (
-                  <Link href={`/dashboard/project-workspace/${node.id}`} key={node.id} className="w-full">
-                    <div className="flex items-center space-x-2 py-1.5 px-3 rounded-lg hover:bg-gray-100 text-gray-600 text-xs">
-                      <span>📄</span>
-                      <span className="truncate">{node.title}</span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </nav>
-        </aside>
+      {/* 데스크톱 사이드바 */}
+      <Sidebar nodes={nodes} isAdmin={isAdmin} />
 
         <main className="flex-1 bg-gray-50 overflow-auto sm:ml-64 pt-12 sm:pt-10">
           <div className="max-w-7xl mx-auto py-4 sm:py-6 px-4">

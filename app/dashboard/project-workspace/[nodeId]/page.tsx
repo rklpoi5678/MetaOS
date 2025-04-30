@@ -18,6 +18,19 @@ export default function ProjectWorkspacePage() {
   const [isLoading, setIsLoading] = useState(true);
   const nodeId = params?.nodeId as string;
 
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => { 
     const fetchNode = async () => {
       try {
@@ -101,7 +114,6 @@ export default function ProjectWorkspacePage() {
 
     // 1분마다 시간 업데이트
     const interval = setInterval(updateLastSaved, 60000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -109,16 +121,38 @@ export default function ProjectWorkspacePage() {
     return <div>잘못된 접근입니다</div>;
   }
   
-  if (!nodeId) {
+  if (!nodeId || typeof nodeId !== 'string') {
     return <div className="flex items-center justify-center h-screen">
       <p className="text-red-500">잘못된 프로젝트 ID입니다.</p>
     </div>;
   }
 
+
+
   // console.log('렌더링 시 rootProject:', rootProject);
 
   return (
     <div className="min-h-screen flex flex-col">
+
+    {/* 모바일 헤더 */}
+    {isMobile && (
+      <header className="sm:hidden fixed top-0 left-0 right-0 bg-white z-50 border-b">
+        <div className="flex justify-between items-center p-3">
+          <button onClick={() => setIsMobileSidebarOpen(true)} className="text-2xl text-gray-800">
+            ☰
+          </button>
+          <h1 className="font-bold text-gray-800 text-lg truncate">
+            {rootProject?.title || "로딩 중..."}
+          </h1>
+          <button onClick={() => router.push('/settings')} className="text-xl">
+            ⚙️
+          </button>
+        </div>
+      </header>
+    )}
+
+    {/* 데스크톱 헤더 */}
+    {!isMobile && (
       <header className={`fixed ${isSidebarHovered ? 'left-64' : 'left-16'} top-0 right-0 bg-white z-40 border-b transition-all duration-300`}>
         <div className="container mx-auto px-4 py-2 flex justify-between items-center">
           <div className="flex items-center space-x-4">
@@ -139,16 +173,33 @@ export default function ProjectWorkspacePage() {
           </div>
         </div>
       </header>
+      )}
+
       <WorkspaceSidebar 
         nodeId={nodeId} 
         rootProjectId={rootProject?.id ?? null} 
         isLoading={isLoading}
+        isMobile={isMobile}
+        isMobileSidebarOpen={isMobileSidebarOpen}
+        onClose={() => setIsMobileSidebarOpen(false)}
       />
-      <div className="flex flex-1 overflow-hidden pt-10">
-        <div className={`flex-1 bg-gray-50 overflow-auto ${isSidebarHovered ? 'ml-64' : 'ml-16'} transition-all duration-300`}>
-          <WorkspaceEditor nodeId={nodeId} rootProjectId={rootProject?.id ?? null} />
+      <div className="flex flex-1 overflow-hidden pt-10 relative z-0">
+        <div className={`
+          flex-1 bg-gray-50 overflow-auto transition-all duration-300
+          ${isMobile ? 'ml-0' : isSidebarHovered ? 'ml-64' : 'ml-16'}
+        `}>
+          <WorkspaceEditor 
+          nodeId={nodeId} 
+          rootProjectId={rootProject?.id ?? null} 
+          isMobile={isMobile} 
+          />
         </div>
-        <WorkspaceSidebarRight />
+
+        {!isMobile && (
+          <div className="sm:block hidden">
+            <WorkspaceSidebarRight />
+          </div>
+        )}
       </div>
     </div>
   );

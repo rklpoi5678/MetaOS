@@ -11,9 +11,10 @@ import ProjectDashboard from "@/components/dashboard/projecct-workspace/ProjectD
 interface WorkspaceEditorProps {
   nodeId: string;
   rootProjectId: string | null;
+  isMobile: boolean;
 }
 
-const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ nodeId, rootProjectId }) => {
+const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ nodeId, rootProjectId, isMobile }) => {
   const { 
     setCurrentNode, 
     updateNode,
@@ -116,19 +117,23 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ nodeId, rootProjectId
     return <p>노드 ID를 불러오는 중...</p>;
   }
 
+
   return (
     <motion.div 
       ref={ref}
       initial="hidden"
       animate={controls}
       variants={containerVariants}
-      className="p-4 space-y-6"
+      className={`relative z-0 p-4 space-y-6 ${isMobile ? 'pt-2' : 'p-4'}`}
     >
+      
       <motion.div variants={itemVariants}>
         {activeTab === 'info' && rootProjectId ? (
             <ProjectDashboard nodeId={rootProjectId} />
         ) : ( 
-          <TiptapEditor nodeId={nodeId} />
+          <div className={`${isMobile ? 'min-h-[60vh] max-h-[calc(100vh-180px)] overflow-y-auto bg-white' : ''}`}>
+            <TiptapEditor nodeId={nodeId} />
+          </div>
         )}
       </motion.div>
     </motion.div>
