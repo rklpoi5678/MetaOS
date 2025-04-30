@@ -1,8 +1,10 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { User } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabaseClient';
+// 필요한 라이브러리와 타입 임포트
+import { create } from 'zustand'; // 전역 상태 관리를 위한 Zustand
+import { persist } from 'zustand/middleware'; // 상태 영속성을 위한 미들웨어
+import { User } from '@supabase/supabase-js'; // Supabase 사용자 타입
+import { supabase } from '@/lib/supabaseClient'; // Supabase 클라이언트
 
+// 노드(문서/프로젝트) 기본 구조 정의
 export interface Node {
   id: string;
   title: string;
@@ -13,22 +15,25 @@ export interface Node {
   updated_at: string;
 }
 
+// 프로젝트 상태 인터페이스
 interface ProjectState {
-  activeMode: 'normal' | 'focus';
-  emotionState: 'focus_needed' | 'focused';
-  currentStep: number;
-  totalSteps: number;
+  activeMode: 'normal' | 'focus'; // 현재 모드 (일반/집중)
+  emotionState: 'focus_needed' | 'focused'; // 감정 상태
+  currentStep: number; // 현재 단계
+  totalSteps: number; // 전체 단계 수
 }
 
+// 에디터 상태 인터페이스
 interface EditorState {
-  editorContent: string;
-  activeStructure: 'mindmap' | 'flowchart';
-  selectedTool: 'editor' | 'keyword';
-  isPreviewOpen: boolean;
-  isSaving: boolean;
-  draggedItem: string | null;
+  editorContent: string; // 에디터 내용
+  activeStructure: 'mindmap' | 'flowchart'; // 활성화된 구조
+  selectedTool: 'editor' | 'keyword'; // 선택된 도구
+  isPreviewOpen: boolean; // 미리보기 열림 여부
+  isSaving: boolean; // 저장 중 여부
+  draggedItem: string | null; // 드래그 중인 아이템
 }
 
+// AI 프로젝트 노드 구조
 interface AiProjectNode {
   type: 'folder' | 'file';
   title: string;
@@ -36,6 +41,7 @@ interface AiProjectNode {
   children?: AiProjectNode[];
 }
 
+// AI 응답 구조
 interface AiProjectResponse {
   core: string;
   structure: string[];
@@ -43,6 +49,7 @@ interface AiProjectResponse {
   tree?: AiProjectNode[];
 }
 
+// 새 프로젝트 상태 인터페이스
 interface NewProjectState {
   projectName: string;
   selectedTemplate: string;
@@ -51,6 +58,7 @@ interface NewProjectState {
   error: string | null;
 }
 
+// AI 프로젝트 상태 인터페이스
 interface AiProjectState {
   userInput: string;
   selectedProject: string;
@@ -63,6 +71,7 @@ interface AiProjectState {
   error: string | null;
 }
 
+// 대시보드 상태 인터페이스
 interface DashboardState {
   currentNode: Node | null;
   userName: string;
@@ -71,7 +80,9 @@ interface DashboardState {
   searchQuery: string;
 }
 
+// 전체 앱 상태 및 액션 인터페이스
 interface AppState {
+  // 상태 속성들
   user: User | null;
   nodes: Node[];
   currentNode: Node | null;
@@ -83,6 +94,8 @@ interface AppState {
   isSidebarHovered: boolean;
   isAdmin: boolean;
   activeTab: 'info' | 'document' | 'project';
+
+  // 액션 메서드들
   setUser: (u: User | null) => void;
   setNodes: (nodes: Node[]) => void;
   setCurrentNode: (node: Node | null) => void;
@@ -102,7 +115,7 @@ interface AppState {
   setProjectName: (name: string) => void;
   setSelectedTemplate: (template: string) => void;
   setSelectedTags: (tags: string[]) => void;
-  toggleTag: (tag: string) => void;
+  toggleProjectTag: (tag: string) => void;
   setIsLoading: (isLoading: boolean) => void;
   setError: (error: string | null) => void;
   resetNewProjectState: () => void;
@@ -112,10 +125,10 @@ interface AppState {
   setAiProjectName: (name: string) => void;
   setAiSelectedTemplate: (template: string) => void;
   setAiSelectedTags: (tags: string[]) => void;
-  toggleAiTag: (tag: string) => void;
+  toggleAiProjectTag: (tag: string) => void;
   setAiIsLoading: (isLoading: boolean) => void;
   setAiResponse: (response: AiProjectResponse | null) => void;
-  setAiError: (error: string | null) => void;
+  setAiProjectError: (error: string | null) => void;
   resetAiProjectState: () => void;
   setUserName: (name: string) => void;
   setDashboardIsLoading: (isLoading: boolean) => void;
@@ -128,9 +141,11 @@ interface AppState {
   handleLogout: () => Promise<void>;
 }
 
+// Zustand 스토어 생성
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
+      // 초기 상태 설정
       user: null,
       nodes: [],
       currentNode: null,
@@ -173,9 +188,12 @@ export const useAppStore = create<AppState>()(
         searchQuery: '',
         currentNode: null
       },
+
       isSidebarHovered: false,
       isAdmin: false,
       activeTab: 'info',
+
+      // 상태 업데이트 액션들
       setUser: (u) => set({ user: u }),
       setNodes: (nodes) => set({ nodes }),
       setCurrentNode: (node) => set((state) => ({
@@ -237,7 +255,7 @@ export const useAppStore = create<AppState>()(
       setSelectedTags: (tags) => set((state) => ({
         newProjectState: { ...state.newProjectState, selectedTags: tags }
       })),
-      toggleTag: (tag) => set((state) => ({
+      toggleProjectTag: (tag) => set((state) => ({
         newProjectState: {
           ...state.newProjectState,
           selectedTags: state.newProjectState.selectedTags.includes(tag)
@@ -278,7 +296,7 @@ export const useAppStore = create<AppState>()(
       setAiSelectedTags: (tags) => set((state) => ({
         aiProjectState: { ...state.aiProjectState, selectedTags: tags }
       })),
-      toggleAiTag: (tag) => set((state) => ({
+      toggleAiProjectTag: (tag) => set((state) => ({
         aiProjectState: {
           ...state.aiProjectState,
           selectedTags: state.aiProjectState.selectedTags.includes(tag)
@@ -292,7 +310,7 @@ export const useAppStore = create<AppState>()(
       setAiResponse: (response) => set((state) => ({
         aiProjectState: { ...state.aiProjectState, aiResponse: response }
       })),
-      setAiError: (error) => set((state) => ({
+      setAiProjectError: (error) => set((state) => ({
         aiProjectState: { ...state.aiProjectState, error }
       })),
       resetAiProjectState: () => set(() => ({
@@ -329,6 +347,14 @@ export const useAppStore = create<AppState>()(
           currentNode: null
         }
       })),
+      resetAppState: () => 
+        set(() => ({
+        user: null,
+        nodes: [],
+        currentNode: null,
+        projectState: { activeMode: 'normal', emotionState: 'focus_needed', currentStep: 0, totalSteps: 5 },
+        editorState: { editorContent: '', activeStructure: 'mindmap', selectedTool: 'editor', isPreviewOpen: false, isSaving: false, draggedItem: null },
+      })),
       setSidebarHovered: (hovered) => set({ isSidebarHovered: hovered }),
       setAdmin: (isAdmin) => set({ isAdmin }),
       setActiveTab: (tab) => set({ activeTab: tab }),
@@ -344,8 +370,9 @@ export const useAppStore = create<AppState>()(
       },
     }),
     {
-      name: 'app-storage',
-      partialize: (state) => ({ 
+      // 영속성 설정
+      name: 'app-storage', // 로컬 스토리지 키 이름
+      partialize: (state) => ({ // 저장할 상태 선택
         user: state.user, 
         nodes: state.nodes,
         currentNode: state.currentNode,

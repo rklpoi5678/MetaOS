@@ -242,7 +242,7 @@ export default function HomePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredProjects.map((node) => (
                   <Link
-                    href={`/dashboard/project-workspace/${node.id}`}
+                    href={`/dashboard/project-workspace/${node.id}?rootProjectId=${node.id}`}
                     key={node.id}
                   >
                     <ProjectCard

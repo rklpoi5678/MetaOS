@@ -127,7 +127,7 @@ const WorkspaceEditor: React.FC<WorkspaceEditorProps> = ({ nodeId, rootProjectId
       <motion.div variants={itemVariants}>
         {activeTab === 'info' && rootProjectId ? (
             <ProjectDashboard nodeId={rootProjectId} />
-          ) : ( 
+        ) : ( 
           <TiptapEditor nodeId={nodeId} />
         )}
       </motion.div>

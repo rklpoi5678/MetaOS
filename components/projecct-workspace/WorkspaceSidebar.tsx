@@ -4,13 +4,16 @@ import React, { useEffect, useState } from "react";
 import { useAppStore } from "@/src/store/appStore";
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 interface WorkspaceSidebarProps {
   nodeId: string;
   rootProjectId: string | null;
+  isLoading?: boolean;
 }
 
-function WorkspaceSidebar({ nodeId, rootProjectId }: WorkspaceSidebarProps) {
+function WorkspaceSidebar({ nodeId, rootProjectId, isLoading = false }: WorkspaceSidebarProps) {
+    const searchParams = useSearchParams();
     const { 
       nodes, 
       setNodes, 
@@ -21,24 +24,40 @@ function WorkspaceSidebar({ nodeId, rootProjectId }: WorkspaceSidebarProps) {
       setCurrentNode
     } = useAppStore();
     const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
+    const [mounted, setMounted] = useState(false);
+    
+    // 클라이언트 사이드에서만 실행되도록 수정
+    useEffect(() => {
+      setMounted(true);
+    }, []);
+
+    // URL에서 rootProjectId 가져오기
+    const urlRootProjectId = mounted ? searchParams?.get('rootProjectId') : null;
     
     useEffect(() => {
-      if (!nodeId) return;
-      (async () => {
-        const { data, error } = await supabase
-          .from("nodes")
-          .select("*")
-          .eq("user_id", (await supabase.auth.getUser()).data.user?.id)
+      if (!mounted || !nodeId) return;
 
-        if (error) {
-          console.error("프로젝트 노드 조회 오류:", error);
-          return;
+      const fetchNodes = async () => {
+        try {
+          const { data, error } = await supabase
+            .from("nodes")
+            .select("*")
+            .eq("user_id", (await supabase.auth.getUser()).data.user?.id);
+
+          if (error) {
+            console.error("프로젝트 노드 조회 오류:", error);
+            return;
+          }
+
+          setNodes(data);
+          setCurrentNode(data.find(node => node.id === nodeId));
+        } catch (error) {
+          console.error('노드 데이터 로드 중 오류:', error);
         }
+      };
 
-        setCurrentNode(data.find(node => node.id === nodeId));
-        setNodes(data);
-      })();
-    }, [nodeId, setNodes, setCurrentNode]);
+      fetchNodes();
+    }, [nodeId, rootProjectId, urlRootProjectId, setNodes, setCurrentNode, mounted]);
 
     const toggleFolder = (folderId: string) => {
       setExpandedFolders(prev => {
@@ -51,6 +70,28 @@ function WorkspaceSidebar({ nodeId, rootProjectId }: WorkspaceSidebarProps) {
         return newSet;
       });
     };
+
+    if (!mounted) {
+      return null;
+    }
+
+    if (isLoading) {
+      return (
+        <aside className="w-64 bg-white border-r p-4">
+          <p className="text-gray-400">문서 구조를 불러오는 중...</p>
+        </aside>
+      );
+    }
+
+    const effectiveRootProjectId = urlRootProjectId || rootProjectId;
+
+    if (!effectiveRootProjectId) {
+      return (
+        <aside className="w-64 bg-white border-r p-4">
+          <p className="text-gray-400">프로젝트를 선택해주세요.</p>
+        </aside>
+      );
+    }
 
     return (
       <aside 
@@ -112,11 +153,10 @@ function WorkspaceSidebar({ nodeId, rootProjectId }: WorkspaceSidebarProps) {
             <div className="flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-600 text-sm">
               <span>📑</span>
               <span>문서 구조</span>
-
             </div>
             <div className="pl-3 space-y-1 mt-1">
               {nodes
-                .filter(node => node.parent_id === rootProjectId)
+                .filter(node => node.parent_id === effectiveRootProjectId)
                 .map(node => {
                   const isFolder = node.type === 'folder';
                   const isExpanded = expandedFolders.has(node.id);
@@ -130,13 +170,10 @@ function WorkspaceSidebar({ nodeId, rootProjectId }: WorkspaceSidebarProps) {
                         }`}
                       >
                         <span>{isFolder ? (isExpanded ? '📂' : '📁') : '📄'}</span>
-                        {isFolder ? (
-                          <span className="truncate">{node.title}</span>
-                        ) : (
-                          <Link href={`/dashboard/project-workspace/${node.id}`} className="w-full">
-                            <span className="truncate">{node.title}</span>
-                          </Link>
-                        )}
+                        {isFolder 
+                        ? <span className="truncate">{node.title}</span>
+                        : <Link href={`/dashboard/project-workspace/${node.id}?rootProjectId=${effectiveRootProjectId}`}>{node.title}</Link>
+                        }
                       </div>
 
                       {isFolder && isExpanded && (
@@ -146,12 +183,12 @@ function WorkspaceSidebar({ nodeId, rootProjectId }: WorkspaceSidebarProps) {
                             .map(child => (
                               <Link 
                                 key={child.id} 
-                                href={`/dashboard/project-workspace/${child.id}`} 
+                                href={`/dashboard/project-workspace/${child.id}?rootProjectId=${effectiveRootProjectId}`} 
+                                onClick={() => setActiveTab('document')}
                                 className="w-full"
                               >
                                 <div 
                                   className="flex items-center space-x-2 py-1.5 px-3 rounded-lg hover:bg-gray-100 text-gray-600 text-xs"
-                                  onClick={() => setActiveTab('document')}
                                 >
                                   <span>📄</span>
                                   <span className="truncate">{child.title}</span>

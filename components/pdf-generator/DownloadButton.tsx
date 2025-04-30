@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { usePdfStore } from '@/src/store/pdfStore';
 import { useRef, useState } from 'react';
