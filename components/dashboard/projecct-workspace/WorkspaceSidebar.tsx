@@ -5,6 +5,7 @@ import { useAppStore } from "@/src/store/appStore";
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import Activity from "@/app/dashboard/project-workspace/AcivityItem/activity";
 
 interface WorkspaceSidebarProps {
   nodeId: string;
@@ -140,10 +141,12 @@ function WorkspaceSidebar({ nodeId, rootProjectId, isLoading = false, isMobile =
 
           {/* 작업 기록 */}
           <div>
+            <Link href="/dashboard/project-workspace/activity">
             <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
               <span>📝</span>
               <span>작업 기록</span>
             </div>
+            </Link>
           </div>
 
           {/* 협업 */}
@@ -253,10 +256,13 @@ function WorkspaceSidebar({ nodeId, rootProjectId, isLoading = false, isMobile =
 
           {/* 작업 기록 */}
           <div>
+            <Link href="/dashboard/project-workspace/activity">
             <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
               <span>📝</span>
               {isSidebarHovered && <span>작업 기록</span>}
+              <Activity />
             </div>
+            </Link>
           </div>
 
           {/* 협업 */}

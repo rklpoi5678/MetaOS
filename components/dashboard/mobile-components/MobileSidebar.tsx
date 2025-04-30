@@ -3,6 +3,7 @@
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import RecentWork from "@/app/dashboard/recent-work/page";
 
 type Node = {
     id: string;
@@ -71,10 +72,13 @@ export default function MobileSidebar({
             )}
 
             <div>
+              <Link href="/dashboard/recent-work" className="w-full">
               <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
                 <span>🕒</span>
                 <span>최근 작업</span>
+                <RecentWork />
               </div>
+              </Link>
             </div>
 
             <div>
