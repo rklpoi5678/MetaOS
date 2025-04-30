@@ -1,7 +1,7 @@
 // app/dashboard/page.tsx
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ProjectCard } from '@/components/ui/card';
@@ -10,6 +10,8 @@ import Link from "next/link";
 import { useAppStore } from '@/src/store/appStore';
 import RoutineDashboard from "@/components/research-lab/flow/RoutineDashboard";
 import OutputEngine from "@/components/research-lab/output/OutputEngine";
+import MobileNavigation from "@/components/dashboard/mobile-components/MobileNavigation";
+import MobileSidebar from "@/components/dashboard/mobile-components/MobileSidebar";
 
 export default function HomePage() {
   const router = useRouter();
@@ -25,7 +27,8 @@ export default function HomePage() {
     isAdmin
   } = useAppStore();
 
-  const [activeTab] = React.useState('projects'); // 초기값을 'projects'로 설정
+  const [activeTab] = React.useState('projects');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     async function init() {
@@ -33,7 +36,6 @@ export default function HomePage() {
       setDashboardError(null);
 
       try {
-        // 1) supabase auth에서 유저 가져오기
         const {
           data: { user: authUser },
           error: userError,
@@ -46,7 +48,6 @@ export default function HomePage() {
           return;
         }
 
-        // 스토어에 저장
         setUser(authUser);
 
         const { data: profile, error: profileError } = await supabase
@@ -55,7 +56,6 @@ export default function HomePage() {
           .eq('id', authUser.id)
           .single();
 
-        // admin 권한 체크 및 상태 저장
         const isAdmin = profile?.role === 'admin';
         useAppStore.setState({ isAdmin });
 
@@ -63,7 +63,6 @@ export default function HomePage() {
           setUserName(profile.name);
         }
 
-        // 2) 프로젝트 불러오기
         const { data: nodesData, error: nodesError } = await supabase
           .from('nodes')
           .select('*')
@@ -88,22 +87,22 @@ export default function HomePage() {
   if (dashboardState.isLoading) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="text-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-        <h2 className="text-xl font-semibold text-gray-700">데이터를 불러오는 중</h2>
-        <p className="text-gray-500 mt-2">잠시만 기다려주세요...</p>
+        <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-700">데이터를 불러오는 중</h2>
+        <p className="text-sm sm:text-base text-gray-500 mt-2">잠시만 기다려주세요...</p>
       </div>
     </div>
   );
 
   if (dashboardState.error) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="p-8 bg-white rounded-lg shadow-lg max-w-md w-full">
-        <div className="text-red-500 text-5xl mb-4">⚠️</div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">오류가 발생했습니다</h2>
-        <p className="text-gray-600 mb-6">{dashboardState.error}</p>
+      <div className="p-4 sm:p-8 bg-white rounded-lg shadow-lg max-w-md w-full mx-4">
+        <div className="text-red-500 text-4xl sm:text-5xl mb-4">⚠️</div>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4">오류가 발생했습니다</h2>
+        <p className="text-sm sm:text-base text-gray-600 mb-6">{dashboardState.error}</p>
         <button 
           onClick={() => window.location.reload()}
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors"
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors text-sm sm:text-base"
         >
           다시 시도하기
         </button>
@@ -118,7 +117,11 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="fixed left-64 top-0 right-0 bg-white z-40 border-b">
+      {/* 모바일 헤더 */}
+      <MobileNavigation isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+
+      {/* 데스크톱 헤더 */}
+      <header className="hidden sm:block fixed left-64 top-0 right-0 bg-white z-40 border-b">
         <div className="container mx-auto px-4 py-2 flex justify-end">
           <div className="flex items-center space-x-4">
             <span className="text-gray-600 text-sm">
@@ -141,8 +144,12 @@ export default function HomePage() {
         </div>
       </header>
 
-      <div className="flex flex-1 overflow-hidden pt-10">
-        <aside className="fixed left-0 top-0 h-screen w-64 bg-white border-r z-50">
+      <div className="flex flex-1 overflow-hidden pt-12 sm:pt-10">
+        {/* 모바일 사이드바 */}
+        <MobileSidebar nodes={nodes} dashboardState={dashboardState} isAdmin={isAdmin} isSidebarOpen={isSidebarOpen}/>
+
+        {/* 데스크톱 사이드바 */}
+        <aside className="hidden sm:block fixed left-0 top-0 h-screen w-64 bg-white border-r z-50">
           <div className="p-4 border-b">
             <Link href="/" className="transform hover:scale-105 transition-transform duration-200 pl-3">
               <span className="font-bold text-2xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -151,7 +158,7 @@ export default function HomePage() {
             </Link>
           </div>
           <nav className="p-4 space-y-4 overflow-y-auto h-[calc(100vh-4rem)]">
-            {/* 새 프로젝트 만들기 */}
+            {/* 데스크톱 사이드바 내용은 기존과 동일 */}
             <div>
               <Link href="/dashboard/project" className="w-full">
                 <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
@@ -211,35 +218,35 @@ export default function HomePage() {
           </nav>
         </aside>
 
-        <main className="flex-1 bg-gray-50 overflow-auto ml-64 pt-10">
-          <div className="max-w-7xl mx-auto py-6 px-4">
-            <div className="mb-8">
-              <div className="flex justify-between items-center">
-                <h2 className="text-3xl font-bold text-gray-800">
+        <main className="flex-1 bg-gray-50 overflow-auto sm:ml-64 pt-12 sm:pt-10">
+          <div className="max-w-7xl mx-auto py-4 sm:py-6 px-4">
+            <div className="mb-6 sm:mb-8">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">
                   {activeTab === 'workflow' ? '워크플로우' : 
                    activeTab === 'infostack' ? '정보 저장소' :
                    activeTab === 'output' ? '결과물' : '프로젝트'}
                 </h2>
-                <div className="flex space-x-4">
+                <div className="w-full sm:w-auto">
                   <input
                     type="search"
                     placeholder="프로젝트 검색..."
                     value={dashboardState.searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700"
+                    className="w-full sm:w-64 px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700 text-sm sm:text-base"
                   />
                 </div>
               </div>
             </div>
 
             {activeTab === 'workflow' ? (
-              <div className="bg-white rounded-xl shadow-lg p-6">
+              <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
                 <RoutineDashboard />
               </div>
             ) : activeTab === 'output' ? (
               <OutputEngine />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filteredProjects.map((node) => (
                   <Link
                     href={`/dashboard/project-workspace/${node.id}?rootProjectId=${node.id}`}

@@ -2,9 +2,9 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import WorkspaceSidebar from "@/components/projecct-workspace/WorkspaceSidebar"
+import WorkspaceSidebar from "@/components/dashboard/projecct-workspace/WorkspaceSidebar"
 import WorkspaceEditor from "@/app/dashboard/project-workspace/components/WorkspaceEditor"
-import WorkspaceSidebarRight from "@/components/projecct-workspace/WorkspaceSidebarRight";
+import WorkspaceSidebarRight from "@/components/dashboard/projecct-workspace/WorkspaceSidebarRight";
 import { useParams, useRouter } from "next/navigation";
 import { useAppStore, Node } from "@/src/store/appStore";
 import { supabase } from "@/lib/supabaseClient";

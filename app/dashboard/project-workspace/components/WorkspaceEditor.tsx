@@ -5,8 +5,8 @@ import { supabase } from "@/lib/supabaseClient";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useAppStore } from "@/src/store/appStore";
-import TiptapEditor from "@/components/projecct-workspace/TiptapEditor";
-import ProjectDashboard from "@/components/projecct-workspace/ProjectDashboard";
+import TiptapEditor from "@/components/dashboard/projecct-workspace/TiptapEditor";
+import ProjectDashboard from "@/components/dashboard/projecct-workspace/ProjectDashboard";
 
 interface WorkspaceEditorProps {
   nodeId: string;
