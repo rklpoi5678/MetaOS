@@ -21,7 +21,7 @@ export default function ProjectDashboard({ nodeId }: ProjectDashboardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="space-y-6"
+      className="space-y-6 z-0"
     >
       {/* 프로젝트 정보 대시보드 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -10,7 +10,7 @@ export default function CTASection() {
         <h2 className="text-3xl font-bold mb-8">지금 바로 시작하세요</h2>
         <p className="text-xl mb-8">AI Agent와 함께 당신의 프로젝트를 시작하세요</p>
         <div className="flex justify-center gap-4">
-          <Link href="/signup">
+          <Link href="/auth/signup">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -19,7 +19,7 @@ export default function CTASection() {
               무료로 시작하기
             </motion.button>
           </Link>
-          <Link href="/agent-demo">
+          <Link href="/info/agent-demo">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

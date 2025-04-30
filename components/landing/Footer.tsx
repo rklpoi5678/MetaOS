@@ -28,16 +28,16 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">회사</h4>
             <ul className="space-y-2">
-              <li><Link href="/about" className="text-gray-400 hover:text-white">소개</Link></li>
-              <li><Link href="/blog" className="text-gray-400 hover:text-white">블로그</Link></li>
-              <li><Link href="/contact" className="text-gray-400 hover:text-white">문의</Link></li>
+              <li><Link href="/info/about" className="text-gray-400 hover:text-white">소개</Link></li>
+              <li><Link href="/info/blog" className="text-gray-400 hover:text-white">블로그</Link></li>
+              <li><Link href="/info/contact" className="text-gray-400 hover:text-white">문의</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-4">법적</h4>
             <ul className="space-y-2">
-              <li><Link href="/privacy" className="text-gray-400 hover:text-white">개인정보처리방침</Link></li>
-              <li><Link href="/terms" className="text-gray-400 hover:text-white">이용약관</Link></li>
+              <li><Link href="/legal/privacy" className="text-gray-400 hover:text-white">개인정보처리방침</Link></li>
+              <li><Link href="/legal/terms" className="text-gray-400 hover:text-white">이용약관</Link></li>
             </ul>
           </div>
         </div>

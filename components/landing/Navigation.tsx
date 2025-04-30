@@ -26,13 +26,13 @@ export default function Navigation() {
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors">
+            <Link href="/info/about" className="text-gray-600 hover:text-blue-600 transition-colors">
               소개
             </Link>
-            <Link href="/blog" className="text-gray-600 hover:text-blue-600 transition-colors">
+            <Link href="/info/blog" className="text-gray-600 hover:text-blue-600 transition-colors">
               블로그
             </Link>
-            <Link href="/pdf-generator" className="text-gray-600 hover:text-blue-600 transition-colors">
+            <Link href="/tools/pdf-generator" className="text-gray-600 hover:text-blue-600 transition-colors">
               PDF 생성기
             </Link>
           </div>
@@ -49,13 +49,13 @@ export default function Navigation() {
           {isMobileMenuOpen && (
             <div className="md:hidden absolute top-16 left-0 right-0 bg-white border-t">
               <div className="container mx-auto px-4 py-2 space-y-2">
-                <Link href="/about" className="block py-2 text-gray-600 hover:text-blue-600">
+                <Link href="/info/about" className="block py-2 text-gray-600 hover:text-blue-600">
                   About
                 </Link>
-                <Link href="/blog" className="block py-2 text-gray-600 hover:text-blue-600">
+                <Link href="/info/blog" className="block py-2 text-gray-600 hover:text-blue-600">
                   Blog
                 </Link>
-                <Link href="/pdf-generator" className="block py-2 text-gray-600 hover:text-blue-600">
+                <Link href="/tools/pdf-generator" className="block py-2 text-gray-600 hover:text-blue-600">
                   PDF 생성기
                 </Link>
                 {user ? (
@@ -72,11 +72,11 @@ export default function Navigation() {
                   </>
                 ) : (
                   <>
-                    <Link href="/signin" className="block py-2 text-gray-600 hover:text-blue-600">
+                    <Link href="/auth/signin" className="block py-2 text-gray-600 hover:text-blue-600">
                       로그인
                     </Link>
                     <Link
-                      href="/signup"
+                      href="/auth/signup"
                       className="block py-2 text-blue-600 hover:text-blue-700"
                     >
                       시작하기

@@ -104,7 +104,7 @@ function WorkspaceSidebar({ nodeId, rootProjectId, isLoading = false, isMobile =
         {/* 모바일 사이드바 오버레이 */}
         {isMobileSidebarOpen && (
           <div 
-            className="fixed inset-0 z-40 bg-black bg-opacity-30 sm:hidden"
+            className="fixed inset-0 z-0 bg-black bg-opacity-30 sm:hidden"
             onClick={onClose}
           />
         )}
