@@ -6,6 +6,7 @@ import { useState, useRef, useCallback, type DragEvent, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { UploadCloud, File as FileIcon, X, CheckCircle } from "lucide-react"
+import Image from "next/image"
 
 type UploadStatus = "idle" | "dragging" | "uploading" | "success" | "error"
 
@@ -102,9 +103,13 @@ export default function FileUpload({
     return () => setPreviewUrl(null)
   }, [file])
 
-  const handleFileValidation = (selectedFile: File): boolean => {
+  const handleFileValidation = useCallback((selectedFile: File): boolean => {
     setError(null) // Reset error before validation
-    if (acceptedFileTypes && acceptedFileTypes.length > 0 && !acceptedFileTypes.includes(selectedFile.type)) {
+    if (
+      acceptedFileTypes &&
+      acceptedFileTypes.length > 0 && 
+      !acceptedFileTypes.includes(selectedFile.type)
+    ) {
       const err = `Invalid file type. Accepted: ${acceptedFileTypes
         .map((t) => t.split("/")[1])
         .join(", ")
@@ -122,9 +127,39 @@ export default function FileUpload({
       return false
     }
     return true
-  }
+  }, [acceptedFileTypes, maxFileSize, onUploadError])
 
-  const handleFileSelect = (selectedFile: File | null) => {
+  const simulateUpload = useCallback((uploadingFile: File) => {
+    let currentProgress = 0
+    const interval = setInterval(() => {
+      currentProgress += Math.random() * 10 + 10 // Simulate progress increments
+      if (currentProgress >= 100) {
+        clearInterval(interval)
+        setProgress(100)
+        setStatus("success")
+        if (onUploadSuccess) {
+          onUploadSuccess(uploadingFile)
+        }
+        // Optional: Reset after a delay
+        //  setTimeout(() => {
+        //     resetState();
+        // }, 3000);
+      } else {
+        // Check if still in uploading state before updating progress
+        setStatus((prevStatus) => {
+          if (prevStatus === "uploading") {
+            setProgress(currentProgress)
+            return "uploading"
+          }
+          // If status changed (e.g., user clicked reset), stop the simulation
+          clearInterval(interval)
+          return prevStatus
+        })
+      }
+    }, 200) // Adjust interval for simulation speed
+  }, [onUploadSuccess])
+
+  const handleFileSelect = useCallback((selectedFile: File | null) => {
     if (!selectedFile) return
 
     if (!handleFileValidation(selectedFile)) {
@@ -139,7 +174,7 @@ export default function FileUpload({
     setProgress(0)
     // Simulate upload
     simulateUpload(selectedFile)
-  }
+  }, [handleFileValidation, simulateUpload])
 
   const handleDragOver = useCallback(
     (e: DragEvent<HTMLDivElement>) => {
@@ -190,35 +225,7 @@ export default function FileUpload({
     fileInputRef.current?.click()
   }
 
-  const simulateUpload = (uploadingFile: File) => {
-    let currentProgress = 0
-    const interval = setInterval(() => {
-      currentProgress += Math.random() * 10 + 10 // Simulate progress increments
-      if (currentProgress >= 100) {
-        clearInterval(interval)
-        setProgress(100)
-        setStatus("success")
-        if (onUploadSuccess) {
-          onUploadSuccess(uploadingFile)
-        }
-        // Optional: Reset after a delay
-        //  setTimeout(() => {
-        //     resetState();
-        // }, 3000);
-      } else {
-        // Check if still in uploading state before updating progress
-        setStatus((prevStatus) => {
-          if (prevStatus === "uploading") {
-            setProgress(currentProgress)
-            return "uploading"
-          }
-          // If status changed (e.g., user clicked reset), stop the simulation
-          clearInterval(interval)
-          return prevStatus
-        })
-      }
-    }, 200) // Adjust interval for simulation speed
-  }
+
 
   const resetState = () => {
     setFile(null)
@@ -302,7 +309,7 @@ export default function FileUpload({
                         damping: 20,
                       }}
                     >
-                      <img src={previewUrl} alt={`Preview of ${file.name}`} className="w-full h-full object-cover" />
+                      <Image src={previewUrl} alt={`Preview of ${file.name}`} className="w-full h-full object-cover" />
                     </motion.div>
                   )}
                   {!previewUrl && <FileIcon className="w-16 h-16 mb-4 text-violet-500" aria-hidden="true" />}

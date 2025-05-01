@@ -25,6 +25,7 @@ interface ProjectState {
 
 // 에디터 상태 인터페이스
 interface EditorState {
+  __init: boolean;
   editorContent: string; // 에디터 내용
   activeStructure: 'mindmap' | 'flowchart'; // 활성화된 구조
   selectedTool: 'editor' | 'keyword'; // 선택된 도구
@@ -162,6 +163,7 @@ export const useAppStore = create<AppState>()(
         isPreviewOpen: false,
         isSaving: false,
         draggedItem: null,
+        __init: false,
       },
       newProjectState: {
         projectName: '',
@@ -232,7 +234,7 @@ export const useAppStore = create<AppState>()(
         editorState: { ...state.editorState, activeStructure: structure }
       })),
       setEditorContent: (content) => set((state) => ({
-        editorState: { ...state.editorState, editorContent: content }
+        editorState: { ...state.editorState, editorContent: content, __init: true }
       })),
       setIsPreviewOpen: (isOpen) => set((state) => ({
         editorState: { ...state.editorState, isPreviewOpen: isOpen }
@@ -353,7 +355,7 @@ export const useAppStore = create<AppState>()(
         nodes: [],
         currentNode: null,
         projectState: { activeMode: 'normal', emotionState: 'focus_needed', currentStep: 0, totalSteps: 5 },
-        editorState: { editorContent: '', activeStructure: 'mindmap', selectedTool: 'editor', isPreviewOpen: false, isSaving: false, draggedItem: null },
+        editorState: { editorContent: '', activeStructure: 'mindmap', selectedTool: 'editor', isPreviewOpen: false, isSaving: false, draggedItem: null, __init: true },
       })),
       setSidebarHovered: (hovered) => set({ isSidebarHovered: hovered }),
       setAdmin: (isAdmin) => set({ isAdmin }),

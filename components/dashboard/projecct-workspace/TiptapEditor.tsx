@@ -14,8 +14,8 @@ import {
   Heading2, 
   Heading3,
   Quote,
-  Code,
   Undo,
+  Code,
   Redo,
   Link,
   Image
@@ -62,9 +62,7 @@ export default function TiptapEditor({ nodeId }: TiptapEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3],
-        },
+        heading: { levels: [1, 2, 3] },
       }),
       LinkExtension.configure({
         openOnClick: false,
@@ -76,13 +74,17 @@ export default function TiptapEditor({ nodeId }: TiptapEditorProps) {
       }),
     ],
     content: editorState.editorContent,
-    onUpdate: ({ editor }) => {
-      setEditorContent(editor.getHTML());
-    },
     editorProps: {
       attributes: {
         class: 'focus:outline-none',
-      }
+      },
+      handleDOMEvents: {
+        keydown: (_, event) => {
+
+          if (event.key === ' ') return false;
+          return false;
+        },
+      },
     },
     immediatelyRender: false,
   })
@@ -90,12 +92,14 @@ export default function TiptapEditor({ nodeId }: TiptapEditorProps) {
 
   const handleSave = async() => {
     if (!editor) return; //에디터 로드 안되면 막기
-    const content = editor.getHTML(); // 현재 작성된 HTML가져오기
+    const rawContent = editor.getHTML();
+    
+    const safeContent = rawContent.replace(/ {2,}/g, match => '&nbsp;'.repeat(match.length).trim()); // 현재 작성된 HTML가져오기
 
     const {error} = await supabase
       .from('nodes')
       .update({
-        content: content,
+        content: safeContent,
         updated_at: new Date().toISOString(),
       })
       .eq('id', nodeId)
@@ -105,16 +109,23 @@ export default function TiptapEditor({ nodeId }: TiptapEditorProps) {
       alert('저장 중 오류가 발생했습니다.');
     } else {
       console.log('저장 성공');
+      setEditorContent(safeContent);
       alert('저장되었습니다.');
     }
 
   }
 
   useEffect(() => {
-    if (editor && editorState.editorContent !== undefined) {
+    if (editor && editorState.editorContent && editorState.__init !== true) {
       editor.commands.setContent(editorState.editorContent);
+      useAppStore.setState({
+        editorState: {
+          ...editorState,
+          __init: true,
+        },
+      });
     }
-  }, [nodeId, editorState.editorContent, editor]);
+  }, [nodeId, editorState, editor]);
 
   if (!editor) return <div>에디터 초기화 중...</div>;
 
@@ -243,7 +254,10 @@ export default function TiptapEditor({ nodeId }: TiptapEditorProps) {
       {/* 에디터 */}
       <EditorContent 
         editor={editor} 
-        className="border rounded-lg p-4 bg-white min-h-[500px] shadow-sm hover:shadow-md transition-shadow prose max-w-none text-gray-800" 
+        className="border rounded-lg p-4 bg-white min-h-[500px] shadow-sm hover:shadow-md transition-shadow prose max-w-none text-gray-800"
+        style={{
+          whiteSpace: 'pre-wrap',
+        }}
       />
     </motion.div>
     <button
