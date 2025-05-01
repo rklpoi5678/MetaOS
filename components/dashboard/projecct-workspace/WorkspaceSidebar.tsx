@@ -5,7 +5,6 @@ import { useAppStore } from "@/src/store/appStore";
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import Activity from "@/app/dashboard/project-workspace/AcivityItem/activity";
 
 interface WorkspaceSidebarProps {
   nodeId: string;
@@ -139,16 +138,6 @@ function WorkspaceSidebar({ nodeId, rootProjectId, isLoading = false, isMobile =
             </div>
           </div>
 
-          {/* 작업 기록 */}
-          <div>
-            <Link href="/dashboard/project-workspace/activity">
-            <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
-              <span>📝</span>
-              <span>작업 기록</span>
-            </div>
-            </Link>
-          </div>
-
           {/* 협업 */}
           <div>
             <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
@@ -254,16 +243,7 @@ function WorkspaceSidebar({ nodeId, rootProjectId, isLoading = false, isMobile =
             </div>
           </div>
 
-          {/* 작업 기록 */}
-          <div>
-            <Link href="/dashboard/project-workspace/activity">
-            <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
-              <span>📝</span>
-              {isSidebarHovered && <span>작업 기록</span>}
-              <Activity />
-            </div>
-            </Link>
-          </div>
+ 
 
           {/* 협업 */}
           <div>
@@ -281,13 +261,14 @@ function WorkspaceSidebar({ nodeId, rootProjectId, isLoading = false, isMobile =
             </div>
             </Link>
           </div>
+
           
           {/* 문서 구조 */}
           <div>
             <div className="border-t my-3"></div>
             <div className="flex items-center space-x-2 py-2 px-3 rounded-lg text-gray-600 text-sm">
               <span>📑</span>
-              <span>문서 구조</span>
+              {isSidebarHovered && <span>문서 구조</span>}
             </div>
             <div className="pl-3 space-y-1 mt-1">
               {nodes

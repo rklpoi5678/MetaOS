@@ -1,5 +1,5 @@
-import RecentWork from "@/app/dashboard/recent-work/page";
 import Link from "next/link";
+import RecentWorkSidebar from "./RecentWorkSidebar";
 
 type Node = {
     id: string;
@@ -14,6 +14,7 @@ type SidebarProps = {
 
 
 export default function Sidebar({ nodes, isAdmin }: SidebarProps) {
+
 
 return (
         <aside className="hidden sm:block fixed left-0 top-0 h-screen w-64 bg-white border-r z-50">
@@ -47,16 +48,6 @@ return (
               </div>
             )}
 
-            {/* 최근 작업 항목 */}
-            <div>
-              <Link href="/dashboard/recent-work" className="w-full">
-              <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
-                <span>🕒</span>
-                <span>최근 작업</span>
-                <RecentWork />
-              </div>
-              </Link>
-            </div>
 
             {/* 즐겨찾기/핀 고정 */}
             <div>
@@ -64,6 +55,14 @@ return (
                 <span>📌</span>
                 <span>즐겨찾기</span>
               </div>
+            </div>
+            
+            {/* 최근 작업 항목 */}
+            <div>
+              <div className="flex items-center space-x-2 py-2 px-3 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer text-gray-600 text-sm">
+                <span>🕒 최근 작업</span>
+              </div>
+              <RecentWorkSidebar />
             </div>
 
             {/* 프로젝트 리스트 */}

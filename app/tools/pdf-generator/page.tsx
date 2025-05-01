@@ -1,6 +1,7 @@
 
 
 'use client'
+import FileUpload from '@/components/pdf-generator/FileUpload';
 import dynamic from 'next/dynamic';
 
 const InputForm = dynamic(() => import('@/components/pdf-generator/InputForm'), { ssr: false });
@@ -23,6 +24,9 @@ export default function PdfGeneratorPage() {
             </div>
             <div className="bg-white rounded-lg shadow">
               <DownloadButton />
+            </div>
+            <div className="bg-white rounded-lg shadow">
+              <FileUpload />
             </div>
           </div>
         </div>
