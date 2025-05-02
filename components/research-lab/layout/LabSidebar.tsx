@@ -16,7 +16,8 @@ const modules = [
   { id: 'experiment-runner', name: '실험 실행', icon: '🧪' },
   { id: 'archive-manager', name: '보관소', icon: '📦' },
   { id: 'open-sync', name: '공개 채널', icon: '🌍' },
-  { id: 'agent-simulator', name: '에이전트 시뮬레이터', icon: '🤖' }
+  { id: 'agent-simulator', name: '에이전트 시뮬레이터', icon: '🤖' },
+  { id: 'chat', name: '챗봇', icon: '💬' }
 ];
 
 const LabSidebar: React.FC<LabSidebarProps> = ({

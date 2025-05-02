@@ -106,13 +106,13 @@ export default function Navigation() {
             ) : (
               <>
                 <Link 
-                  href="/signin" 
+                  href="/auth/signin" 
                   className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   로그인
                 </Link>
                 <Link 
-                  href="/signup"
+                  href="/auth/signup"
                   className="text-sm px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   시작하기
