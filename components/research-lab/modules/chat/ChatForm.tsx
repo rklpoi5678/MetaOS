@@ -30,13 +30,12 @@ export function ChatForm({ className, ...props }: React.ComponentProps<"form">) 
 
   const header = (
     <header className="m-auto flex max-w-96 flex-col gap-5 text-center">
-      <h1 className="text-2xl font-semibold leading-none tracking-tight">Basic AI Chatbot Template</h1>
+      <h1 className="text-2xl text-gray-700 font-semibold leading-none tracking-tight">MetaOS-0.0.1-WillAlpha-bot</h1>
       <p className="text-muted-foreground text-sm">
-        This is an AI chatbot app template built with <span className="text-foreground">Next.js</span>, the{" "}
-        <span className="text-foreground">Vercel AI SDK</span>, and <span className="text-foreground">Vercel KV</span>.
+        사전 테스트 용
       </p>
       <p className="text-muted-foreground text-sm">
-        Connect an API Key from your provider and send a message to get started.
+        아래 입력창으로 테스트 해보세요!
       </p>
     </header>
   )
