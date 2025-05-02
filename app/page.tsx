@@ -1,5 +1,6 @@
 
 {/* section components */}
+import Script from 'next/script';
 import HeroSection from "@/components/landing/HeroSection";
 import HowItWorksSection from "@/components/landing/HowItWorksSection";
 import PricingSection from "@/components/landing/PricingSection";
@@ -12,6 +13,23 @@ import CTASection from '@/components/landing/CTASection';
 export default function LandingPage() {
 
   return (
+    <>
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+          `,
+        }}
+      />
     <div>
       {/* Navigation */}
       <Navigation />
@@ -37,5 +55,6 @@ export default function LandingPage() {
       {/* 6. CTA */}
       <CTASection />
     </div>
+    </>
   );
 }
