@@ -79,7 +79,7 @@ const StructureBuilder: React.FC<StructureBuilderProps> = ({ onEmotionChange }) 
                 ...currentNode,
                 type: e.target.value as StructureNode['type']
               })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-lg text-gray-700"
             >
               {Object.entries(nodeTypes).map(([type, { name }]) => (
                 <option key={type} value={type}>{name}</option>
@@ -98,7 +98,7 @@ const StructureBuilder: React.FC<StructureBuilderProps> = ({ onEmotionChange }) 
                 ...currentNode,
                 label: e.target.value
               })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-lg text-gray-700"
             />
           </div>
 
@@ -112,7 +112,7 @@ const StructureBuilder: React.FC<StructureBuilderProps> = ({ onEmotionChange }) 
                 ...currentNode,
                 description: e.target.value
               })}
-              className="w-full h-24 p-2 border rounded-lg"
+              className="w-full h-24 p-2 border rounded-lg text-gray-700"
             />
           </div>
 

@@ -133,7 +133,7 @@ const OpenSyncPanel: React.FC<OpenSyncPanelProps> = ({ onEmotionChange }) => {
                 ...currentConnection,
                 name: e.target.value
               })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-lg text-gray-700"
             />
           </div>
 
@@ -147,7 +147,7 @@ const OpenSyncPanel: React.FC<OpenSyncPanelProps> = ({ onEmotionChange }) => {
                 ...currentConnection,
                 type: e.target.value as SyncConnection['type']
               })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-lg text-gray-700"
             >
               <option value="api">API</option>
               <option value="database">데이터베이스</option>
@@ -167,14 +167,14 @@ const OpenSyncPanel: React.FC<OpenSyncPanelProps> = ({ onEmotionChange }) => {
                     type="text"
                     value={key}
                     onChange={(e) => handleConfigChange(key, e.target.value)}
-                    className="flex-1 p-2 border rounded-lg"
+                    className="flex-1 p-2 border rounded-lg text-gray-700"
                     placeholder="키"
                   />
                   <input
                     type="text"
                     value={value}
                     onChange={(e) => handleConfigChange(key, e.target.value)}
-                    className="flex-1 p-2 border rounded-lg"
+                    className="flex-1 p-2 border rounded-lg text-gray-700"
                     placeholder="값"
                   />
                 </div>

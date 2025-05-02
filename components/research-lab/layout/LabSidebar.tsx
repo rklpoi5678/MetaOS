@@ -17,6 +17,7 @@ const modules = [
   { id: 'archive-manager', name: '보관소', icon: '📦' },
   { id: 'open-sync', name: '공개 채널', icon: '🌍' },
   { id: 'agent-simulator', name: '에이전트 시뮬레이터', icon: '🤖' },
+  { id: 'chat', name: '챗봇', icon: '💬' },
 ];
 
 const LabSidebar: React.FC<LabSidebarProps> = ({
@@ -55,8 +56,8 @@ const LabSidebar: React.FC<LabSidebarProps> = ({
 
       <div className="mt-auto pt-8">
         <div className="text-xs text-gray-500">
-          <p>버전: v0.1.1</p>
-          <p className="mt-1">마지막 업데이트: 2025.04.29</p>
+          <p>버전: v0.1.4</p>
+          <p className="mt-1">마지막 업데이트: 2025.05.03</p>
         </div>
       </div>
     </div>

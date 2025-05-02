@@ -96,7 +96,7 @@ export default function SignIn() {
             </h2>
             <p className="mt-2 text-sm text-gray-600">
               계정이 없으신가요?{' '}
-              <Link href="/signup" className="font-medium text-blue-600 hover:text-blue-500">
+              <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
                 회원가입하기
               </Link>
             </p>

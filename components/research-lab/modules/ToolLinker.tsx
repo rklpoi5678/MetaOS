@@ -85,7 +85,7 @@ const ToolLinker: React.FC<ToolLinkerProps> = ({ onEmotionChange }) => {
               type="text"
               value={currentTool.name}
               onChange={(e) => setCurrentTool({ ...currentTool, name: e.target.value })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-lg text-gray-700"
             />
           </div>
 
@@ -96,7 +96,7 @@ const ToolLinker: React.FC<ToolLinkerProps> = ({ onEmotionChange }) => {
             <textarea
               value={currentTool.description}
               onChange={(e) => setCurrentTool({ ...currentTool, description: e.target.value })}
-              className="w-full h-24 p-2 border rounded-lg"
+              className="w-full h-24 p-2 border rounded-lg text-gray-700"
             />
           </div>
 
@@ -111,7 +111,7 @@ const ToolLinker: React.FC<ToolLinkerProps> = ({ onEmotionChange }) => {
                   type="text"
                   value={trigger}
                   onChange={(e) => handleTriggerChange(index, e.target.value)}
-                  className="w-full p-2 border rounded-lg"
+                  className="w-full p-2 border rounded-lg text-gray-700"
                   placeholder="트리거 조건 입력"
                 />
               ))}
@@ -138,7 +138,7 @@ const ToolLinker: React.FC<ToolLinkerProps> = ({ onEmotionChange }) => {
                   type="text"
                   value={action}
                   onChange={(e) => handleActionChange(index, e.target.value)}
-                  className="w-full p-2 border rounded-lg"
+                  className="w-full p-2 border rounded-lg text-gray-700"
                   placeholder="실행할 액션 입력"
                 />
               ))}

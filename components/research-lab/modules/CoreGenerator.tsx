@@ -143,7 +143,7 @@ const CoreGenerator: React.FC<CoreGeneratorProps> = ({ onEmotionChange }) => {
             value={philosophy}
             onChange={(e) => setPhilosophy(e.target.value)}
             placeholder="예: 적게 배우고 많이 깨닫는다"
-            className="w-full h-32 sm:h-24 p-3 border rounded-lg text-sm sm:text-base"
+            className="w-full h-32 sm:h-24 p-3 border text-gray-700 rounded-lg text-sm sm:text-base"
           />
         </div>
 
@@ -160,7 +160,7 @@ const CoreGenerator: React.FC<CoreGeneratorProps> = ({ onEmotionChange }) => {
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleVectorToggle(vector.id)}
                 className={`
-                  p-3 sm:p-4 rounded-lg text-left border
+                  p-3 sm:p-4 rounded-lg text-left border text-gray-700
                   ${selectedVectors.includes(vector.id)
                     ? 'border-blue-500 bg-blue-50'
                     : 'border-gray-200'}

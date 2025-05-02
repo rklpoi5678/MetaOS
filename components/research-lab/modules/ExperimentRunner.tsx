@@ -97,7 +97,7 @@ const ExperimentRunner: React.FC<ExperimentRunnerProps> = ({ onEmotionChange }) 
                 ...currentExperiment,
                 title: e.target.value
               })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-lg text-gray-700"
             />
           </div>
 
@@ -111,7 +111,7 @@ const ExperimentRunner: React.FC<ExperimentRunnerProps> = ({ onEmotionChange }) 
                 ...currentExperiment,
                 hypothesis: e.target.value
               })}
-              className="w-full h-24 p-2 border rounded-lg"
+              className="w-full h-24 p-2 border rounded-lg text-gray-700"
             />
           </div>
 
@@ -126,14 +126,14 @@ const ExperimentRunner: React.FC<ExperimentRunnerProps> = ({ onEmotionChange }) 
                     type="text"
                     value={param.key}
                     onChange={(e) => handleParameterChange(index, 'key', e.target.value)}
-                    className="flex-1 p-2 border rounded-lg"
+                    className="flex-1 p-2 border rounded-lg text-gray-700"
                     placeholder="키"
                   />
                   <input
                     type="text"
                     value={param.value}
                     onChange={(e) => handleParameterChange(index, 'value', e.target.value)}
-                    className="flex-1 p-2 border rounded-lg"
+                    className="flex-1 p-2 border rounded-lg text-gray-700"
                     placeholder="값"
                   />
                 </div>

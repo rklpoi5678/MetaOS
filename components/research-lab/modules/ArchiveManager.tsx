@@ -115,7 +115,7 @@ const ArchiveManager: React.FC<ArchiveManagerProps> = ({ onEmotionChange }) => {
                 ...currentArchive,
                 title: e.target.value
               })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-lg text-gray-700"
             />
           </div>
 
@@ -129,7 +129,7 @@ const ArchiveManager: React.FC<ArchiveManagerProps> = ({ onEmotionChange }) => {
                 ...currentArchive,
                 description: e.target.value
               })}
-              className="w-full h-24 p-2 border rounded-lg"
+              className="w-full h-24 p-2 border rounded-lg text-gray-700"
             />
           </div>
 
@@ -143,7 +143,7 @@ const ArchiveManager: React.FC<ArchiveManagerProps> = ({ onEmotionChange }) => {
                 ...currentArchive,
                 category: e.target.value as ArchiveItem['category']
               })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-lg text-gray-700"
             >
               <option value="experiment">실험</option>
               <option value="research">연구</option>
@@ -162,7 +162,7 @@ const ArchiveManager: React.FC<ArchiveManagerProps> = ({ onEmotionChange }) => {
                   type="text"
                   value={tag}
                   onChange={(e) => handleTagChange(index, e.target.value)}
-                  className="w-full p-2 border rounded-lg"
+                  className="w-full p-2 border rounded-lg text-gray-700"
                   placeholder="태그 입력"
                 />
               ))}
@@ -185,7 +185,7 @@ const ArchiveManager: React.FC<ArchiveManagerProps> = ({ onEmotionChange }) => {
                 ...currentArchive,
                 content: e.target.value
               })}
-              className="w-full h-32 p-2 border rounded-lg"
+              className="w-full h-32 p-2 border rounded-lg text-gray-700"
             />
           </div>
 
@@ -208,12 +208,12 @@ const ArchiveManager: React.FC<ArchiveManagerProps> = ({ onEmotionChange }) => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="검색..."
-              className="flex-1 p-2 border rounded-lg"
+              className="flex-1 p-2 border rounded-lg text-gray-700"
             />
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value as ArchiveItem['category'] | 'all')}
-              className="p-2 border rounded-lg"
+              className="p-2 border rounded-lg text-gray-700"
             >
               <option value="all">전체</option>
               <option value="experiment">실험</option>

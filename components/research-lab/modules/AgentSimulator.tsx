@@ -181,7 +181,7 @@ const AgentSimulator: React.FC<AgentSimulatorProps> = ({ onEmotionChange }) => {
                 ...currentAgent,
                 name: e.target.value
               })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-lg text-gray-700"  
             />
           </div>
 
@@ -231,7 +231,7 @@ const AgentSimulator: React.FC<AgentSimulatorProps> = ({ onEmotionChange }) => {
                   type="text"
                   value={item}
                   onChange={(e) => handleKnowledgeChange(index, e.target.value)}
-                  className="w-full p-2 border rounded-lg"
+                  className="w-full p-2 border rounded-lg text-gray-700"
                   placeholder="지식 항목 입력"
                 />
               ))}
@@ -263,7 +263,7 @@ const AgentSimulator: React.FC<AgentSimulatorProps> = ({ onEmotionChange }) => {
               <select
                 value={simulationSpeed}
                 onChange={(e) => setSimulationSpeed(Number(e.target.value))}
-                className="p-2 border rounded-lg"
+                className="p-2 border rounded-lg text-gray-700"
               >
                 <option value="0.5">0.5x</option>
                 <option value="1">1x</option>
