@@ -9,7 +9,6 @@ import ExperimentRunner from '@/components/research-lab/modules/ExperimentRunner
 import ArchiveManager from '@/components/research-lab/modules/ArchiveManager';
 import OpenSyncPanel from '@/components/research-lab/modules/OpenSyncPanel';
 import AgentSimulator from '@/components/research-lab/modules/AgentSimulator';
-import { ChatForm } from '@/components/research-lab/modules/chat/ChatForm';
 
 interface MainPanelProps {
   currentModule: string;
@@ -36,8 +35,6 @@ const MainPanel: React.FC<MainPanelProps> = ({
         return <OpenSyncPanel onEmotionChange={onEmotionChange} />;
       case 'agent-simulator':
         return <AgentSimulator onEmotionChange={onEmotionChange} />;
-      case 'chat':
-        return <ChatForm />;
       default:
         return (
           <div className="text-center py-12">
