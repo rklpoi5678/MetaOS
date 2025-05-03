@@ -17,7 +17,7 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
       <motion.div
         key={pathname}
         initial={false}
-        animate={isMounted ? "visible" : "hidden"}
+        whileInView={isMounted ? "visible" : "hidden"}
         variants={{
           hidden: { opacity: 1 },
           visible: { opacity: 1 }
