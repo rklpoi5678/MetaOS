@@ -29,9 +29,9 @@ export default function Navigation() {
             <Link href="/info/about" className="text-gray-600 hover:text-blue-600 transition-colors">
               소개
             </Link>
-            <Link href="/info/blog" className="text-gray-600 hover:text-blue-600 transition-colors">
+            <a href="https://nextra-blog-3t4s.vercel.app" className="text-gray-600 hover:text-blue-600 transition-colors">
               블로그
-            </Link>
+            </a>
             <Link href="/tools/pdf-generator" className="text-gray-600 hover:text-blue-600 transition-colors">
               PDF 생성기
             </Link>
@@ -52,9 +52,9 @@ export default function Navigation() {
                 <Link href="/info/about" className="block py-2 text-gray-600 hover:text-blue-600">
                   About
                 </Link>
-                <Link href="/info/blog" className="block py-2 text-gray-600 hover:text-blue-600">
+                <a href="https://nextra-blog-3t4s.vercel.app" className="block py-2 text-gray-600 hover:text-blue-600">
                   Blog
-                </Link>
+                </a>
                 <Link href="/tools/pdf-generator" className="block py-2 text-gray-600 hover:text-blue-600">
                   PDF 생성기
                 </Link>
