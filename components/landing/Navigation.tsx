@@ -32,6 +32,9 @@ export default function Navigation() {
             <a href="https://nextra-blog-3t4s.vercel.app" className="text-gray-600 hover:text-blue-600 transition-colors">
               블로그
             </a>
+            <a href="/info/portfolio" className="text-gray-600 hover:text-blue-600 transition-colors">
+              포트폴리오
+            </a>
             <Link href="/tools/pdf-generator" className="text-gray-600 hover:text-blue-600 transition-colors">
               PDF 생성기
             </Link>
