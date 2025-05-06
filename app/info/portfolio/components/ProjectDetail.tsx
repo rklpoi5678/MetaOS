@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink, Download } from 'lucide-react';
-import Mermaid from '@/components/Mermaid';
 
 interface Project {
   id: string;
@@ -12,7 +11,6 @@ interface Project {
   thumbnail: string;
   summary: string;
   tools: string[];
-  flowDiagram: string;
   links: { title: string; url: string }[];
   pdfUrl: string;
   learnings: string[];
@@ -47,13 +45,6 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
               {tool}
             </Badge>
           ))}
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-lg font-semibold mb-2">실행 흐름</h3>
-        <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
-          <Mermaid chart={project.flowDiagram} />
         </div>
       </div>
 

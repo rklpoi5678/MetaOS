@@ -12,7 +12,6 @@ interface Project {
   thumbnail: string;
   summary: string;
   tools: string[];
-  flowDiagram: string;
   links: { title: string; url: string }[];
   pdfUrl: string;
   learnings: string[];
@@ -25,10 +24,6 @@ const projects: Project[] = [
     thumbnail: '/portfolio/meta-os.jpeg',
     summary: 'AI를 활용한 프로젝트 관리 및 자동화 시스템',
     tools: ['Next.js', 'Supabase', 'Zustand', 'OpenAI API', 'Mistral'],
-    flowDiagram: `graph TD
-      A[사용자 입력] --> B[AI 분석]
-      B --> C[작업 자동화]
-      C --> D[결과 피드백]`,
     links: [
       { title: 'GitHub', url: 'https://github.com/rklpoi5678/meta-os' },
       { title: 'Demo', url: 'https://meta-os.vercel.app' }
