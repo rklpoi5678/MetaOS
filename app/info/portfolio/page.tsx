@@ -34,6 +34,23 @@ const projects: Project[] = [
       '실시간 데이터 동기화 구현',
       '사용자 경험 최적화'
     ]
+  },
+  {
+    id: 'guguFresh',
+    title: '구구프래시 - 농산품 직거래 플랫폼',
+    thumbnail: '/portfolio/guguFresh.jpeg',
+    summary: '보바일 농산품 직거래 플랫폼',
+    tools: ['Flutter', 'Firebase', 'FlutterFlow'],
+    links: [
+      { title: 'GitHub', url: 'https://github.com/rklpoi5678' },
+      { title: 'Demo', url: 'https://gugufresh.flutterflow.app/' }
+    ],
+    pdfUrl: '/documents/meta-os-documentation.pdf',
+    learnings: [
+      '산지직송 신선한 농산물 소비 플랫폼',
+      '농업자와 소비자의 연결 및 문제점발견',
+      '하이브리드 웹앱'
+    ]
   }
 ];
 
