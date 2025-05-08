@@ -7,18 +7,6 @@ import ClientWrapper from '@/components/ClientWrapper';
 import Footer from "@/components/landing/Footer";
 import { notFound } from "next/navigation";
 
-export const metadata = {
-  title: "MetaOS | AI 기반 프로젝트 관리 시스템",
-  description: "AI 기반 프로젝트 관리 시스템",
-  openGraph: {
-    title: "MetaOS | AI 기반 프로젝트 관리 시스템",
-    description: "AI 기반 프로젝트 관리 시스템",
-    type: "website"
-  },
-  icons: {
-    icon: "/metaOS.ico",
-  },
-};
 
 export function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'ko' }];
@@ -26,7 +14,7 @@ export function generateStaticParams() {
 
 export default async function LocaleLayout({
   children,
-  params: { locale }
+  params,
 }: {
   children: ReactNode;
   params: { locale: string };
@@ -34,17 +22,17 @@ export default async function LocaleLayout({
 
   let messages;
   try {
-    messages = (await import(`@/locales/${locale}.json`)).default;
+    messages = (await import(`@/locales/${params.locale}.json`)).default;
   } catch (error) {
-    console.error(`Failed to load messages for locale: ${locale}`, error);
+    console.error(`Failed to load messages for locale: ${params.locale}`, error);
 
     notFound();
   }
 
   return (
-    <html lang={locale}>
+    <html lang={params.locale}>
       <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
+        <NextIntlClientProvider locale={params.locale} messages={messages}>
           <ClientWrapper>
             {children}
           </ClientWrapper>
