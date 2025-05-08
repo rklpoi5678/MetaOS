@@ -24,17 +24,17 @@ export function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'ko' }];
 }
 
-interface LayoutProps {
+type Props = {
   children: ReactNode;
   params: {
     locale: string;
   };
-}
+};
 
-export default async function LocaleLayout({
+export default async function RootLayout({
   children,
   params: { locale }
-}: LayoutProps) {
+}: Props) {
   let messages;
   try {
     messages = (await import(`@/locales/${locale}.json`)).default;
