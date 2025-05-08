@@ -1,0 +1,256 @@
+{
+  "common": {
+    "language": "언어",
+    "languages": {
+      "ko": "한국어",
+      "en": "영어"
+    }
+  },
+  "navigation": {
+    "about": "소개",
+    "blog": "블로그",
+    "portfolio": "포트폴리오",
+    "pdfGenerator": "PDF 생성기",
+    "dashboard": "대시보드",
+    "logout": "로그아웃",
+    "login": "로그인",
+    "getStarted": "시작하기"
+  },
+  "hero": {
+    "title": "프로젝트의 미래를\n",
+    "titleEnd": "와 함께",
+    "description": "AI 기반 프로젝트 관리 플랫폼으로 더 스마트하게 일하세요. 실시간 협업, 자동화된 워크플로우, 데이터 기반 인사이트를 제공합니다.",
+    "metaOS": "MetaOS",
+    "cta": "무료로 시작하기",
+    "version": "Alpha v0.1.5",
+    "goToDashboard": "대시보드 바로가기",
+    "learnMore": "더 알아보기"
+  },
+  "whatIsMetaOS": {
+    "title": "MetaOS란?",
+    "description": "MetaOS는 AI 기반의 프로젝트 관리 시스템으로, 복잡한 프로젝트를 효율적으로 관리할 수 있도록 도와줍니다.",
+    "features": {
+      "ai": {
+        "title": "AI 기반 프로젝트 생성",
+        "description": "간단한 설명만으로 완성된 프로젝트 구조를 생성합니다"
+      },
+      "automation": {
+        "title": "자동화된 워크플로우",
+        "description": "반복적인 작업을 자동화하여 효율성을 높입니다"
+      },
+      "analysis": {
+        "title": "실시간 분석",
+        "description": "프로젝트 진행 상황을 실시간으로 분석하고 최적화합니다"
+      }
+    }
+  },
+  "pricing": {
+    "title": "가격 정책",
+    "subtitle": "팀의 규모와 필요에 맞는 플랜을 선택하세요",
+    "cta": "시작하기",
+    "plans": {
+      "starter": {
+        "name": "스타터",
+        "price": "₩29,000",
+        "period": "월",
+        "features": {
+          "basicAI": "기본 AI 프로젝트 관리",
+          "teamSize": "최대 3명 팀원",
+          "projects": "5개 프로젝트",
+          "reports": "기본 분석 리포트",
+          "support": "이메일 지원"
+        }
+      },
+      "pro": {
+        "name": "프로",
+        "price": "₩99,000",
+        "period": "월",
+        "features": {
+          "advancedAI": "고급 AI 프로젝트 관리",
+          "teamSize": "최대 10명 팀원",
+          "projects": "무제한 프로젝트",
+          "reports": "고급 분석 리포트",
+          "support": "우선 지원",
+          "api": "API 접근"
+        }
+      },
+      "enterprise": {
+        "name": "엔터프라이즈",
+        "price": "₩299,000",
+        "period": "월",
+        "features": {
+          "dedicatedAI": "전용 AI 프로젝트 관리",
+          "teamSize": "무제한 팀원",
+          "projects": "무제한 프로젝트",
+          "reports": "커스텀 분석 리포트",
+          "manager": "전용 매니저",
+          "api": "API 우선 접근",
+          "solutions": "맞춤형 솔루션"
+        }
+      }
+    }
+  },
+  "features": {
+    "title": "주요 기능",
+    "subtitle": "MetaOS의 강력한 기능들로 프로젝트를 더 효율적으로 관리하세요.",
+    "items": {
+      "collaboration": {
+        "title": "실시간 협업",
+        "description": "팀원들과 실시간으로 소통하고 작업을 공유하세요"
+      },
+      "aiAnalysis": {
+        "title": "AI 분석",
+        "description": "AI가 프로젝트 데이터를 분석하여 인사이트를 제공합니다"
+      },
+      "workflow": {
+        "title": "자동화 워크플로우",
+        "description": "반복적인 작업을 자동화하여 시간을 절약하세요"
+      },
+      "visualization": {
+        "title": "데이터 시각화",
+        "description": "복잡한 데이터를 직관적인 그래프로 확인하세요"
+      },
+      "calendar": {
+        "title": "통합 캘린더",
+        "description": "모든 일정을 한 곳에서 관리하세요"
+      },
+      "security": {
+        "title": "보안 및 권한",
+        "description": "강력한 보안과 세밀한 권한 관리로 안전하게 작업하세요"
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "작동 방식",
+    "subtitle": "MetaOS가 어떻게 프로젝트를 관리하는지 알아보세요",
+    "steps": {
+      "setup": {
+        "step": "1",
+        "title": "설정",
+        "description": "프로젝트를 설정하고 팀원을 초대합니다."
+      },
+      "plan": {
+        "step": "2",
+        "title": "계획",
+        "description": "AI가 도와주는 스마트한 프로젝트 계획을 수립합니다."
+      },
+      "execute": {
+        "step": "3",
+        "title": "실행",
+        "description": "자동화된 워크플로우로 프로젝트를 효율적으로 실행합니다."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "고객 후기",
+    "subtitle": "MetaOS를 사용하는 고객들의 이야기를 들어보세요",
+    "items": {
+      "testimonial1": {
+        "name": "김철수",
+        "role": "프로젝트 매니저",
+        "company": "TechCorp",
+        "content": "MetaOS로 프로젝트 관리가 훨씬 효율적이 되었습니다. AI의 도움으로 시간을 많이 절약할 수 있었습니다.",
+        "image": "👨‍💼"
+      },
+      "testimonial2": {
+        "name": "이영희",
+        "role": "개발자",
+        "company": "DevTeam",
+        "content": "자동화된 워크플로우가 정말 큰 도움이 됩니다. 반복적인 작업이 크게 줄었습니다.",
+        "image": "👩‍💻"
+      },
+      "testimonial3": {
+        "name": "구구",
+        "role": "프로젝트 매니저",
+        "company": "구구",
+        "content": "MetaOS 도입 후 업무 처리 시간이 60% 단축되었습니다. AI가 프로젝트 구조를 자동으로 설계해주니 정말 편리합니다.",
+        "image": "👨‍💼"
+      },
+      "testimonial4": {
+        "name": "디자인웨이브로",
+        "role": "제조업",
+        "company": "디자인웨이브로",
+        "content": "AI 기반 자동화로 인적 오류가 90% 감소했습니다. 특히 실시간 분석 기능이 프로젝트 관리에 큰 도움이 됩니다.",
+        "image": "🔭"
+      }
+    }
+  },
+  "cta": {
+    "title": "지금 시작하세요",
+    "subtitle": "MetaOS와 함께 프로젝트 관리의 새로운 시대를 열어보세요",
+    "button": "무료로 시작하기",
+    "button2": "Agent 데모 보기"
+  },
+  "footer": {
+    "description": "당신의 생각을 현실로 만드는 AI 프로젝트 플랫폼",
+    "sections": {
+      "product": {
+        "title": "제품",
+        "features": "기능",
+        "pricing": "가격",
+        "demo": "데모"
+      },
+      "company": {
+        "title": "회사",
+        "about": "소개",
+        "blog": "블로그",
+        "contact": "문의"
+      },
+      "legal": {
+        "title": "법적",
+        "privacy": "개인정보처리방침",
+        "terms": "이용약관"
+      }
+    },
+    "copyright": "© 2024 MetaOS. All rights reserved."
+  },
+  "about": {
+    "hero": {
+      "title": "프로젝트의 미래를\n",
+      "titleEnd": "와 함께",
+      "description": "AI 기반 프로젝트 관리 플랫폼으로 더 스마트하게 일하세요. 실시간 협업, 자동화된 워크플로우, 데이터 기반 인사이트를 제공합니다."
+    },
+    "mission": {
+      "title": "미션",
+      "description": "우리는 프로젝트 관리를 더 스마트하고 효율적으로 만들어, 모든 팀이 더 나은 결과를 빠르게 달성할 수 있도록 돕습니다."
+    },
+    "vision": {
+      "title": "비전",
+      "description": "AI와 인간의 협업을 통해 프로젝트 관리의 새로운 패러다임을 만들어, 더 나은 미래를 위한 혁신을 주도합니다."
+    },
+    "coreValues": {
+      "title": "핵심 가치",
+      "innovation": {
+        "title": "혁신",
+        "description": "최신 기술과 AI를 활용하여 프로젝트 관리를 혁신합니다."
+      },
+      "collaboration": {
+        "title": "협업",
+        "description": "팀원 간의 원활한 소통과 협업을 지원합니다."
+      },
+      "growth": {
+        "title": "성장",
+        "description": "지속적인 학습과 개선을 통해 함께 성장합니다."
+      }
+    },
+    "team": {
+      "title": "우리의 팀",
+      "member1": {
+        "name": "김철수",
+        "role": "CEO"
+      },
+      "member2": {
+        "name": "이영희",
+        "role": "CTO"
+      },
+      "member3": {
+        "name": "박민수",
+        "role": "디자인 리더"
+      },
+      "member4": {
+        "name": "정지원",
+        "role": "AI 엔지니어"
+      }
+    }
+  }
+} 

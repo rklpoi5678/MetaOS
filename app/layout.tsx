@@ -1,34 +1,7 @@
-// app/layout.tsx
-
-import "@/styles/globals.css";
-import { ReactNode } from 'react';
-import ClientWrapper from '@/components/ClientWrapper';
-import Footer from "@/components/landing/Footer";
-
-
-export const metadata = {
-  title: "MetaOS | AI 기반 프로젝트 관리 시스템",
-  description: "AI 기반 프로젝트 관리 시스템",
-  openGraph: {
-    title: "MetaOS | AI 기반 프로젝트 관리 시스템",
-    description: "AI 기반 프로젝트 관리 시스템",
-    type: "website"
-  },
-  icons: {
-    icon: "/metaOS.ico",
-  },
-};
-
-
-export default function RootLayout({ children }: { children: ReactNode }) {
-  return (
-    <html lang="ko">
-      <body>
-        <ClientWrapper>
-          {children}
-        </ClientWrapper>
-        <Footer />
-      </body>
-    </html>
-  )
-}
+export default function RootLayout({
+    children,
+  }: {
+    children: React.ReactNode;
+  }) {
+    return children;
+  }

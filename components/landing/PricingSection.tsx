@@ -1,48 +1,51 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 
 export default function PricingSection() {
+  const t = useTranslations('pricing');
+  
   const plans = [
     {
-      name: "스타터",
-      price: "₩29,000",
-      period: "월",
+      name: t('plans.starter.name'),
+      price: t('plans.starter.price'),
+      period: t('plans.starter.period'),
       features: [
-        "기본 AI 프로젝트 관리",
-        "최대 3명 팀원",
-        "5개 프로젝트",
-        "기본 분석 리포트",
-        "이메일 지원"
+        t('plans.starter.features.basicAI'),
+        t('plans.starter.features.teamSize'),
+        t('plans.starter.features.projects'),
+        t('plans.starter.features.reports'),
+        t('plans.starter.features.support')
       ],
       highlight: false
     },
     {
-      name: "프로",
-      price: "₩99,000",
-      period: "월",
+      name: t('plans.pro.name'),
+      price: t('plans.pro.price'),
+      period: t('plans.pro.period'),
       features: [
-        "고급 AI 프로젝트 관리",
-        "최대 10명 팀원",
-        "무제한 프로젝트",
-        "고급 분석 리포트",
-        "우선 지원",
-        "API 접근"
+        t('plans.pro.features.advancedAI'),
+        t('plans.pro.features.teamSize'),
+        t('plans.pro.features.projects'),
+        t('plans.pro.features.reports'),
+        t('plans.pro.features.support'),
+        t('plans.pro.features.api')
       ],
       highlight: true
     },
     {
-      name: "엔터프라이즈",
-      price: "₩299,000",
-      period: "월",
+      name: t('plans.enterprise.name'),
+      price: t('plans.enterprise.price'),
+      period: t('plans.enterprise.period'),
       features: [
-        "전용 AI 프로젝트 관리",
-        "무제한 팀원",
-        "무제한 프로젝트",
-        "커스텀 분석 리포트",
-        "전용 매니저",
-        "API 우선 접근",
-        "맞춤형 솔루션"
+        t('plans.enterprise.features.dedicatedAI'),
+        t('plans.enterprise.features.teamSize'),
+        t('plans.enterprise.features.projects'),
+        t('plans.enterprise.features.reports'),
+        t('plans.enterprise.features.manager'),
+        t('plans.enterprise.features.api'),
+        t('plans.enterprise.features.solutions')
       ],
       highlight: false
     }
@@ -59,10 +62,10 @@ export default function PricingSection() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-            가격 정책
+            {t('title')}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            팀의 규모와 필요에 맞는 플랜을 선택하세요
+            {t('subtitle')}
           </p>
         </motion.div>
 
@@ -112,7 +115,7 @@ export default function PricingSection() {
                     : 'bg-gray-200 text-gray-900 hover:bg-gray-300'
                 }`}
               >
-                시작하기
+                {t('cta')}
               </button>
             </motion.div>
           ))}

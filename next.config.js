@@ -1,3 +1,7 @@
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -21,13 +25,13 @@ const nextConfig = {
   },
   transpilePackages: ['framer-motion'],
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'images.unsplash.com'],
   },
   experimental: {
     serverActions: {
       allowedOrigins: ['localhost:3000'],
     },
   },
-}
+};
 
-export default nextConfig
+export default withNextIntl(nextConfig);

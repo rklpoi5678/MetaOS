@@ -3,10 +3,13 @@
 import Link from 'next/link'
 import { useAppStore } from '@/src/store/appStore'
 import { useEffect, useState } from 'react'
+import { useTranslations } from 'next-intl'
+import { LocalesSetting } from './nav-locales/LocalesSetting'
 
 export default function Navigation() {
   const { user, handleLogout, setUser } = useAppStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const t = useTranslations('navigation');
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -27,16 +30,16 @@ export default function Navigation() {
 
           <div className="hidden md:flex items-center space-x-8">
             <Link href="/info/about" className="text-gray-600 hover:text-blue-600 transition-colors">
-              소개
+              {t('about')}
             </Link>
-            <a href="https://nextra-blog-3t4s.vercel.app" className="text-gray-600 hover:text-blue-600 transition-colors">
-              블로그
-            </a>
-            <a href="/info/portfolio" className="text-gray-600 hover:text-blue-600 transition-colors">
-              포트폴리오
-            </a>
+            <Link href="https://nextra-blog-3t4s.vercel.app" className="text-gray-600 hover:text-blue-600 transition-colors">
+              {t('blog')}
+            </Link>
+            <Link href="/info/portfolio" className="text-gray-600 hover:text-blue-600 transition-colors">
+              {t('portfolio')}
+            </Link>
             <Link href="/tools/pdf-generator" className="text-gray-600 hover:text-blue-600 transition-colors">
-              PDF 생성기
+              {t('pdfGenerator')}
             </Link>
           </div>
 
@@ -53,36 +56,36 @@ export default function Navigation() {
             <div className="md:hidden absolute top-16 left-0 right-0 bg-white border-t">
               <div className="container mx-auto px-4 py-2 space-y-2">
                 <Link href="/info/about" className="block py-2 text-gray-600 hover:text-blue-600">
-                  About
+                  {t('about')}
                 </Link>
                 <a href="https://nextra-blog-3t4s.vercel.app" className="block py-2 text-gray-600 hover:text-blue-600">
-                  Blog
+                  {t('blog')}
                 </a>
                 <Link href="/tools/pdf-generator" className="block py-2 text-gray-600 hover:text-blue-600">
-                  PDF 생성기
+                  {t('pdfGenerator')}
                 </Link>
                 {user ? (
                   <>
                     <Link href="/dashboard" className="block py-2 text-gray-600 hover:text-blue-600">
-                      대시보드
+                      {t('dashboard')}
                     </Link>
                     <button
                       onClick={handleLogout}
                       className="block w-full py-2 text-gray-600 hover:text-blue-600"
                     >
-                      로그아웃
+                      {t('logout')}
                     </button>
                   </>
                 ) : (
                   <>
                     <Link href="/auth/signin" className="block py-2 text-gray-600 hover:text-blue-600">
-                      로그인
+                      {t('login')}
                     </Link>
                     <Link
                       href="/auth/signup"
                       className="block py-2 text-blue-600 hover:text-blue-700"
                     >
-                      시작하기
+                      {t('getStarted')}
                     </Link>
                   </>
                 )}
@@ -91,19 +94,20 @@ export default function Navigation() {
           )}
 
           <div className="hidden md:flex items-center space-x-4">
+            <LocalesSetting />
             {user ? (
               <>
                 <Link 
                   href="/dashboard" 
                   className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
                 >
-                  대시보드
+                  {t('dashboard')}
                 </Link>
                 <button 
                   onClick={handleLogout}
                   className="text-sm px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors"
                 >
-                  로그아웃
+                  {t('logout')}
                 </button>
               </>
             ) : (
@@ -112,13 +116,13 @@ export default function Navigation() {
                   href="/auth/signin" 
                   className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
                 >
-                  로그인
+                  {t('login')}
                 </Link>
                 <Link 
                   href="/auth/signup"
                   className="text-sm px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                  시작하기
+                  {t('getStarted')}
                 </Link>
               </>
             )}

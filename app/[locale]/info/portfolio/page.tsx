@@ -38,7 +38,7 @@ const projects: Project[] = [
   {
     id: 'guguFresh',
     title: '구구프래시 - 농산품 직거래 플랫폼',
-    thumbnail: '/portfolio/guguFresh.jpeg',
+    thumbnail: '/portfolio/guguFresh.png',
     summary: '보바일 농산품 직거래 플랫폼',
     tools: ['Flutter', 'Firebase', 'FlutterFlow'],
     links: [

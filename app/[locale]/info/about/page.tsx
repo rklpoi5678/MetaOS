@@ -3,11 +3,13 @@
 import React from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useTranslations } from 'next-intl';
 import Navigation from '@/components/landing/Navigation';
 import CTASection from '@/components/landing/CTASection';
 
 export default function AboutPage() {
   const controls = useAnimation();
+  const t = useTranslations('about');
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
@@ -41,6 +43,47 @@ export default function AboutPage() {
     }
   };
 
+  const coreValues = [
+    {
+      title: t('coreValues.innovation.title'),
+      description: t('coreValues.innovation.description'),
+      icon: "🚀"
+    },
+    {
+      title: t('coreValues.collaboration.title'),
+      description: t('coreValues.collaboration.description'),
+      icon: "🤝"
+    },
+    {
+      title: t('coreValues.growth.title'),
+      description: t('coreValues.growth.description'),
+      icon: "📈"
+    }
+  ];
+
+  const teamMembers = [
+    {
+      name: t('team.member1.name'),
+      role: t('team.member1.role'),
+      image: "👨‍💼"
+    },
+    {
+      name: t('team.member2.name'),
+      role: t('team.member2.role'),
+      image: "👩‍💻"
+    },
+    {
+      name: t('team.member3.name'),
+      role: t('team.member3.role'),
+      image: "🎨"
+    },
+    {
+      name: t('team.member4.name'),
+      role: t('team.member4.role'),
+      image: "🤖"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* 헤더 */}
@@ -61,15 +104,14 @@ export default function AboutPage() {
             className="text-center mb-20"
           >
             <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-              프로젝트의 미래를<br />
+              {t('hero.title')}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 MetaOS
               </span>
-              와 함께
+              {t('hero.titleEnd')}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              AI 기반 프로젝트 관리 플랫폼으로 더 스마트하게 일하세요.
-              실시간 협업, 자동화된 워크플로우, 데이터 기반 인사이트를 제공합니다.
+              {t('hero.description')}
             </p>
           </motion.div>
 
@@ -80,10 +122,9 @@ export default function AboutPage() {
               className="bg-white p-8 rounded-xl shadow-sm"
             >
               <div className="text-4xl mb-4">🎯</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">미션</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('mission.title')}</h2>
               <p className="text-gray-600">
-                우리는 프로젝트 관리를 더 스마트하고 효율적으로 만들어, 
-                모든 팀이 더 나은 결과를 빠르게 달성할 수 있도록 돕습니다.
+                {t('mission.description')}
               </p>
             </motion.div>
 
@@ -92,10 +133,9 @@ export default function AboutPage() {
               className="bg-white p-8 rounded-xl shadow-sm"
             >
               <div className="text-4xl mb-4">🚀</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">비전</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('vision.title')}</h2>
               <p className="text-gray-600">
-                AI와 인간의 협업을 통해 프로젝트 관리의 새로운 패러다임을 만들어,
-                더 나은 미래를 위한 혁신을 주도합니다.
+                {t('vision.description')}
               </p>
             </motion.div>
           </div>
@@ -106,26 +146,10 @@ export default function AboutPage() {
               variants={itemVariants}
               className="text-3xl font-bold text-center mb-12 text-gray-900"
             >
-              핵심 가치
+              {t('coreValues.title')}
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-gray-800">
-              {[
-                {
-                  title: "혁신",
-                  description: "최신 기술과 AI를 활용하여 프로젝트 관리를 혁신합니다.",
-                  icon: "🚀"
-                },
-                {
-                  title: "협업",
-                  description: "팀원 간의 원활한 소통과 협업을 지원합니다.",
-                  icon: "🤝"
-                },
-                {
-                  title: "성장",
-                  description: "지속적인 학습과 개선을 통해 함께 성장합니다.",
-                  icon: "📈"
-                }
-              ].map((value, index) => (
+              {coreValues.map((value, index) => (
                 <motion.div
                   key={index}
                   variants={itemVariants}
@@ -145,31 +169,10 @@ export default function AboutPage() {
               variants={itemVariants}
               className="text-3xl font-bold text-center mb-12 text-gray-900"
             >
-              우리의 팀
+              {t('team.title')}
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-gray-800">
-              {[
-                {
-                  name: "김철수",
-                  role: "CEO",
-                  image: "👨‍💼"
-                },
-                {
-                  name: "이영희",
-                  role: "CTO",
-                  image: "👩‍💻"
-                },
-                {
-                  name: "박민수",
-                  role: "디자인 리더",
-                  image: "🎨"
-                },
-                {
-                  name: "정지원",
-                  role: "AI 엔지니어",
-                  image: "🤖"
-                }
-              ].map((member, index) => (
+              {teamMembers.map((member, index) => (
                 <motion.div
                   key={index}
                   variants={itemVariants}

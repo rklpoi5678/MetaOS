@@ -1,0 +1,253 @@
+{
+  "common": {
+    "language": "Language",
+    "languages": {
+      "ko": "Korean",
+      "en": "English"
+    }
+  },
+  "navigation": {
+    "about": "About",
+    "blog": "Blog",
+    "portfolio": "Portfolio",
+    "pdfGenerator": "PDF Generator",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
+    "login": "Login",
+    "getStarted": "Get Started"
+  },
+  "hero": {
+    "title": "The Future of Projects",
+    "titleEnd": "MetaOS",
+    "description": "Manage your projects smarter",
+    "metaOS": "with ",
+    "cta": "Start Free",
+    "version": "Alpha v0.1.5",
+    "goToDashboard": "Go to Dashboard",
+    "learnMore": "Learn More"
+  },
+  "whatIsMetaOS": {
+    "title": "What is MetaOS?",
+    "description": "MetaOS is an AI-powered project management system that helps you manage complex projects efficiently.",
+    "features": {
+      "ai": {
+        "title": "AI-Powered Project Generation",
+        "description": "Creates complete project structures from simple descriptions"
+      },
+      "automation": {
+        "title": "Automated Workflow",
+        "description": "Increases efficiency by automating repetitive tasks"
+      },
+      "analysis": {
+        "title": "Real-time Analysis",
+        "description": "Analyzes and optimizes project progress in real-time"
+      }
+    }
+  },
+  
+  "pricing": {
+    "title": "Pricing Plans",
+    "subtitle": "Choose a plan that fits your team's size and needs",
+    "cta": "Get Started",
+    "plans": {
+      "starter": {
+        "name": "Starter",
+        "price": "$29",
+        "period": "month",
+        "features": {
+          "basicAI": "Basic AI Project Management",
+          "teamSize": "Up to 3 team members",
+          "projects": "5 projects",
+          "reports": "Basic analytics reports",
+          "support": "Email support"
+        }
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "$99",
+        "period": "month",
+        "features": {
+          "advancedAI": "Advanced AI Project Management",
+          "teamSize": "Up to 10 team members",
+          "projects": "Unlimited projects",
+          "reports": "Advanced analytics reports",
+          "support": "Priority support",
+          "api": "API access"
+        }
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "$299",
+        "period": "month",
+        "features": {
+          "dedicatedAI": "Dedicated AI Project Management",
+          "teamSize": "Unlimited team members",
+          "projects": "Unlimited projects",
+          "reports": "Custom analytics reports",
+          "manager": "Dedicated manager",
+          "api": "Priority API access",
+          "solutions": "Custom solutions"
+        }
+      }
+    }
+  },
+  "features": {
+    "title": "Key Features",
+    "subtitle": "Manage your projects more efficiently with MetaOS's powerful features.",
+    "items": {
+      "collaboration": {
+        "title": "Real-time Collaboration",
+        "description": "Communicate and share work with team members in real-time"
+      },
+      "aiAnalysis": {
+        "title": "AI Analysis",
+        "description": "Get insights from AI-powered project data analysis"
+      },
+      "workflow": {
+        "title": "Automated Workflows",
+        "description": "Save time by automating repetitive tasks"
+      },
+      "visualization": {
+        "title": "Data Visualization",
+        "description": "View complex data through intuitive graphs"
+      },
+      "calendar": {
+        "title": "Integrated Calendar",
+        "description": "Manage all schedules in one place"
+      },
+      "security": {
+        "title": "Security & Permissions",
+        "description": "Work safely with strong security and granular permission management"
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "subtitle": "Learn how MetaOS manages your projects",
+    "steps": {
+      "setup": {
+        "step": "1",
+        "title": "Setup",
+        "description": "Set up your project and invite team members."
+      },
+      "plan": {
+        "step": "2",
+        "title": "Plan",
+        "description": "Create smart project plans with AI assistance."
+      },
+      "execute": {
+        "step": "3",
+        "title": "Execute",
+        "description": "Execute projects efficiently with automated workflows."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "Customer Testimonials",
+    "subtitle": "Hear from our customers about their experience with MetaOS",
+    "items": {
+      "testimonial1": {
+        "name": "John Smith",
+        "role": "Project Manager",
+        "company": "TechCorp",
+        "content": "Project management has become much more efficient with MetaOS. The AI assistance has helped us save a lot of time."
+      },
+      "testimonial2": {
+        "name": "Sarah Johnson",
+        "role": "Developer",
+        "company": "DevTeam",
+        "content": "The automated workflows are really helpful. We've significantly reduced repetitive tasks."
+      },
+      "testimonial3": {
+        "name": "GuGu Company",
+        "role": "IT Services",
+        "company": "Gugu",
+        "content": "After implementing MetaOS, our processing time decreased by 60%. It's really convenient that AI automatically designs the project structure."
+      },
+      "testimonial4": {
+        "name": "DesignWave",
+        "role": "Manufacturing",
+        "company": "DesignWave",
+        "content": "Human errors have decreased by 90% thanks to AI-based automation. The real-time analysis feature is particularly helpful for project management."
+      }
+    }
+  },
+  "cta": {
+    "title": "Get Started Now",
+    "subtitle": "Start a new era of project management with MetaOS",
+    "button": "Start Free",
+    "button2": "View Agent Demo"
+  },
+  "footer": {
+    "description": "AI Project Platform that turns your ideas into reality",
+    "sections": {
+      "product": {
+        "title": "Product",
+        "features": "Features",
+        "pricing": "Pricing",
+        "demo": "Demo"
+      },
+      "company": {
+        "title": "Company",
+        "about": "About",
+        "blog": "Blog",
+        "contact": "Contact"
+      },
+      "legal": {
+        "title": "Legal",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service"
+      }
+    },
+    "copyright": "© 2024 MetaOS. All rights reserved."
+  },
+  "about": {
+    "hero": {
+      "title": "The Future of Projects with\n",
+      "titleEnd": "",
+      "description": "Work smarter with our AI-powered project management platform. We provide real-time collaboration, automated workflows, and data-driven insights."
+    },
+    "mission": {
+      "title": "Mission",
+      "description": "We make project management smarter and more efficient, helping all teams achieve better results faster."
+    },
+    "vision": {
+      "title": "Vision",
+      "description": "We create a new paradigm in project management through AI and human collaboration, leading innovation for a better future."
+    },
+    "coreValues": {
+      "title": "Core Values",
+      "innovation": {
+        "title": "Innovation",
+        "description": "We innovate project management using the latest technology and AI."
+      },
+      "collaboration": {
+        "title": "Collaboration",
+        "description": "We support smooth communication and collaboration between team members."
+      },
+      "growth": {
+        "title": "Growth",
+        "description": "We grow together through continuous learning and improvement."
+      }
+    },
+    "team": {
+      "title": "Our Team",
+      "member1": {
+        "name": "John Smith",
+        "role": "CEO"
+      },
+      "member2": {
+        "name": "Sarah Johnson",
+        "role": "CTO"
+      },
+      "member3": {
+        "name": "Mike Brown",
+        "role": "Design Lead"
+      },
+      "member4": {
+        "name": "Jane Wilson",
+        "role": "AI Engineer"
+      }
+    }
+  }
+} 

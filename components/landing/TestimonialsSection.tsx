@@ -1,8 +1,42 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 export default function TestimonialsSection() {
+  const t = useTranslations('testimonials');
+
+  const testimonials = [
+    {
+      name: t('items.testimonial1.name'),
+      role: t('items.testimonial1.role'),
+      company: t('items.testimonial1.company'),
+      content: t('items.testimonial1.content'),
+      image: "👨‍💼"
+    },
+    {
+      name: t('items.testimonial2.name'),
+      role: t('items.testimonial2.role'),
+      company: t('items.testimonial2.company'),
+      content: t('items.testimonial2.content'),
+      image: "👩‍💻"
+    },
+    {
+      name: t('items.testimonial3.name'),
+      role: t('items.testimonial3.role'),
+      company: t('items.testimonial3.company'),
+      content: t('items.testimonial3.content'),
+      image: "🖥️"
+    },
+    {
+      name: t('items.testimonial4.name'),
+      role: t('items.testimonial4.role'),
+      company: t('items.testimonial4.company'),
+      content: t('items.testimonial4.content'),
+      image: "🔭"
+    }
+  ];
+
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,44 +48,15 @@ export default function TestimonialsSection() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-            사용자 후기
+            {t('title')}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            MetaOS를 사용하는 팀들의 이야기를 들어보세요.
+            {t('subtitle')}
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[
-            {
-              name: "김철수",
-              role: "프로젝트 매니저",
-              company: "TechCorp",
-              content: "MetaOS로 프로젝트 관리가 훨씬 효율적이 되었습니다. AI의 도움으로 시간을 많이 절약할 수 있었습니다.",
-              image: "👨‍💼"
-            },
-            {
-              name: "이영희",
-              role: "개발자",
-              company: "DevTeam",
-              content: "자동화된 워크플로우가 정말 큰 도움이 됩니다. 반복적인 작업이 크게 줄었습니다.",
-              image: "👩‍💻"
-            },
-            {
-              name: "(주)구구 컴퍼니",
-              role: "IT 서비스",
-              company: "구구",
-              content: "MetaOS 도입 후 업무 처리 시간이 60% 단축되었습니다. AI가 프로젝트 구조를 자동으로 설계해주니 정말 편리합니다.",
-              image: "🖥️"
-            },
-            {
-              name: "디자인웨이브로",
-              role: "제조업",
-              company: "디자인웨이브로",
-              content: "AI 기반 자동화로 인적 오류가 90% 감소했습니다. 특히 실시간 분석 기능이 프로젝트 관리에 큰 도움이 됩니다.",
-              image: "🔭"
-            }
-          ].map((testimonial, index) => (
+          {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
