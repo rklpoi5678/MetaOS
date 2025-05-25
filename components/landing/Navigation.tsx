@@ -35,9 +35,14 @@ export default function Navigation() {
             <Link href="https://nextra-blog-3t4s.vercel.app" className="text-gray-600 hover:text-blue-600 transition-colors">
               {t('blog')}
             </Link>
-            <Link href="/info/portfolio" className="text-gray-600 hover:text-blue-600 transition-colors">
+            <a 
+              href="https://portfolio-six-nu-90.vercel.app/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-gray-600 hover:text-blue-600 transition-colors"
+            >
               {t('portfolio')}
-            </Link>
+            </a>
             <Link href="/tools/pdf-generator" className="text-gray-600 hover:text-blue-600 transition-colors">
               {t('pdfGenerator')}
             </Link>
