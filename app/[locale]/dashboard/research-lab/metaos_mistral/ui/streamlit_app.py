@@ -4,9 +4,9 @@ import openai
 import os
 import json
 
-openai.api_key = "aCQRZv3eh3dGy1ZtfPgnl0JdY8BKgXhX"
-openai.api_base = "https://api.mistral.ai/v1"
-MODEL_NAME = "mistral-small-latest"
+openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_base = os.getenv("OPENAI_API_BASE")
+MODEL_NAME = os.getenv("MODEL_NAME")
 
 def load_memory():
     try:
